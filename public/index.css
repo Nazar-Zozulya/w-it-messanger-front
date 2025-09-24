@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "GT Walsheim Pro";
+  src: url("assets/fonts/GTWalsheimPro-Light.eot");
+  src: local("GT Walsheim Pro Light"), local("GTWalsheimPro-Light"),
+    url("assets/fonts/GTWalsheimPro-Light.eot?#iefix") format("embedded-opentype"),
+    url("assets/fonts/GTWalsheimPro-Light.woff2") format("woff2"),
+    url("assets/fonts/GTWalsheimPro-Light.woff") format("woff"),
+    url("assets/fonts/GTWalsheimPro-Light.ttf") format("truetype");
+}
