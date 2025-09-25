@@ -1,0 +1,1 @@
+export { AuthFormBlock } from './block'

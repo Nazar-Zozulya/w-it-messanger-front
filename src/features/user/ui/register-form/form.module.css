@@ -1,0 +1,39 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.optionalTitle {
+    font-family: "GT Walsheim Pro";
+    font-size: 24px;
+    font-weight: 500;
+    color: #070A1C;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.submitButton {
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    border-radius: 100px;
+    background-color: #543C52;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "GT Walsheim Pro";
+    font-size: 16px;
+    font-weight: 500;
+}

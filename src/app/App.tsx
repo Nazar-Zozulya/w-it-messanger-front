@@ -1,6 +1,6 @@
 import { Input } from "../shared/ui/input";
 import { AppProviders } from "./providers";
-import "./stylesManager.css"
+import "./fontsManager.css"
 
 
 

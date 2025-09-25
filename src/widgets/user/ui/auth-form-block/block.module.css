@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    /* padding: -50px; */
+}
+
+.content {
+    /* width: 500px; */
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 1;
+    gap: 30px;
+}
+
+.bgImage {
+    height: 500px;
+    margin-left: -80px;
+    z-index: 0;
+}
+
+.logOrRegBlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.logOrRegButton {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.logOrRegText {
+    font-family: "GT Walsheim Pro";
+    font-size: 34px;
+    font-weight: 500;
+    color: #81818D;
+}
+
+.logOrRegActiveText {
+    text-decoration: underline;
+    font-family: "GT Walsheim Pro";
+    font-size: 34px;
+    font-weight: 700;
+    color: #070A1C;
+}
