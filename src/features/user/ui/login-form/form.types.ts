@@ -1,4 +1,4 @@
 export interface LoginFormTypes {
-    gmail: string
+    email: string
     password: string
 }

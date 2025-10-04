@@ -1,5 +1,5 @@
 export interface RegisterFormTypes {
-    gmail: string
+    email: string
     password: string
     repeatPassword: string
 }
