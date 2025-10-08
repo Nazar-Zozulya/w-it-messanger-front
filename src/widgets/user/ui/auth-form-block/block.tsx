@@ -39,7 +39,7 @@ export function AuthFormBlock() {
 						</p>
 					</button>
 				</div>
-				{logOrReg === "log" ? <LoginForm /> : <RegisterForm />}
+				{logOrReg === "reg" ? <LoginForm /> : <RegisterForm />}
 			</div>
 			<img src={bgImage} alt="" className={styles.bgImage} />
 		</div>

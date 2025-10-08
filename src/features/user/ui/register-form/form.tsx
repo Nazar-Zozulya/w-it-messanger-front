@@ -3,21 +3,28 @@ import styles from "./form.module.css"
 import { RegisterFormTypes } from "./form.types"
 import { Input } from "../../../../shared/ui/input"
 import { POST } from "../../../../helpers/post"
+import { useState } from "react"
+import { useUserContext } from "../../../../entities/user"
+import { redirect } from "react-router-dom"
 
 export function RegisterForm() {
 	const { handleSubmit, control } = useForm<RegisterFormTypes>()
+	const [validationError, setValidationError] = useState<string | null>(null)
+
+	const { register } = useUserContext()
 
 	async function onSubmit(data: RegisterFormTypes) {
-		
 		const { email, password, repeatPassword } = data
-		// data.password
+		const result = await register(email, password, repeatPassword)
 
-		const result = await POST({
-			whichService: "userService",
-			endpoint: "api/user/create",
-			body: {email, password},
-		})
-		console.log(result)
+		if (result.status === 'error') {
+			setValidationError(result.status)
+		}
+
+		if (result.status === 'success') {
+			localStorage.setItem("completeProfile", "yes")
+		}
+		redirect("/")
 	}
 
 	return (
@@ -93,6 +100,8 @@ export function RegisterForm() {
 						)
 					}}
 				/>
+
+				<p className={styles.errorField}>{validationError}</p>
 
 				<button type="submit" className={styles.submitButton}>
 					Створити акаунт

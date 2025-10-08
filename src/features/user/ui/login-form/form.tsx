@@ -3,9 +3,13 @@ import styles from "./form.module.css"
 import { LoginFormTypes } from "./form.types"
 import { Input } from "../../../../shared/ui/input"
 import { POST } from "../../../../helpers/post"
+import { useState } from "react"
+import { useUserContext } from "../../../../entities/user"
 
 export function LoginForm() {
 	const { handleSubmit, control } = useForm<LoginFormTypes>()
+	const [validationError, setValidationError] = useState<string | null>(null)
+	const { login } = useUserContext()
 
 	async function onSubmit(data: LoginFormTypes) {
 		const { email, password } = data
@@ -67,6 +71,8 @@ export function LoginForm() {
 						)
 					}}
 				/>
+
+				<p className={styles.errorField}>{validationError}</p>
 
 				<button type="submit" className={styles.submitButton}>
 					Повернутися в акаунт
