@@ -15,11 +15,7 @@ export function LoginForm() {
 		const { email, password } = data
 		// data.password
 
-		const result = await POST({
-			whichService: "userService",
-			endpoint: "api/user/auth",
-			body: { email, password },
-		})
+		const result = await login(email, password)
 		console.log(result)
 	}
 

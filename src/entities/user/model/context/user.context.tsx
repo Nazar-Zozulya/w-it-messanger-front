@@ -69,8 +69,10 @@ export function UserContextProvider(props: userProviderProps) {
 		if (result.status === "error") {
 			return result
 		}
+		console.log(result)
 
 		setToken(result.data)
+		console.log(token)
 
 		return result
 	}
@@ -132,6 +134,7 @@ export function UserContextProvider(props: userProviderProps) {
 	}
 
 	async function getUser(token: string) {
+		console.log(123)
 		const result = await GET<User>({
 			whichService: "userService",
 			endpoint: "api/user/get",
@@ -160,6 +163,7 @@ export function UserContextProvider(props: userProviderProps) {
 
 	// юзефект при запуске сайта на получение токена
 	useEffect(() => {
+		console.log(44)
 		const userToken = localStorage.getItem("token")
 
 		if (!userToken) return
