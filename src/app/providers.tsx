@@ -9,6 +9,7 @@ export function AppProviders() {
 				<Routes>
 					<Route path="/auth" element={<AuthPage />} />
 					<Route path="*" element={<div>not found</div>} />
+					<Route path="/"/>
 				</Routes>
 			</BrowserRouter>
 		</UserContextProvider>
