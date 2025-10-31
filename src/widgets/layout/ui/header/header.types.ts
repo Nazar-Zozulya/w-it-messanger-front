@@ -1,0 +1,1 @@
+export type WhichSelected = "main" | "my posts" | "friends" | "chats" | "settings"

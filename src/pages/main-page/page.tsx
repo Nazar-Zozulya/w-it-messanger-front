@@ -1,9 +1,10 @@
+import { UserAvatar } from "../../entities/user";
 
 
 
 
 export function MainPage() {
     return(
-        <div>main page</div>
+        <UserAvatar />
     )
 }

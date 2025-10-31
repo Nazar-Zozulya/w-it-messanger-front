@@ -6,6 +6,9 @@
 	gap: 8px;
 	height: 30px;
 	border-radius: 3px;
+	border: none;
+	background: none;
+	cursor: pointer;
 }
 
 .text {
@@ -17,4 +20,8 @@
 	text-align: center;
 	color: #060a1d;
 	color: color(display-p3 0.027 0.039 0.11);
+}
+
+.selected {
+	background-color: #E9E5EE;
 }

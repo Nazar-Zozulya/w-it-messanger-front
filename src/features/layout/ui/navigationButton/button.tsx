@@ -5,7 +5,7 @@ import { NavigationButtonProps } from "./button.types"
 export function NavigationButton(props: NavigationButtonProps) {
 	return (
         // TODO счетчик
-		<button className={styles.container} onClick={()=>redirect(props.redirect)}>
+		<button className={`${styles.container} ${props.isSelected && styles.selected}`} onClick={()=>redirect(props.redirect)}>
 			{props.icon}
 			<p className={styles.text}>{props.text}</p>
 		</button>

@@ -17,6 +17,7 @@
 
 .unFill {
 	border: 1px solid #583b53;
+	background: none;
 	color: #583b53;
 	border: 1px solid color(display-p3 0.329 0.235 0.322);
 }

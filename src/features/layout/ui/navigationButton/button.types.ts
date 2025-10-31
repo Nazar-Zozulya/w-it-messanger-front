@@ -4,4 +4,5 @@ export interface NavigationButtonProps {
     icon: ReactNode
     text: string
     redirect: string
+    isSelected?: boolean
 }

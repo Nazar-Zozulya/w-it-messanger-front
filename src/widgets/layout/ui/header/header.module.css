@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    flex-direction: row;
+    width: 100%;
+    background-color: #fff;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    align-items: center;
+    gap: 24px;
+}
