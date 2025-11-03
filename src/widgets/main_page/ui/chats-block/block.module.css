@@ -1,0 +1,85 @@
+.container {
+    border: 1px solid #CDCED2;
+    background: #fff;
+    border-radius: 10px;
+    width: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px 0;
+}
+
+.header {
+    width: calc(100% - 30px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    /* padding-left: 50px; */
+    /* padding-right: 50px; */
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 8px;    
+}
+
+.title p {
+    font-family: "GT Walsheim Pro";
+    /* font-weight: 500; */
+    font-size: 20px;
+    color: #81818D;
+}
+
+.seeAll {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: "GT Walsheim Pro";
+    font-weight: 700;
+    font-size: 16px;
+    color: #543C52;
+}
+
+.requestsList {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.request {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    padding: 0 10px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 1000px;
+}
+
+.textInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.name {
+    color: #070A1C;
+    font-family: "GT Walsheim Pro";
+    font-size: 16px;
+}
+
+.lastMessage {
+    color: #81818D;
+    font-family: "GT Walsheim Pro";
+    font-weight: 400;
+    font-size: 14px;
+}

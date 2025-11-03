@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 10000px;
+    position: relative;
 }
 
 .image {
@@ -17,7 +18,8 @@
     position: absolute;
     /* margin-top: 80%;
     margin-left: 80%; */
-    top: 10px;
+    top: 75%;
+    left: 75%;
     width: 20px;
     height: 20px;
     border-radius: 1000px;

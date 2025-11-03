@@ -1,0 +1,41 @@
+.container {
+    width: 925px;
+    border: 1px solid #CDCED2;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+}
+
+.form {
+    width: 100%;
+}
+
+.form textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-family: "GT Walsheim Pro";
+    font-weight: 500;
+    font-size: 16px;
+    color: #070A1C;
+    padding: 2px;
+}
+
+.form textarea::placeholder {
+    color: #81818D;
+    font-weight: 400;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+}

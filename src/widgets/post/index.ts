@@ -1,0 +1,1 @@
+export { CreatePostBlock } from './ui/create-post-block'

@@ -8,9 +8,14 @@
 	gap: 8px;
 	height: 40px;
 	border-radius: 1234px;
+	cursor: pointer;
 }
 
-.fil {
+.onlyIcon {
+	padding: 10px;
+}
+
+.fill {
 	background-color: #583b53;
 	color: #fff;
 }

@@ -1,0 +1,76 @@
+.container {
+    border: 1px solid #CDCED2;
+    background: #fff;
+    border-radius: 10px;
+    width: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    padding: 10px 0;
+}
+
+
+.ProfileInfo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.NameBlock {
+    gap: 10px;
+    color: #070A1C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Name {
+    font-family: "GT Walsheim Pro";
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.Username {
+    font-family: "GT Walsheim Pro";
+    font-weight: 500;
+    font-size: 16px;
+}
+
+
+.ProfileStats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-direction: row;
+    width: 100%;
+}
+
+.StatBlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 7px;
+    flex: 1;
+}
+
+.StatCount {
+    color: #070A1C;
+    font-family: "GT Walsheim Pro";
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.StatName {
+    color: #81818D;
+    font-family: "GT Walsheim Pro";
+    font-weight: 500;
+    font-size: 16px;
+}
