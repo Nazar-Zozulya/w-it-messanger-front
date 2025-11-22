@@ -1,3 +1,4 @@
+import { PostCard } from "../../entities/post";
 import { UserAvatar } from "../../entities/user";
 import { ChatsBlock, RequestBlock } from "../../widgets/main_page";
 import { CreatePostBlock } from "../../widgets/post";
@@ -16,6 +17,7 @@ export function MainPage() {
             </div>
             <div style={{display: "flex", flexDirection: "column", gap: "5px"}}>
                 <CreatePostBlock />
+                <PostCard />
             </div>
         </div>
     )

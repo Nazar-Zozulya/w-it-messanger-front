@@ -1,5 +1,6 @@
 .container {
     width: 925px;
+    box-sizing: border-box;
     border: 1px solid #CDCED2;
     background: #fff;
     border-radius: 10px;
