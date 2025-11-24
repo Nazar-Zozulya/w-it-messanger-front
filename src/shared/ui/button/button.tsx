@@ -8,9 +8,11 @@ export function Button(props: ButtonProps) {
 				props.fill ? styles.fill : styles.unFill
 			} ${props.icon && !props.text ? styles.onlyIcon : null}` }
 			onClick={() => props.function}
+			type={props.type}
 		>
 			{props.icon}
 			{props.text && <p className={styles.text}>{props.text}</p>}
+			{props.rightIcon}
 		</button>
 	)
 }

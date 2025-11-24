@@ -24,49 +24,33 @@ export function LoginForm() {
 			<p className={styles.optionalTitle}>З Поверненням до World IT</p>
 
 			<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-				<Controller
-					control={control}
-					name="email"
-					rules={{
-						required: {
-							value: true,
-							message: "Ел. пошта обов'язкова",
-						},
-					}}
-					render={({ field }) => {
-						return (
-							<Input
-								label="Електронна пошта"
-								placeholder="you@example.com"
-								value={field.value}
-								type="email"
-								onChange={field.onChange}
-							/>
-						)
-					}}
-				/>
+				<Input
+						label="Електронна пошта"
+						placeholder="you@example.com"
+						type="email"
+						rules={{
+							required: {
+								value: true,
+								message: "Ел. пошта обов'язкова",
+							},
+						}}
+						control={control}
+						name="email"
+					/>
 
-				<Controller
-					control={control}
-					name="password"
-					rules={{
-						required: {
-							value: true,
-							message: "Пароль обов'язковий",
-						},
-					}}
-					render={({ field }) => {
-						return (
-							<Input
-								label="Пароль"
-								placeholder="Введи пароль"
-								isPassword={true}
-								value={field.value}
-								onChange={field.onChange}
-							/>
-						)
-					}}
-				/>
+					<Input
+						label="Пароль"
+						placeholder="Введи пароль"
+						rules={{
+							required: {
+								value: true,
+								message: "Пароль обов'язковий",
+							},
+						}}
+						isPassword={true}
+						control={control}
+						name="password"
+					/>
 
 				<p className={styles.errorField}>{validationError}</p>
 

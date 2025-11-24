@@ -3,6 +3,7 @@ import { InputProps } from "./input.types"
 import { ReactComponent as Eye } from "../icons/eye.svg"
 import { ReactComponent as SlashEye } from "../icons/shashEye.svg"
 import { useState } from "react"
+import { Controller } from "react-hook-form"
 
 export function Input(props: InputProps) {
 	const {
@@ -10,9 +11,12 @@ export function Input(props: InputProps) {
 		placeholder,
 		isPassword = false,
 		type = "text",
-		value,
-        error,
-        onChange,
+		// value,
+		error,
+		// onChange,
+		control,
+		name,
+		rules,
 		...otherProps
 	} = props
 
@@ -22,14 +26,29 @@ export function Input(props: InputProps) {
 		<div className={styles.container}>
 			<p className={styles.label}>{label}</p>
 			<div className={styles.helpInputDiv}>
-				<input
-					type={isPassword ? (isVisible ? "text" : "password") : type}
-					placeholder={placeholder}
-					className={styles.input}
-					value={value}
-                    onChange={(e) => onChange(e)}
-                    // onChange={}
-                    {...otherProps}
+				<Controller
+					control={control}
+					name={name}
+					rules={rules}
+					render={({ field }) => {
+						return (
+							<input
+								type={
+									isPassword
+										? isVisible
+											? "text"
+											: "password"
+										: type
+								}
+								placeholder={placeholder}
+								className={styles.input}
+								value={field.value}
+								onChange={(e) => field.onChange(e)}
+								// onChange={}
+								{...otherProps}
+							/>
+						)
+					}}
 				/>
 				{isPassword && (
 					<button

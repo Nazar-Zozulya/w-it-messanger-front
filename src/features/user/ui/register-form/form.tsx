@@ -17,11 +17,11 @@ export function RegisterForm() {
 		const { email, password, repeatPassword } = data
 		const result = await register(email, password, repeatPassword)
 
-		if (result.status === 'error') {
+		if (result.status === "error") {
 			setValidationError(result.status)
 		}
 
-		if (result.status === 'success') {
+		if (result.status === "success") {
 			localStorage.setItem("completeProfile", "yes")
 		}
 		redirect("/")
@@ -32,74 +32,49 @@ export function RegisterForm() {
 			<p className={styles.optionalTitle}>Приєднуйся до World IT</p>
 
 			<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-				{/* <div className={styles.inputsBlock}>
-                </div> */}
+				<div className={styles.inputsBlock}>
+					<Input
+						label="Електронна пошта"
+						placeholder="you@example.com"
+						type="email"
+						rules={{
+							required: {
+								value: true,
+								message: "Ел. пошта обов'язкова",
+							},
+						}}
+						control={control}
+						name="email"
+					/>
 
-				<Controller
-					control={control}
-					name="email"
-					rules={{
-						required: {
-							value: true,
-							message: "Ел. пошта обов'язкова",
-						},
-					}}
-					render={({ field }) => {
-						return (
-							<Input
-								label="Електронна пошта"
-								placeholder="you@example.com"
-								value={field.value}
-								type="email"
-								onChange={field.onChange}
-							/>
-						)
-					}}
-				/>
+					<Input
+						label="Пароль"
+						placeholder="Введи пароль"
+						rules={{
+							required: {
+								value: true,
+								message: "Пароль обов'язковий",
+							},
+						}}
+						isPassword={true}
+						control={control}
+						name="password"
+					/>
 
-				<Controller
-					control={control}
-					name="password"
-					rules={{
-						required: {
-							value: true,
-							message: "Пароль обов'язковий",
-						},
-					}}
-					render={({ field }) => {
-						return (
-							<Input
-								label="Пароль"
-								placeholder="Введи пароль"
-								isPassword={true}
-								value={field.value}
-								onChange={field.onChange}
-							/>
-						)
-					}}
-				/>
-
-				<Controller
-					control={control}
-					name="repeatPassword"
-					rules={{
-						required: {
-							value: true,
-							message: "Повторення паролю обов'язкове",
-						},
-					}}
-					render={({ field }) => {
-						return (
-							<Input
-								label="Підтверди пароль"
-								placeholder="Повтори пароль"
-								isPassword={true}
-								value={field.value}
-								onChange={field.onChange}
-							/>
-						)
-					}}
-				/>
+					<Input
+						label="Підтверди пароль"
+						placeholder="Повтори пароль"
+						rules={{
+							required: {
+								value: true,
+								message: "Повторення обов'язкове",
+							},
+						}}
+						isPassword={true}
+						control={control}
+						name="repeatPassword"
+					/>
+				</div>
 
 				<p className={styles.errorField}>{validationError}</p>
 
