@@ -1,10 +1,13 @@
 import { Button } from '../../../../shared/ui/button'
 import styles from './block.module.css'
 import { ReactComponent as Smile } from '../../../../shared/ui/icons/smile.svg'
+import { useModalManagerStore } from '../../../../entities/modal/storage/modalManager'
 
 
 
 export function CreatePostBlock() {
+    const { openModal } = useModalManagerStore()
+
     return (
         <div className={styles.container}>
             <form action="" className={styles.form}>
@@ -12,7 +15,7 @@ export function CreatePostBlock() {
             </form>
             <div className={styles.buttons}>
                 <Button fill={false} function={()=>console.log(123)} icon={<Smile />} />
-                <Button fill={true} function={()=>console.log(321)} text='Перейти до оформлення' />
+                <Button fill={true} function={()=>{openModal("createPost")}} text='Перейти до оформлення' />
             </div>
         </div>
     )

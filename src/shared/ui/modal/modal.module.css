@@ -1,11 +1,11 @@
-.modal {
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(13px);
     z-index: 9999;
     position: fixed;
+    inset: 0;
 }

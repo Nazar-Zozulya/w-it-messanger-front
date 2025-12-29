@@ -1,16 +1,25 @@
 import { createPortal } from "react-dom";
 import { ModalProps } from "./modal.types";
 import styles from './modal.module.css'
-
+import { useRef } from "react";
+import { MouseEvent } from "react";
+import { useModalManagerStore } from "../../../entities/modal/storage/modalManager";
 
 
 
 export function Modal(props: ModalProps) {
+    const { closeModal } = useModalManagerStore()
+    const coverRef = useRef<HTMLDivElement | null>(null)
 
-    return(
-        createPortal(<div className={styles.modal} onClick={props.onClose}>
-            {props.children}
-        </div>, document.body)
+    function closeModalFromCover(event: MouseEvent<HTMLDivElement>) {
+        if ( event.target === coverRef.current ) {
+            closeModal()
+        }
+    }
+
+    return createPortal (
+        <div ref={coverRef} className={styles.container} onClick={closeModalFromCover}>
+            { props.children }
+        </div>, document.body
     )
 }
-

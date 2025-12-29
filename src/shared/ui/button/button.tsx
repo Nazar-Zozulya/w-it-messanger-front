@@ -7,7 +7,7 @@ export function Button(props: ButtonProps) {
 			className={`${styles.container} ${
 				props.fill ? styles.fill : styles.unFill
 			} ${props.icon && !props.text ? styles.onlyIcon : null}` }
-			onClick={() => props.function}
+			onClick={() => props.function()}
 			type={props.type}
 		>
 			{props.icon}

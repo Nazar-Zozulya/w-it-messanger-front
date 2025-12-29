@@ -1,5 +1,5 @@
 import { Modal } from "../../../../shared/ui/modal"
-import { createPostForm, createPostModalProps } from "./modal.types"
+import { createPostForm } from "./modal.types"
 import styles from "./modal.module.css"
 import { ReactComponent as XMark } from "../../../../shared/ui/icons/xMark.svg"
 import { Input } from "../../../../shared/ui/input"
@@ -11,8 +11,7 @@ import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.s
 import { ReactComponent as Smile } from "../../../../shared/ui/icons/smile.svg"
 import { ReactComponent as Send } from "../../../../shared/ui/icons/send.svg"
 
-export function CreatePostModal(props: createPostModalProps) {
-	const { isVisible, onClose } = props
+export function CreatePostModal() {
 	const [tags, setTags] = useState<string[]>()
 	const [links, setLinks] = useState<string[]>()
 	const [images, setImages] = useState<string[]>()
@@ -23,7 +22,7 @@ export function CreatePostModal(props: createPostModalProps) {
 	}
 
 	return (
-		<Modal isVisible={isVisible} onClose={onClose}>
+		<Modal>
 			<div className={styles.container}>
 				<button className={styles.closeButton}>
 					<XMark />

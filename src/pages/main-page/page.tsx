@@ -13,7 +13,6 @@ export function MainPage() {
 
     return(
         <div style={{display: "flex", flexDirection: "row", padding: "10px 80px", gap: "5px", width:"100%",justifyContent: "center", position: "relative"}}>
-            <CreatePostModal isVisible={isVisible} onClose={() => setIsVisible(false)}  />
             <div style={{display: "flex", flexDirection:"column", gap:"20px"}}>
                 <ProfileBlock />
                 <RequestBlock />
