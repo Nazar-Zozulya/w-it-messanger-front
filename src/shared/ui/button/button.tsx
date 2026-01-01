@@ -16,3 +16,22 @@ export function Button(props: ButtonProps) {
 		</button>
 	)
 }
+
+function SmallButton(props: ButtonProps) {
+	return (
+		<button
+			className={`${styles.smallContainer} ${
+				props.fill ? styles.fill : styles.unFill
+			} ${props.icon && !props.text ? styles.smallOnlyIcon : null}` }
+			onClick={() => props.function()}
+			type={props.type}
+		>
+			{props.icon}
+			{props.text && <p className={styles.smallText}>{props.text}</p>}
+			{props.rightIcon}
+		</button>
+	)
+}
+
+
+Button.Small = SmallButton

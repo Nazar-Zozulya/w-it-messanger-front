@@ -10,6 +10,7 @@ import { ReactComponent as Plus } from "../../../../shared/ui/icons/plus.svg"
 import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.svg"
 import { ReactComponent as Smile } from "../../../../shared/ui/icons/smile.svg"
 import { ReactComponent as Send } from "../../../../shared/ui/icons/send.svg"
+import { CloseModalButton } from "../../../../features/modal"
 
 export function CreatePostModal() {
 	const [tags, setTags] = useState<string[]>()
@@ -24,11 +25,11 @@ export function CreatePostModal() {
 	return (
 		<Modal>
 			<div className={styles.container}>
-				<button className={styles.closeButton}>
-					<XMark />
-				</button>
+				<div className={styles.closeModalButtonDiv}>
+					<CloseModalButton />
+				</div>
 				<p className={styles.title}>Створення публікації</p>
-				<form onSubmit={handleSubmit(onSubmit)}>
+				<form onSubmit={handleSubmit(onSubmit)} className={styles.content}>
 					<Input
 						label="Назва публікації"
 						placeholder="Введіть назву"
@@ -50,8 +51,9 @@ export function CreatePostModal() {
 								</div>
 							)
 						})}
-						<Button
+						<Button.Small
 							fill={false}
+
 							function={() => {}}
 							icon={<Plus />}
 						/>
@@ -69,7 +71,7 @@ export function CreatePostModal() {
 							control={control}
 							name="title"
 						/>
-						<Button
+						<Button.Small
 							fill={false}
 							function={() => {}}
 							icon={<Plus />}
