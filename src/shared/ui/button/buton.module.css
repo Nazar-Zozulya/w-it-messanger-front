@@ -70,8 +70,7 @@
 	align-items: center;
 	padding: 10px 16px;
 	gap: 8px;
-	height: 30px;
-	width: 30px;
+	height: 25px;
 	border-radius: 1234px;
 	cursor: pointer;
 	border: none;
@@ -86,5 +85,5 @@
 
 .smallOnlyIcon{
 	padding: 5px;
-	width: 30px;
+	width: 25px;
 }

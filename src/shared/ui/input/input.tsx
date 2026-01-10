@@ -1,5 +1,5 @@
 import styles from "./input.module.css"
-import { InputProps } from "./input.types"
+import { InputProps, TextAreaProps } from "./input.types"
 import { ReactComponent as Eye } from "../icons/eye.svg"
 import { ReactComponent as SlashEye } from "../icons/shashEye.svg"
 import { useState } from "react"
@@ -17,6 +17,7 @@ export function Input(props: InputProps) {
 		control,
 		name,
 		rules,
+		defaultValue,
 		...otherProps
 	} = props
 
@@ -43,6 +44,7 @@ export function Input(props: InputProps) {
 								placeholder={placeholder}
 								className={styles.input}
 								value={field.value}
+								defaultValue={defaultValue}
 								onChange={(e) => field.onChange(e)}
 								// onChange={}
 								{...otherProps}
@@ -63,6 +65,58 @@ export function Input(props: InputProps) {
 					</button>
 				)}
 			</div>
+			<p className={styles.error}>{error}</p>
 		</div>
 	)
 }
+
+
+
+
+function TextArea(props: TextAreaProps) {
+	const {
+		label,
+		placeholder,
+		// value,
+		error,
+		// onChange,
+		control,
+		name,
+		rules,
+		rows = 1,
+		defaultValue,
+		...otherProps
+	} = props
+
+	const [isVisible, setIsVisible] = useState(false)
+
+	return (
+		<div className={styles.containerTextArea}>
+			<p className={styles.label}>{label}</p>
+			<div className={styles.helpInputDiv}>
+				<Controller
+					control={control}
+					name={name}
+					rules={rules}
+					render={({ field }) => {
+						return (
+							<textarea
+								placeholder={placeholder}
+								className={styles.textarea}
+								value={field.value}
+								onChange={(e) => field.onChange(e)}
+								rows={rows}
+								wrap="soft"
+								defaultValue={defaultValue}
+								{...otherProps}
+							/>
+						)
+					}}
+				/>
+			</div>
+		</div>
+	)
+}
+
+
+Input.TextArea = TextArea

@@ -44,7 +44,7 @@ const initalValue: userContextTypes = {
 	},
 }
 
-const UserContext = createContext<userContextTypes>(initalValue)
+export const UserContext = createContext<userContextTypes>(initalValue)
 
 export function useUserContext() {
 	return useContext(UserContext)
@@ -55,7 +55,7 @@ interface userProviderProps {
 }
 
 export function UserContextProvider(props: userProviderProps) {
-	const [user, setUser] = useState<User | null>(null)
+	const [userok, setUserok] = useState<User | null>(null)
 	const [token, setToken] = useState<string | null>(null)
 
 	async function login(email: string, password: string) {
@@ -147,7 +147,10 @@ export function UserContextProvider(props: userProviderProps) {
 			return result
 		}
 
-		setUser(result.data)
+		setUserok(result.data)
+		console.log("result.data:", result.data)
+
+		console.log("user:", userok)
 
 		return result
 	}
@@ -155,8 +158,10 @@ export function UserContextProvider(props: userProviderProps) {
 	// юзефект при измененний токена
 	useEffect(() => {
 		if (!token) return
+		console.log(45)
 
 		getUser(token)
+		console.log(userok)
 
 		localStorage.setItem("token", token)
 	}, [token])
@@ -171,10 +176,14 @@ export function UserContextProvider(props: userProviderProps) {
 		setToken(userToken)
 	}, [])
 
+	useEffect(() => {
+		console.log("user changed:", userok)
+	}, [userok])
+
 	return (
 		<UserContext.Provider
 			value={{
-				user,
+				user: userok,
 				token,
 				login,
 				register,

@@ -7,6 +7,7 @@ export interface InputProps {
 	isPassword?: boolean
 	error?: string
 	type?: "text" | "password" | "email"
+	defaultValue?: string
 	// onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 	// value?: any
 	control: Control<any, any, any>
@@ -18,3 +19,7 @@ export interface InputProps {
 		  >
 		| undefined
 }
+
+export interface TextAreaProps extends Omit<InputProps, "type" | "isPassword" > {
+	rows?: number
+}	

@@ -2,8 +2,10 @@ export interface createPostForm {
     title: string
     content?: string
 
-    images?: string[]
+    authorId: number
 
-    tags?: string[]
-    links?: string[]
+    // images?: string[]
+
+    // tags: string[]
+    // links: string[]
 }
