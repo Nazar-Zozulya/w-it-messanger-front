@@ -55,7 +55,7 @@ interface userProviderProps {
 }
 
 export function UserContextProvider(props: userProviderProps) {
-	const [userok, setUserok] = useState<User | null>(null)
+	const [user, setUser] = useState<User | null>(null)
 	const [token, setToken] = useState<string | null>(null)
 
 	async function login(email: string, password: string) {
@@ -64,15 +64,12 @@ export function UserContextProvider(props: userProviderProps) {
 			endpoint: "api/user/auth",
 			body: { email, password },
 		})
-		console.log(result)
 
 		if (result.status === "error") {
 			return result
 		}
-		console.log(result)
 
 		setToken(result.data)
-		console.log(token)
 
 		return result
 	}
@@ -95,13 +92,10 @@ export function UserContextProvider(props: userProviderProps) {
 			endpoint: "api/user/create",
 			body: { email, password },
 		})
-		console.log(result)
 
 		if (result.status === "error") {
 			return result
 		}
-
-		setToken(result.data)
 
 		return result
 	}
@@ -122,8 +116,6 @@ export function UserContextProvider(props: userProviderProps) {
 			token: token as string,
 		})
 
-		console.log(result)
-
 		if (result.status === "error") {
 			return result
 		}
@@ -134,23 +126,17 @@ export function UserContextProvider(props: userProviderProps) {
 	}
 
 	async function getUser(token: string) {
-		console.log(123)
 		const result = await GET<User>({
 			whichService: "userService",
 			endpoint: "api/user/get",
 			token,
 		})
 
-		console.log(result)
-
 		if (result.status === "error") {
 			return result
 		}
 
-		setUserok(result.data)
-		console.log("result.data:", result.data)
-
-		console.log("user:", userok)
+		setUser(result.data)
 
 		return result
 	}
@@ -161,7 +147,7 @@ export function UserContextProvider(props: userProviderProps) {
 		console.log(45)
 
 		getUser(token)
-		console.log(userok)
+		console.log(user)
 
 		localStorage.setItem("token", token)
 	}, [token])
@@ -177,13 +163,13 @@ export function UserContextProvider(props: userProviderProps) {
 	}, [])
 
 	useEffect(() => {
-		console.log("user changed:", userok)
-	}, [userok])
+		console.log("user changed:", user)
+	}, [user])
 
 	return (
 		<UserContext.Provider
 			value={{
-				user: userok,
+				user,
 				token,
 				login,
 				register,

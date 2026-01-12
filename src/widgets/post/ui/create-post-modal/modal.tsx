@@ -4,7 +4,7 @@ import styles from "./modal.module.css"
 import { ReactComponent as XMark } from "../../../../shared/ui/icons/xMark.svg"
 import { Input } from "../../../../shared/ui/input"
 import { Controller, useFieldArray, useForm } from "react-hook-form"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Button } from "../../../../shared/ui/button"
 import { ReactComponent as Plus } from "../../../../shared/ui/icons/plus.svg"
 import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.svg"
@@ -19,13 +19,17 @@ export function CreatePostModal() {
 	const [tags, setTags] = useState<string[]>(["#тег1", "#тег2"])
 	const [links, setLinks] = useState<string[]>([])
 	const [images, setImages] = useState<string[]>()
-	const { user } = useContext(UserContext)
+	const { user } = useUserContext()
 	const { handleSubmit, control, formState } = useForm<createPostForm>({
 		defaultValues: {
 			// tags: [],
 			// links: [""],
 		},
 	})
+
+	useEffect(() => {
+		console.log(user, "user in create post modal")
+	}, [user])
 
 	async function onSubmit(data: createPostForm) {
 		console.log(user,"=golyboi")

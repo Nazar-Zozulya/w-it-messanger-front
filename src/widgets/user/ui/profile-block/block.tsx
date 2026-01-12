@@ -1,4 +1,5 @@
-import { UserAvatar } from '../../../../entities/user'
+import { useEffect } from 'react'
+import { UserAvatar, useUserContext } from '../../../../entities/user'
 import styles from './block.module.css'
 
 
@@ -8,6 +9,12 @@ import styles from './block.module.css'
 
 export function ProfileBlock() {
 
+    const { user } = useUserContext()
+
+    useEffect(() => {
+        console.log(user, "user in profile block")
+    }, [user])
+
 
     return (
         <div className={styles.container}>
@@ -15,8 +22,8 @@ export function ProfileBlock() {
                 <UserAvatar />
 
                 <div className={styles.NameBlock}>
-                    <p className={styles.Name}>name</p>
-                    <p className={styles.Username}>@username</p>
+                    <p className={styles.Name}>{user?.name}</p>
+                    <p className={styles.Username}>@{user?.username}</p>
                 </div>
 
             </div>

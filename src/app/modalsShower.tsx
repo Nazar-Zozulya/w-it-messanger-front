@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useModalManagerStore } from "../entities/modal/storage/modalManager"
+import { useModalManagerStore } from "../entities/modal/model/storage/modalManager"
 import { CreatePostModal } from "../widgets/post"
 
 

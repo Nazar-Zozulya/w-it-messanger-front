@@ -1,7 +1,8 @@
 import { Button } from '../../../../shared/ui/button'
 import styles from './block.module.css'
 import { ReactComponent as Smile } from '../../../../shared/ui/icons/smile.svg'
-import { useModalManagerStore } from '../../../../entities/modal/storage/modalManager'
+import { useModalManagerStore } from '../../../../entities/modal/model/storage/modalManager'
+import { Post } from '../../../../entities/post/model/types'
 
 
 

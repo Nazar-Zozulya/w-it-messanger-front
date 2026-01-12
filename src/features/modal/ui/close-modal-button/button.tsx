@@ -1,4 +1,4 @@
-import { useModalManagerStore } from "../../../../entities/modal/storage/modalManager"
+import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 import { ReactComponent as XMark } from "../../../../shared/ui/icons/xMark.svg"
 import styles from './button.module.css'
 

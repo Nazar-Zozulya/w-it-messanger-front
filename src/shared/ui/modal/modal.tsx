@@ -3,7 +3,7 @@ import { ModalProps } from "./modal.types";
 import styles from './modal.module.css'
 import { useRef } from "react";
 import { MouseEvent } from "react";
-import { useModalManagerStore } from "../../../entities/modal/storage/modalManager";
+import { useModalManagerStore } from "../../../entities/modal/model/storage/modalManager";
 
 
 
