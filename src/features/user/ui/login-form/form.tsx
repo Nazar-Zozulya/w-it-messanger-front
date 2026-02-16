@@ -1,11 +1,11 @@
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import styles from "./form.module.css"
 import { LoginFormTypes } from "./form.types"
 import { Input } from "../../../../shared/ui/input"
-import { POST } from "../../../../helpers/post"
 import { useState } from "react"
 import { useUserContext } from "../../../../entities/user"
 import { Button } from "../../../../shared/ui/button"
+import { redirect } from "react-router-dom"
 
 export function LoginForm() {
 	const { handleSubmit, control } = useForm<LoginFormTypes>()
@@ -17,7 +17,13 @@ export function LoginForm() {
 		// data.password
 
 		const result = await login(email, password)
-		console.log(result)
+		// console.log(result)
+		if (result.status === "error") {
+			setValidationError(result.message ?? 'Помилка входу')
+		}
+		else {
+			redirect("/")
+		}
 	}
 
 	return (

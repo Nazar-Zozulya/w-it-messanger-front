@@ -11,11 +11,6 @@ export function ProfileBlock() {
 
     const { user } = useUserContext()
 
-    useEffect(() => {
-        console.log(user, "user in profile block")
-    }, [user])
-
-
     return (
         <div className={styles.container}>
             <div className={styles.ProfileInfo}>
@@ -28,7 +23,27 @@ export function ProfileBlock() {
 
             </div>
 
-            <div className={styles.ProfileStats}>
+            { 
+            user ?
+                <div className={styles.ProfileStats}>
+                    <div className={styles.StatBlock}>
+                        <p className={styles.StatCount}>566</p>
+                        <p className={styles.StatName}>Дописи</p>
+                    </div>
+
+                    <div className={styles.StatBlock + " " + styles.BorderedSides}>
+                        <p className={styles.StatCount}>566</p>
+                        <p className={styles.StatName}>Читачі</p>
+                    </div>
+
+                    <div className={styles.StatBlock}>
+                        <p className={styles.StatCount}>566</p>
+                        <p className={styles.StatName}>Друзі</p>
+                    </div>
+                </div> : <a href="auth">auth</a>
+            }
+
+            {/* <div className={styles.ProfileStats}>
                 <div className={styles.StatBlock}>
                     <p className={styles.StatCount}>566</p>
                     <p className={styles.StatName}>Дописи</p>
@@ -44,7 +59,7 @@ export function ProfileBlock() {
                     <p className={styles.StatName}>Друзі</p>
                 </div>
 
-            </div>
+            </div> */}
         </div>
     )
 }

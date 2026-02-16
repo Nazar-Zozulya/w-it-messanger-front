@@ -7,8 +7,10 @@ import { useState } from "react"
 import { useUserContext } from "../../../../entities/user"
 import { redirect } from "react-router-dom"
 import { Button } from "../../../../shared/ui/button"
+import { useCookies } from "react-cookie"
 
 export function RegisterForm() {
+	const [cookies, setCookie, removeCookie] = useCookies(['complete-profile'])
 	const { handleSubmit, control } = useForm<RegisterFormTypes>()
 	const [validationError, setValidationError] = useState<string | null>(null)
 
@@ -23,9 +25,10 @@ export function RegisterForm() {
 		}
 
 		if (result.status === "success") {
-			localStorage.setItem("completeProfile", "yes")
+			setCookie("complete-profile", "yes", { expires: new Date(Date.now() + 10 * 1000) })
+			// localStorage.setItem("completeProfile", "yes")
+			redirect("/")
 		}
-		redirect("/")
 	}
 
 	return (

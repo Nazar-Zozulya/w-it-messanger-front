@@ -1,0 +1,1 @@
+export { CompleteProfileModal } from "./modal"

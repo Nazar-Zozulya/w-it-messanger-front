@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 
 
-type ModalType = 'createPost' | null;
+type ModalType = 'createPost' | "completeProfile" | null;
 
 interface ModalManagerStoreTypes {
     activeModal: ModalType;

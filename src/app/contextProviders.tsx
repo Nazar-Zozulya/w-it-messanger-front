@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { UserContextProvider } from "../entities/user";
+import { CookiesProvider } from "react-cookie";
 
 
 
@@ -10,6 +11,10 @@ interface ContextProvidersProps {
 
 export function ContextProviders(props: ContextProvidersProps) {
     return (
-        <UserContextProvider>{props.children}</UserContextProvider>
+        <UserContextProvider>
+            <CookiesProvider>
+                {props.children}
+            </CookiesProvider>
+        </UserContextProvider>
     )
 }
