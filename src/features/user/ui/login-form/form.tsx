@@ -5,6 +5,7 @@ import { Input } from "../../../../shared/ui/input"
 import { POST } from "../../../../helpers/post"
 import { useState } from "react"
 import { useUserContext } from "../../../../entities/user"
+import { Button } from "../../../../shared/ui/button"
 
 export function LoginForm() {
 	const { handleSubmit, control } = useForm<LoginFormTypes>()
@@ -52,11 +53,9 @@ export function LoginForm() {
 						name="password"
 					/>
 
-				<p className={styles.errorField}>{validationError}</p>
+				<p className={styles.errorField}>{validationError} error field</p>
 
-				<button type="submit" className={styles.submitButton}>
-					Повернутися в акаунт
-				</button>
+				<Button type="submit" fill={true} text="Повернутися в акаунт" className={styles.submitButton} />
 			</form>
 		</div>
 	)

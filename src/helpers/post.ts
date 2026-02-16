@@ -8,10 +8,11 @@ interface POSTTypes {
 	headers?: HeadersInit
 	token?: string
 	body: any
+	method?: "POST" | "PUT" | "PATCH" | "DELETE"
 }
 
 export async function POST<T>(params: POSTTypes): Promise<Result<T>> {
-	const { whichService, endpoint, headers, token, body } = params
+	const { whichService, endpoint, headers, token, body, method = "POST" } = params
 
 	const serviceUrl = servicesUrlPath[whichService]
 
@@ -23,7 +24,7 @@ export async function POST<T>(params: POSTTypes): Promise<Result<T>> {
 	}
 	try {
 		const response = await fetch(`${serviceUrl}/${endpoint}`, {
-			method: "POST",
+			method,
 			headers: requestHeaders,
 			body: JSON.stringify(body),
 		})

@@ -84,6 +84,7 @@ export function CreatePostModal() {
 						})}
 						<Button.Small
 							fill={false}
+							type="button"
 							function={() => {}}
 							icon={<Plus />}
 						/>

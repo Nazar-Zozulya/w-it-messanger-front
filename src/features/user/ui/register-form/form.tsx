@@ -6,6 +6,7 @@ import { POST } from "../../../../helpers/post"
 import { useState } from "react"
 import { useUserContext } from "../../../../entities/user"
 import { redirect } from "react-router-dom"
+import { Button } from "../../../../shared/ui/button"
 
 export function RegisterForm() {
 	const { handleSubmit, control } = useForm<RegisterFormTypes>()
@@ -76,11 +77,9 @@ export function RegisterForm() {
 					/>
 				</div>
 
-				<p className={styles.errorField}>{validationError}</p>
+				<p className={styles.errorField}>{validationError} error field</p>
 
-				<button type="submit" className={styles.submitButton}>
-					Створити акаунт
-				</button>
+				<Button type="submit" fill={true} text="Створити акаунт" className={styles.submitButton} />
 			</form>
 		</div>
 	)
