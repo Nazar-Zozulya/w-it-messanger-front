@@ -12,6 +12,8 @@ export interface InputProps {
 	// value?: any
 	control: Control<any, any, any>
 	name: string
+	className?: string
+	isInputOnFullWidth?: boolean
 	rules?:
 		| Omit<
 				RegisterOptions<any, string>,

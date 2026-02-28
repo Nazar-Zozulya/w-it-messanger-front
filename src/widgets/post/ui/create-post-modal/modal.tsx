@@ -1,44 +1,76 @@
-import { Modal } from "../../../../shared/ui/modal"
-import { createPostForm } from "./modal.types"
-import styles from "./modal.module.css"
 import { ReactComponent as XMark } from "../../../../shared/ui/icons/xMark.svg"
-import { Input } from "../../../../shared/ui/input"
-import { Controller, useFieldArray, useForm } from "react-hook-form"
-import { useContext, useEffect, useState } from "react"
-import { Button } from "../../../../shared/ui/button"
+import { ReactComponent as Check } from "../../../../shared/ui/icons/check.svg"
 import { ReactComponent as Plus } from "../../../../shared/ui/icons/plus.svg"
 import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.svg"
 import { ReactComponent as Smile } from "../../../../shared/ui/icons/smile.svg"
 import { ReactComponent as Send } from "../../../../shared/ui/icons/send.svg"
+
+import styles from "./modal.module.css"
+import { Modal } from "../../../../shared/ui/modal"
+import { createPostForm } from "./modal.types"
+import { Input } from "../../../../shared/ui/input"
+import { Controller, useForm } from "react-hook-form"
+import { useEffect, useRef, useState } from "react"
+import { Button } from "../../../../shared/ui/button"
 import { CloseModalButton } from "../../../../features/modal"
 import { POST } from "../../../../helpers/post"
 import { useUserContext } from "../../../../entities/user"
-import { UserContext } from "../../../../entities/user/model/context/user.context"
 
 export function CreatePostModal() {
-	const [tags, setTags] = useState<string[]>(["#тег1", "#тег2"])
+	const [tags, setTags] = useState<string[]>([])
 	const [links, setLinks] = useState<string[]>([])
 	const [images, setImages] = useState<string[]>()
+
 	const { user } = useUserContext()
-	const { handleSubmit, control, formState } = useForm<createPostForm>({
-		defaultValues: {
-			// tags: [],
-			// links: [""],
-		},
-	})
+
+	// Переменная которая говорит что будет показываться кнопка добавления тега или инпут добавления тега
+	// false = показуется кнопка добавления
+	// true = показуется инпут добавления
+	const [isAddingTagInputShowing, setIsAddingTagInputShowing] =
+		useState<boolean>()
+
+	const {
+		handleSubmit: tagHandleSubmit,
+		control: tagControl,
+		formState: tagFormState,
+		reset: tagReset,
+	} = useForm<{ tag: string }>()
+	const { handleSubmit, control, formState } = useForm<createPostForm>({})
+
+
 
 	useEffect(() => {
 		console.log(user, "user in create post modal")
 	}, [user])
 
+
+
+	function deleteTag(tag: string) {
+		const newTags = tags.filter((fTag) => {
+			return fTag !== tag
+		})
+		setTags(newTags)
+	}
+
+	function addNewTag(data: { tag: string }) {
+		let newTag = data.tag
+
+		if (!newTag.startsWith("#")) newTag= `#${newTag}`
+
+		const newTags = [...tags, newTag]
+
+		tagReset()
+
+		setTags(newTags)
+	}
+
 	async function onSubmit(data: createPostForm) {
-		console.log(user,"=golyboi")
 
 		if (!user) return
 		const response = await POST<string>({
 			whichService: "postService",
 			endpoint: "api/post/create",
-			body: { ...data, authorId: user.id },
+			body: { ...data, authorId: user.id, tags },
 		})
 
 		console.log(response)
@@ -77,17 +109,52 @@ export function CreatePostModal() {
 					<div className={styles.tagList}>
 						{tags?.map((tag) => {
 							return (
-								<button className={styles.tag}>
+								<button
+									className={styles.tag}
+									type="button"
+									onClick={() => {
+										deleteTag(tag)
+									}}
+								>
 									<p>{tag}</p>
 								</button>
 							)
 						})}
+						{isAddingTagInputShowing ? (
+							<>
+								<Controller
+									control={tagControl}
+									name={"tag"}
+									render={({ field }) => {
+										return (
+											<input
+												{...field}
+												type={"text"}
+												placeholder={""}
+												className={styles.addTagInput}
+												/>
+											)
+										}}
+										/>
+							</>
+						) : (
+							<></>
+						)}
 						<Button.Small
 							fill={false}
-							type="button"
-							function={() => {}}
-							icon={<Plus />}
-						/>
+							type={"button"}
+							function={() => {
+								if (isAddingTagInputShowing) {
+									tagHandleSubmit(addNewTag)()
+								}
+								setIsAddingTagInputShowing(
+									!isAddingTagInputShowing,
+								)
+							}}
+							icon={
+								isAddingTagInputShowing ? <Check /> : <Plus />
+							}
+							/>
 					</div>
 
 					<Input.TextArea

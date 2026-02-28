@@ -1,11 +1,10 @@
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import styles from "./form.module.css"
 import { RegisterFormTypes } from "./form.types"
 import { Input } from "../../../../shared/ui/input"
-import { POST } from "../../../../helpers/post"
 import { useState } from "react"
 import { useUserContext } from "../../../../entities/user"
-import { redirect } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Button } from "../../../../shared/ui/button"
 import { useCookies } from "react-cookie"
 
@@ -13,6 +12,7 @@ export function RegisterForm() {
 	const [cookies, setCookie, removeCookie] = useCookies(['complete-profile'])
 	const { handleSubmit, control } = useForm<RegisterFormTypes>()
 	const [validationError, setValidationError] = useState<string | null>(null)
+	const navigate = useNavigate()
 
 	const { register } = useUserContext()
 
@@ -24,10 +24,10 @@ export function RegisterForm() {
 			setValidationError(result.status)
 		}
 
-		if (result.status === "success") {
-			setCookie("complete-profile", "yes", { expires: new Date(Date.now() + 10 * 1000) })
+		else {
+			setCookie("complete-profile", "yes", { expires: new Date(Date.now() + 1000 * 1000) })
 			// localStorage.setItem("completeProfile", "yes")
-			redirect("/")
+			navigate("/")
 		}
 	}
 

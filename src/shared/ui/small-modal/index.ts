@@ -1,0 +1,1 @@
+export { SmallModal } from './modal'

@@ -5,12 +5,13 @@ import { Input } from "../../../../shared/ui/input"
 import { useState } from "react"
 import { useUserContext } from "../../../../entities/user"
 import { Button } from "../../../../shared/ui/button"
-import { redirect } from "react-router-dom"
+import { redirect, useNavigate } from "react-router-dom"
 
 export function LoginForm() {
 	const { handleSubmit, control } = useForm<LoginFormTypes>()
 	const [validationError, setValidationError] = useState<string | null>(null)
 	const { login } = useUserContext()
+	const navigate = useNavigate()
 
 	async function onSubmit(data: LoginFormTypes) {
 		const { email, password } = data
@@ -22,7 +23,7 @@ export function LoginForm() {
 			setValidationError(result.message ?? 'Помилка входу')
 		}
 		else {
-			redirect("/")
+			navigate("/")
 		}
 	}
 

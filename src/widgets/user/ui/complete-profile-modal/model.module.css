@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    padding: 40px 20px;
+    width: 500px;
+    height: 450px;
+    background: #fff;
+    border-radius: 20px;
+}
+
+.title {
+    font-family: "GT Walsheim Pro";
+    font-size: 34px;
+    font-weight: 700;
+    color: black;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    /* gap: 15px; */
+}
+
+.inputsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.errorField {
+    font-family: "GT Walsheim Pro";
+    font-size: 12px;
+    color: #FF4C4C;
+}
+
+.suggestions {
+    font-family: "GT Walsheim Pro";
+    font-size: 12px;
+    color: black;   
+    /* align-items: flex-end; */
+    align-self: flex-start;
+}
+
+.suggestions a {
+    color: #22C55E;
+}
+
+.button {
+    margin-top: 25px;
+    align-self: flex-end;
+}

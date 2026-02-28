@@ -1,3 +1,4 @@
+import { Tag } from "../../../tag"
 import { User } from "../../../user"
 
 export interface Post {
@@ -11,6 +12,6 @@ export interface Post {
     images?: string[]
     views: number
     likes: number
-    tags?: string[] //TODO сделать тег
+    tags?: Tag[] //TODO сделать тег
     links?: string[]
 }

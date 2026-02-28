@@ -8,6 +8,7 @@ import { useModalManagerStore } from "../../../entities/modal/model/storage/moda
 
 
 export function Modal(props: ModalProps) {
+    const { isClosingFromCover = true } = props
     const { closeModal } = useModalManagerStore()
     const coverRef = useRef<HTMLDivElement | null>(null)
 
@@ -18,7 +19,11 @@ export function Modal(props: ModalProps) {
     }
 
     return createPortal (
-        <div ref={coverRef} className={styles.container} onClick={closeModalFromCover}>
+        <div ref={coverRef} className={styles.container} onClick={
+            isClosingFromCover ? 
+            closeModalFromCover :
+            () => {}
+        }>
             { props.children }
         </div>, document.body
     )

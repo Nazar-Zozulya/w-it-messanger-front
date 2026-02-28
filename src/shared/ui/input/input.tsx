@@ -18,6 +18,7 @@ export function Input(props: InputProps) {
 		name,
 		rules,
 		defaultValue,
+		className,
 		...otherProps
 	} = props
 
@@ -42,7 +43,7 @@ export function Input(props: InputProps) {
 										: type
 								}
 								placeholder={placeholder}
-								className={styles.input}
+								className={`${styles.input} ${className}`}
 								value={field.value}
 								defaultValue={defaultValue}
 								onChange={(e) => field.onChange(e)}
@@ -69,9 +70,6 @@ export function Input(props: InputProps) {
 		</div>
 	)
 }
-
-
-
 
 function TextArea(props: TextAreaProps) {
 	const {
@@ -117,6 +115,5 @@ function TextArea(props: TextAreaProps) {
 		</div>
 	)
 }
-
 
 Input.TextArea = TextArea

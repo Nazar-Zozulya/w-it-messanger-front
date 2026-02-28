@@ -28,6 +28,8 @@
     height: 50px !important;
 }
 
-.errorField{
-    
+.errorField {
+    font-family: "GT Walsheim Pro";
+    font-size: 12px;
+    color: #FF4C4C;
 }

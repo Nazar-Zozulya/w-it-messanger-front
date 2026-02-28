@@ -55,11 +55,25 @@
     align-items: center;
     padding: 6px;
     gap: 10px;
+    height: 28px;
     background: #EAE5EF;
     border-radius: 6px;
     border: none;
     transition: all 0.2s ease;
     cursor: pointer;
+}
+
+.addTagInput {
+    height: 28px;
+    width: auto;
+    min-width: 50px;
+    padding-left: 5px;
+    border: 1px solid #CDCED2;
+    border-radius: 10px;
+    font-family: "GT Walsheim Pro";
+    color: #000;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .tag:hover {

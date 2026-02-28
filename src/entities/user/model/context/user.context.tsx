@@ -19,6 +19,7 @@ interface userContextTypes {
 		password: string,
 		repeatPassword: string
 	) => Promise<Result<string>>
+	logout: () => void
 	completeProfile: (
 		name?: string,
 		surname?: string,
@@ -36,6 +37,7 @@ const initalValue: userContextTypes = {
 	register: async (email, password, repeatPassword) => {
 		return { status: "error" } as Error
 	},
+	logout: () => {},
 	completeProfile: async (name, surname, username) => {
 		return { status: "error" } as Error
 	},
@@ -97,7 +99,14 @@ export function UserContextProvider(props: userProviderProps) {
 			return result
 		}
 
+		setToken(result.data)
+
 		return result
+	}
+
+	function logout() {
+		setToken(null)
+		setUser(null)
 	}
 
 	async function completeProfile(
@@ -108,6 +117,7 @@ export function UserContextProvider(props: userProviderProps) {
 		const result = await POST<User>({
 			whichService: "userService",
 			endpoint: "api/user/complete-profile",
+			method: "PATCH",
 			body: {
 				name,
 				surname,
@@ -171,6 +181,7 @@ export function UserContextProvider(props: userProviderProps) {
 			value={{
 				user,
 				token,
+				logout,
 				login,
 				register,
 				completeProfile,

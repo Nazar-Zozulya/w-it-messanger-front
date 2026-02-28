@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { GET } from "../../../../helpers/get";
 import { Result } from "../../../../types/result";
 import { Post } from "../types";
+import { POST } from "../../../../helpers/post";
 
 
 
@@ -10,10 +11,11 @@ import { Post } from "../types";
 interface PostsManagerStoreTypes {
     posts: Post[] | null
     getPosts: () => void
+    deletePost: (postId: number) => void
 }
 
 
-export const usePostsManager = create<PostsManagerStoreTypes>((set) => ({
+export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
     posts: null,
 
     getPosts: async () => {
@@ -32,4 +34,28 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set) => ({
             console.log("Error fetching posts:", e)
         }
     },
+
+    deletePost: async (postId) => {
+        try {
+            const response = await POST<Post>({
+                whichService: "postService",
+                endpoint: "api/post/delete",
+                method: "DELETE",
+                body: { id: postId }
+            })
+
+            if (response.status === "success") {
+                const newPosts = get().posts?.filter((post) => {
+                    return post.id !== postId
+                })
+
+                set({ posts: newPosts })
+
+
+            }
+
+        } catch (e) {
+            console.log("Error fetching posts:", e)
+        }
+    }
 }))

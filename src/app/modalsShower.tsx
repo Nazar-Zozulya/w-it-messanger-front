@@ -3,21 +3,20 @@ import { useModalManagerStore } from "../entities/modal/model/storage/modalManag
 import { CreatePostModal } from "../widgets/post"
 import { CompleteProfileModal } from "../widgets/user"
 
+export function ModalsShower(props: { children: React.ReactNode }) {
+	const { activeModal } = useModalManagerStore()
+	useEffect(() => {
+		console.log("Active modal changed to: ", activeModal)
+	}, [activeModal])
+	return (
+		<>
+			{props.children}
 
+			{activeModal == "createPost" && <CreatePostModal />}
 
-
-
-
-export function ModalsShower(props: {children: React.ReactNode}) {
-    const { activeModal } = useModalManagerStore()
-    useEffect(()=> {
-        console.log("Active modal changed to: ", activeModal)
-    }, [activeModal])
-    return (
-        <>
-            { props.children }
-            { activeModal == "createPost" &&  <CreatePostModal/> }
-            { activeModal == "completeProfile" &&  <CompleteProfileModal/> }
-        </>
-    )
+			{activeModal == "completeProfile" && (
+				<CompleteProfileModal isClosingFromCover={false} />
+			)}
+		</>
+	)
 }

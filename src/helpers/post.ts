@@ -24,7 +24,7 @@ export async function POST<T>(params: POSTTypes): Promise<Result<T>> {
 	}
 	try {
 		const response = await fetch(`${serviceUrl}/${endpoint}`, {
-			method,
+			method: method,
 			headers: requestHeaders,
 			body: JSON.stringify(body),
 		})
