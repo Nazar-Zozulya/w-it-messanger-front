@@ -12,6 +12,6 @@ export interface Post {
     images?: string[]
     views: number
     likes: number
-    tags?: Tag[] //TODO сделать тег
+    tags?: Tag[]
     links?: string[]
 }

@@ -2,7 +2,7 @@ export interface createPostForm {
     title: string
     content?: string
 
-    authorId: number
+    // authorId: number
 
     // images?: string[]
 

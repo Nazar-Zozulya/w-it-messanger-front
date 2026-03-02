@@ -15,6 +15,7 @@ import { Button } from "../../../../shared/ui/button"
 import { CloseModalButton } from "../../../../features/modal"
 import { POST } from "../../../../helpers/post"
 import { useUserContext } from "../../../../entities/user"
+import { createPostData, usePostsManager } from "../../../../entities/post"
 
 export function CreatePostModal() {
 	const [tags, setTags] = useState<string[]>([])
@@ -22,6 +23,8 @@ export function CreatePostModal() {
 	const [images, setImages] = useState<string[]>()
 
 	const { user } = useUserContext()
+
+	const { createPost } = usePostsManager()
 
 	// Переменная которая говорит что будет показываться кнопка добавления тега или инпут добавления тега
 	// false = показуется кнопка добавления
@@ -67,11 +70,16 @@ export function CreatePostModal() {
 	async function onSubmit(data: createPostForm) {
 
 		if (!user) return
-		const response = await POST<string>({
-			whichService: "postService",
-			endpoint: "api/post/create",
-			body: { ...data, authorId: user.id, tags },
-		})
+
+		const newData: createPostData = {
+			...data,
+			authorId: user.id,
+			tags,
+			images,
+			links,
+		}
+
+		const response = await createPost(newData)
 
 		console.log(response)
 	}
