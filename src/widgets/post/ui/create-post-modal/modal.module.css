@@ -127,3 +127,34 @@
 .imageSelectInput {
     display: none;
 }
+
+.imagesList {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 3%;
+}
+
+.postImage {
+    width: 31%;
+    position: relative;
+    /* max-height: 260px;
+    border-radius: 15px; */
+}
+
+.postImage img {
+    width: 100%;
+    height: 260px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.postImageDeleteButton {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    background: #fff !important;
+}

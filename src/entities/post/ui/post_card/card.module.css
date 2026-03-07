@@ -166,14 +166,16 @@
 
 .images {
 	display: flex;
-	flex-direction: column;
+	flex-direction: flex-start;
 	align-items: flex-start;
-	gap: 16px;
+	flex-wrap: wrap;
+	gap: 2%;
 	width: 100%;
 }
 
 .image {
-	width: 100%;
+	/* width: 31%; */
+	height: 260px;
 	border-radius: 16px;
 }
 

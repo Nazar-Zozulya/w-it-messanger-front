@@ -9,7 +9,10 @@ export async function fileToBase64(file: File): Promise<string | null> {
 
 		reader.onload = () => {
 			const base64String = reader.result as string
-			resolve(base64String)
+
+			const pureBase64 = base64String.split(",")[1]
+
+			resolve(`data:${file.type};base64,${pureBase64}`)
 		}
 
 		reader.onerror = (error) => {

@@ -153,7 +153,7 @@ export function PostCard(props: Post) {
 				<div className={styles.images}>
 					{props.images?.map((image) => {
 						return (
-							<img src={image} alt="" className={styles.image} />
+							<img src={image.base64} alt="123" className={styles.image} />
 						)
 					})}
 				</div>

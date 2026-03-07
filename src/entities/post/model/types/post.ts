@@ -1,3 +1,4 @@
+import { Image } from "../../../image"
 import { Tag } from "../../../tag"
 import { User } from "../../../user"
 
@@ -9,7 +10,7 @@ export interface Post {
     authorId: number
     author: User
 
-    images?: string[]
+    images?: Image[]
     views: number
     likes: number
     tags?: Tag[]

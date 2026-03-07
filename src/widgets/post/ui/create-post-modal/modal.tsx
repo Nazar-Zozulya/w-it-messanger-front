@@ -3,6 +3,7 @@ import { ReactComponent as Plus } from "../../../../shared/ui/icons/plus.svg"
 import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.svg"
 import { ReactComponent as Smile } from "../../../../shared/ui/icons/smile.svg"
 import { ReactComponent as Send } from "../../../../shared/ui/icons/send.svg"
+import { ReactComponent as Trash } from "../../../../shared/ui/icons/trash.svg"
 
 import styles from "./modal.module.css"
 import { Modal } from "../../../../shared/ui/modal"
@@ -75,18 +76,15 @@ export function CreatePostModal() {
 		setTags(newTags)
 	}
 
-	function deleteImage(image: string) {
-		const newImages = tags.filter((fImage) => {
-			return fImage !== image
+	function deleteImage(image: string, imageIndex: number) {
+		const newImages = images.filter((fImage, index) => {
+			return index !== imageIndex
 		})
 		setImages(newImages)
 	}
 
 	function addNewImage(image: string) {
-		
-		const newImages = [...images, image]
-
-		setImages(newImages)
+		setImages((prev) => [...prev, image])
 	}
 
 	function triggerImageInput() {
@@ -100,29 +98,29 @@ export function CreatePostModal() {
 	async function selectImage(e: ChangeEvent<HTMLInputElement>) {
 		const file = e.target.files?.[0]
 
+		e.target.value = '';
+
 		if (!file) return
-		console.log("files: " + file)
 
 		const imageBase64 = await fileToBase64(file)
 
 		if (!imageBase64) return
 
 		const newImage = addNewImage(imageBase64)
-		
-
-		console.log(imageBase64)
 	}
 
 	async function onSubmit(data: createPostForm) {
 		if (!user) return
 
-		const newData: createPostData = {
+		const 	newData: createPostData = {
 			...data,
 			authorId: user.id,
 			tags,
 			images,
 			links,
 		}
+
+		console.log("images: " + newData.images)
 
 		const response = await createPost(newData)
 
@@ -283,8 +281,19 @@ export function CreatePostModal() {
 					</div>
 
 					<div className={styles.imagesList}>
-						{images?.map((image) => {
-							return <img src={image} alt="" />
+						{images?.map((image, index) => {
+							return (
+								<div className={styles.postImage}>
+									<img src={image} alt="image format error" />
+									<Button
+										fill={false}
+										icon={<Trash />}
+										type={"button"}
+										className={styles.postImageDeleteButton}
+										function={() => {deleteImage(image, index)}}
+									/>
+								</div>
+							)
 						})}
 					</div>
 
@@ -301,6 +310,8 @@ export function CreatePostModal() {
 									type="file"
 									ref={selectImageInputRef}
 									onChange={selectImage}
+									accept="image/*"
+
 								></input>
 							}
 							function={triggerImageInput}
