@@ -9,6 +9,7 @@ export interface ButtonProps {
     isSubmit?: boolean
     disabled?: boolean
     className?: string
+    children?: ReactNode
     
     type?: "submit" | "reset" | "button" | undefined
 }

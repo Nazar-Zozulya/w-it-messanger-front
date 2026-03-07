@@ -114,3 +114,16 @@
     flex-direction: row;
     gap: 10px;
 }
+
+.footerButtons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+
+.imageSelectInput {
+    display: none;
+}

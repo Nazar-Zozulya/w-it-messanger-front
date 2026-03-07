@@ -11,6 +11,7 @@ export function Button(props: ButtonProps) {
 		isSubmit,
 		disabled = false,
 		className,
+		children,
 		type,
 	} = props
 
@@ -45,6 +46,7 @@ export function Button(props: ButtonProps) {
 		>
 			{icon}
 			{text && <p className={styles.text}>{text}</p>}
+			{children}
 			{rightIcon}
 		</button>
 	)

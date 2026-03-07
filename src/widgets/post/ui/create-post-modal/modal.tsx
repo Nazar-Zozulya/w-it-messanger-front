@@ -1,4 +1,3 @@
-import { ReactComponent as XMark } from "../../../../shared/ui/icons/xMark.svg"
 import { ReactComponent as Check } from "../../../../shared/ui/icons/check.svg"
 import { ReactComponent as Plus } from "../../../../shared/ui/icons/plus.svg"
 import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.svg"
@@ -10,19 +9,25 @@ import { Modal } from "../../../../shared/ui/modal"
 import { createPostForm } from "./modal.types"
 import { Input } from "../../../../shared/ui/input"
 import { Controller, useForm } from "react-hook-form"
-import { useEffect, useRef, useState } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { Button } from "../../../../shared/ui/button"
 import { CloseModalButton } from "../../../../features/modal"
-import { POST } from "../../../../helpers/post"
 import { useUserContext } from "../../../../entities/user"
 import { createPostData, usePostsManager } from "../../../../entities/post"
+import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
+import { fileToBase64 } from "../../../../helpers/fileToBase64"
 
 export function CreatePostModal() {
 	const [tags, setTags] = useState<string[]>([])
 	const [links, setLinks] = useState<string[]>([])
-	const [images, setImages] = useState<string[]>()
+	const [images, setImages] = useState<string[]>([])
+	const [error, setError] = useState<string>("")
+
+	const selectImageInputRef = useRef<HTMLInputElement | null>(null)
 
 	const { user } = useUserContext()
+
+	const { closeModal } = useModalManagerStore()
 
 	const { createPost } = usePostsManager()
 
@@ -32,21 +37,24 @@ export function CreatePostModal() {
 	const [isAddingTagInputShowing, setIsAddingTagInputShowing] =
 		useState<boolean>()
 
+	// форма для тегов
 	const {
 		handleSubmit: tagHandleSubmit,
 		control: tagControl,
 		formState: tagFormState,
 		reset: tagReset,
 	} = useForm<{ tag: string }>()
+
+	// форма для картинок
+	// const {
+	// 	handleSubmit: ImageHandleSubmit,
+	// 	control: ImageControl,
+	// 	formState: ImageFormState,
+	// 	reset: ImageReset,
+	// } = useForm<{ image: string }>()
+
+	// форма для поста
 	const { handleSubmit, control, formState } = useForm<createPostForm>({})
-
-
-
-	useEffect(() => {
-		console.log(user, "user in create post modal")
-	}, [user])
-
-
 
 	function deleteTag(tag: string) {
 		const newTags = tags.filter((fTag) => {
@@ -58,7 +66,7 @@ export function CreatePostModal() {
 	function addNewTag(data: { tag: string }) {
 		let newTag = data.tag
 
-		if (!newTag.startsWith("#")) newTag= `#${newTag}`
+		if (!newTag.startsWith("#")) newTag = `#${newTag}`
 
 		const newTags = [...tags, newTag]
 
@@ -67,8 +75,45 @@ export function CreatePostModal() {
 		setTags(newTags)
 	}
 
-	async function onSubmit(data: createPostForm) {
+	function deleteImage(image: string) {
+		const newImages = tags.filter((fImage) => {
+			return fImage !== image
+		})
+		setImages(newImages)
+	}
 
+	function addNewImage(image: string) {
+		
+		const newImages = [...images, image]
+
+		setImages(newImages)
+	}
+
+	function triggerImageInput() {
+		if (!selectImageInputRef.current) return
+
+		const getImage = selectImageInputRef.current.click()
+
+		// addNewImage({image: getImage})
+	}
+
+	async function selectImage(e: ChangeEvent<HTMLInputElement>) {
+		const file = e.target.files?.[0]
+
+		if (!file) return
+		console.log("files: " + file)
+
+		const imageBase64 = await fileToBase64(file)
+
+		if (!imageBase64) return
+
+		const newImage = addNewImage(imageBase64)
+		
+
+		console.log(imageBase64)
+	}
+
+	async function onSubmit(data: createPostForm) {
 		if (!user) return
 
 		const newData: createPostData = {
@@ -81,6 +126,11 @@ export function CreatePostModal() {
 
 		const response = await createPost(newData)
 
+		if (response.status === "error") setError(response.message ?? "error")
+
+		if (response.status === "success") {
+			closeModal()
+		}
 		console.log(response)
 	}
 
@@ -140,10 +190,10 @@ export function CreatePostModal() {
 												type={"text"}
 												placeholder={""}
 												className={styles.addTagInput}
-												/>
-											)
-										}}
-										/>
+											/>
+										)
+									}}
+								/>
 							</>
 						) : (
 							<></>
@@ -162,7 +212,7 @@ export function CreatePostModal() {
 							icon={
 								isAddingTagInputShowing ? <Check /> : <Plus />
 							}
-							/>
+						/>
 					</div>
 
 					<Input.TextArea
@@ -238,17 +288,28 @@ export function CreatePostModal() {
 						})}
 					</div>
 
+					<p>{error}</p>
+
 					<div className={styles.footerButtons}>
 						<Button
 							fill={false}
-							type="button"
 							icon={<Gallery />}
-							function={() => {}}
+							type="button"
+							children={
+								<input
+									className={styles.imageSelectInput}
+									type="file"
+									ref={selectImageInputRef}
+									onChange={selectImage}
+								></input>
+							}
+							function={triggerImageInput}
 						/>
 						<Button
 							fill={false}
-							icon={<Smile />}
 							type="button"
+							icon={<Smile />}
+							children
 							function={() => {}}
 						/>
 						<Button
