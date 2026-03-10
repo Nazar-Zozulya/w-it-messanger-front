@@ -9,13 +9,27 @@ import { ReactComponent as Chat } from "../../../../shared/ui/icons/chat.svg"
 import { ReactComponent as Settings } from "../../../../shared/ui/icons/settings.svg"
 import { ReactComponent as Logout } from "../../../../shared/ui/icons/logout.svg"
 import { WhichSelected } from "./header.types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useUserContext } from "../../../../entities/user"
+import { useLocation } from "react-router-dom"
 
 export function Header() {
 	const [whichSelected, setWhichSelected] = useState<WhichSelected>("main")
 
+	const location = useLocation()
+
 	const { logout } = useUserContext()
+
+	useEffect(()=>{
+		switch (location.pathname){
+			case "/":
+				setWhichSelected('main')
+				break
+			case "/settings":
+				setWhichSelected("settings")
+				break
+		}
+	},[])
 
 	return (
 		<div className={styles.container}>
@@ -25,31 +39,36 @@ export function Header() {
 				<NavigationButton
 					icon={<House width={17} height={17} />}
 					text="Головна"
-					redirect=""
+					redirect="/"
+					onClick={()=>{setWhichSelected('main')}}
 					isSelected={whichSelected == "main"}
 				/>
 				<NavigationButton
 					icon={<Gallery width={17} height={17} />}
 					text="Мої публікації"
 					redirect=""
+					onClick={()=>{setWhichSelected('my posts')}}
 					isSelected={whichSelected == "my posts"}
 				/>
 				<NavigationButton
 					icon={<People width={17} height={17} />}
 					text="Друзі"
 					redirect=""
+					onClick={()=>{setWhichSelected('friends')}}
 					isSelected={whichSelected == "friends"}
 				/>
 				<NavigationButton
 					icon={<Chat width={17} height={17} />}
 					text="Чати"
 					redirect=""
+					onClick={()=>{setWhichSelected('chats')}}
 					isSelected={whichSelected == "chats"}
 				/>
 				<NavigationButton
 					icon={<Settings width={17} height={17} />}
 					text="Налаштування"
-					redirect=""
+					redirect="/settings"
+					onClick={()=>{setWhichSelected('settings')}}
 					isSelected={whichSelected == "settings"}
 				/>
 

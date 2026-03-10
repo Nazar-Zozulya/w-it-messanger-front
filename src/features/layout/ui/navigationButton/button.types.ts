@@ -5,4 +5,5 @@ export interface NavigationButtonProps {
     text: string
     redirect: string
     isSelected?: boolean
+    onClick?: () => void
 }

@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { AuthPage } from "../pages/auth-page/page"
+import { AuthPage, MainPage, SettingsPage } from "../pages"
 import { Layout } from "../widgets/layout"
-import { MainPage } from "../pages/main-page"
 
 export function AppProviders() {
 	return (
@@ -11,6 +10,7 @@ export function AppProviders() {
 				<Route path="*" element={<div>not found</div>} />
 				<Route path="/" element={<Layout />}> 
 					<Route path="/" element={<MainPage />} />
+					<Route path="/settings" element={<SettingsPage />} />
 				</ Route>
 				
 			</Routes>
