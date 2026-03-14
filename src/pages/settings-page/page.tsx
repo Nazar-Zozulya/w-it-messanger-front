@@ -11,8 +11,8 @@ export function SettingsPage() {
 			style={{
 				display: "flex",
 				justifyContent: "space-between",
-				padding: "0 15%",
-				alignItems: "center",
+				padding: "2% 10%",
+				alignItems: "flex-start",
 				flexDirection: "row",
 				width: "100%",
 			}}

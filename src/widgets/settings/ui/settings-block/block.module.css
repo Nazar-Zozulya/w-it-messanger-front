@@ -1,3 +1,11 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-direction: column;
+}
+
 .avatarAndUsernameBlock {
     width: 100%;
     display: flex;
@@ -35,4 +43,19 @@
     font-family: "GT Walsheim Pro";
     font-weight: 600;
     color: #070A1C;
+}
+
+.userInfoBlock {
+    display: flex;
+    width: 100%;
+
+}
+
+.userInfoForm {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
 }

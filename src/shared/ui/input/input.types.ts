@@ -4,9 +4,10 @@ import { Control, RegisterOptions } from "react-hook-form"
 export interface InputProps {
 	label?: string
 	placeholder?: string
+	disabled?: boolean
 	isPassword?: boolean
 	error?: string
-	type?: "text" | "password" | "email"
+	type?: typesOfInput
 	defaultValue?: string
 	// onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 	// value?: any
@@ -22,6 +23,8 @@ export interface InputProps {
 		| undefined
 }
 
-export interface TextAreaProps extends Omit<InputProps, "type" | "isPassword" > {
+export interface TextAreaProps extends Omit<InputProps, "type" | "isPassword"> {
 	rows?: number
-}	
+}
+
+type typesOfInput = "text" | "password" | "email" | "date"

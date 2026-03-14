@@ -19,6 +19,7 @@ export function Input(props: InputProps) {
 		rules,
 		defaultValue,
 		className,
+		disabled,
 		...otherProps
 	} = props
 
@@ -42,6 +43,7 @@ export function Input(props: InputProps) {
 											: "password"
 										: type
 								}
+								disabled={disabled}
 								placeholder={placeholder}
 								className={`${styles.input} ${className}`}
 								value={field.value}
