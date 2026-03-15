@@ -1,4 +1,4 @@
-import { DEFAULT_AVATAR } from '../../../../shared/ui/constants'
+import { DEFAULT_AVATAR } from '../../../../constants/default-avatar'
 import styles from './avatar.module.css'
 
 

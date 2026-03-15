@@ -5,7 +5,7 @@ import { ReactComponent as Check } from "../../../../shared/ui/icons/check.svg"
 
 import styles from "./block.module.css"
 import { useUserContext } from "../../../../entities/user"
-import { DEFAULT_AVATAR } from "../../../../shared/ui/constants"
+import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
 import { useForm } from "react-hook-form"
 import { UserInfoChangeForm } from "./block.types"
 import { Input } from "../../../../shared/ui/input"
