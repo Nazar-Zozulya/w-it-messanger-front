@@ -1,21 +1,30 @@
-# FROM node:24-alpine as build
-# WORKDIR /app
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# RUN npm run build
-
 FROM node:24-alpine as build
 WORKDIR /app
-
 COPY package*.json ./
-
 RUN npm install
+COPY . .
 
-COPY src ./src
-COPY public ./public
+ARG REACT_APP_USER_SERVICE_URL
+ARG REACT_APP_POST_SERVICE_URL
+ARG REACT_APP_CHAT_SERVICE_URL
+
+ENV REACT_APP_USER_SERVICE_URL=$REACT_APP_USER_SERVICE_URL
+ENV REACT_APP_POST_SERVICE_URL=$REACT_APP_POST_SERVICE_URL
+ENV REACT_APP_CHAT_SERVICE_URL=$REACT_APP_CHAT_SERVICE_URL
 
 RUN npm run build
+
+# FROM node:24-alpine as build
+# WORKDIR /app
+
+# COPY package*.json ./
+
+# RUN npm install
+
+# COPY src ./src
+# COPY public ./public
+
+# RUN npm run build
 
 
 FROM nginx:alpine
