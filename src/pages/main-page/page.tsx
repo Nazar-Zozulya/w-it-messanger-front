@@ -33,7 +33,7 @@ export function MainPage() {
             <div style={{display: "flex", flexDirection:"column", gap:"20px"}}>
                 <ProfileBlock />
                 <RequestBlock />
-                <ChatsBlock />
+                {/* <ChatsBlock /> */}
             </div>
             <div style={{display: "flex", flexDirection: "column", gap: "5px"}}>
                 <CreatePostBlock />
