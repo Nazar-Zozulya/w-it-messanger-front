@@ -23,7 +23,6 @@ export function SettingsPage() {
 					alignItems: "flex-start",
 					justifyContent: "center",
 					flexDirection: "column",
-					// width: "260px",
 					gap: "10px",
 				}}
 			>

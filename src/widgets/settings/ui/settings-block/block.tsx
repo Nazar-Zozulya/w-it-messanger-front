@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form"
 import { UserInfoChangeForm } from "./block.types"
 import { Input } from "../../../../shared/ui/input"
 import { useState } from "react"
+import { POST } from "../../../../helpers/post"
 
 export function SettingsBlock() {
 	const { user } = useUserContext()
@@ -18,7 +19,24 @@ export function SettingsBlock() {
 
 	const [isUserDataChanging, setIsUserDataChanging] = useState<boolean>(false)
 
-	async function onSubmit(data: UserInfoChangeForm) {}
+	async function onSubmit(data: UserInfoChangeForm) {
+		setIsUserDataChanging(false)
+		console.log(data)
+		if (!data.name && !data.surname && !data.dateOfBirth && !data.email) {
+			console.log("no data")
+		}
+
+		const response = await POST({
+			whichService: "userService",
+			endpoint: "api/user/update",
+			method: "PATCH",
+			body: {...data, id: user?.id},
+
+		})
+
+		console.log(response)
+
+	}
 
 	return (
 		<div className={styles.container}>
@@ -60,51 +78,50 @@ export function SettingsBlock() {
 				button={
 					<Button
 						text={isUserDataChanging ? "" : "Редагувати Інформацію"   }
-						type={isUserDataChanging ? "submit" : "button"}
-						function={()=>{setIsUserDataChanging(!isUserDataChanging)}}
+						function={()=>{isUserDataChanging ? handleSubmit(onSubmit)(): setIsUserDataChanging(true)}}
 						fill={false}
 						icon={isUserDataChanging ? <Check />: <Edit />}
 					/>
 				}
 			>
 				<div className={styles.userInfoBlock}>
-					<form
-						className={styles.userInfoForm}
-						onSubmit={handleSubmit(onSubmit)}
-					>
-						<Input
-							control={control}
-							label="Ім'я"
-							placeholder="Введіть ваше ім'я"
-							error={formState.errors.name?.message}
-							name={"name"}
-							disabled={!isUserDataChanging}
-						/>
-						<Input
-							control={control}
-							label="Прізвище"
-							placeholder="Введіть ваше прізвище"
-							error={formState.errors.surname?.message}
-							name={"surname"}
-							disabled={!isUserDataChanging}
-						/>
-						<Input
-							control={control}
-							label="Дата народження"
-							type={"date"}
-							error={formState.errors.dateOfBirth?.message}
-							name={"dateOfBirth"}
-							disabled={!isUserDataChanging}
-						/>
-						<Input
-							control={control}
-							label="Електронна адреса"
-							placeholder="Введіть вашу електронну адресу"
-							error={formState.errors.name?.message}
-							name={"email"}
-							disabled={!isUserDataChanging}
-						/>
-					</form>
+					<Input
+						control={control}
+						label="Ім'я"
+						defaultValue={user?.name}
+						placeholder="Введіть ваше ім'я"
+						error={formState.errors.name?.message}
+						name={"name"}
+						disabled={!isUserDataChanging}
+					/>
+					<Input
+						control={control}
+						label="Прізвище"
+						defaultValue={user?.surname}
+						placeholder="Введіть ваше прізвище"
+						error={formState.errors.surname?.message}
+						name={"surname"}
+						disabled={!isUserDataChanging}
+					/>
+					<Input
+						control={control}
+						label="Дата народження"
+						type={"date"}
+						defaultValue={user?.profile?.dateOfBirth?.toString()}
+						error={formState.errors.dateOfBirth?.message}
+						name={"dateOfBirth"}
+						disabled={!isUserDataChanging}
+					/>
+					<Input
+						control={control}
+						label="Електронна адреса"
+						defaultValue={user?.email}
+						placeholder="Введіть вашу електронну адресу"
+						error={formState.errors.name?.message}
+
+						name={"email"}
+						disabled={!isUserDataChanging}
+					/>
 				</div>
 			</UniversalBlockCard>
 

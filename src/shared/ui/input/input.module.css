@@ -66,3 +66,8 @@
     resize: none;
     overflow-x: none;
 }
+
+.disabled {
+    background-color: #dfdddd;
+    color: #A9A9A9;
+}

@@ -45,7 +45,7 @@ export function Input(props: InputProps) {
 								}
 								disabled={disabled}
 								placeholder={placeholder}
-								className={`${styles.input} ${className}`}
+								className={`${styles.input} ${className} ${disabled && styles.disabled}`}
 								value={field.value}
 								defaultValue={defaultValue}
 								onChange={(e) => field.onChange(e)}
