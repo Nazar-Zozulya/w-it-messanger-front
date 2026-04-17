@@ -15,18 +15,20 @@ export function Input(props: InputProps) {
 		error,
 		// onChange,
 		control,
+		size = "default",
 		name,
 		rules,
 		defaultValue,
 		className,
 		disabled,
+		style,
 		...otherProps
 	} = props
 
 	const [isVisible, setIsVisible] = useState(false)
 
 	return (
-		<div className={styles.container}>
+		<div className={`${styles.container} ${size === "small" && styles.smallContainer}`}>
 			<p className={styles.label}>{label}</p>
 			<div className={styles.helpInputDiv}>
 				<Controller
@@ -45,8 +47,9 @@ export function Input(props: InputProps) {
 								}
 								disabled={disabled}
 								placeholder={placeholder}
-								className={`${styles.input} ${className} ${disabled && styles.disabled}`}
+								className={`${styles.input} ${className} ${disabled && styles.disabled} ${size === "small" && styles.smallInput}`}
 								value={field.value}
+								style={style}
 								defaultValue={defaultValue}
 								onChange={(e) => field.onChange(e)}
 								// onChange={}

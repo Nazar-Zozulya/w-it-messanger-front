@@ -14,7 +14,7 @@ export interface User{
     surname?: string;
     username?: string;
 
-    lastLogin?: Date
-    createdAt: Date
-    updatedAt?: Date
+    lastLogin?: Date | string
+    createdAt: Date | string
+    updatedAt?: Date | string
 }

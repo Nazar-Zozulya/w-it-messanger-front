@@ -8,7 +8,7 @@ export interface Profile {
     
     signature?: string
 
-    dateOfBirth?: Date
+    dateOfBirth?: Date | string
 
     avatars: Avatar[]
 }

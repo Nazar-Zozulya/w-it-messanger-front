@@ -5,6 +5,10 @@
     width: 400px;
 }
 
+.smallContainer {
+    width: 200px !important;
+}
+
 .label {
     font-family: "GT Walsheim Pro";
     font-weight: 400;
@@ -22,7 +26,7 @@
 }
 
 .helpInputDiv {
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     flex-direction: row;
 }
@@ -70,4 +74,9 @@
 .disabled {
     background-color: #dfdddd;
     color: #A9A9A9;
+}
+
+.smallInput {
+    width: 200px !important;
+    height: 30px !important;
 }

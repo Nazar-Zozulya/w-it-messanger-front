@@ -1,0 +1,1 @@
+export { UserAvatarBlock } from "./block"

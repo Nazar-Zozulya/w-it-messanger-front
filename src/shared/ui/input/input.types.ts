@@ -9,6 +9,8 @@ export interface InputProps {
 	error?: string
 	type?: typesOfInput
 	defaultValue?: string
+	style?: React.CSSProperties
+	size?: "small" | "default"
 	// onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 	// value?: any
 	control: Control<any, any, any>

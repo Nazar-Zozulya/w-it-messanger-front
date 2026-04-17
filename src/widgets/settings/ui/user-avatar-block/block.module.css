@@ -1,0 +1,44 @@
+.avatarAndUsernameBlock {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.changeAvatar {
+    border: none;
+    background: none;
+    /* cursor: pointer; */
+
+    position: relative
+}
+
+.avatarInput {
+    display: none;
+    /* background: red; */
+    /* width: 100%;
+    height: 100%; */
+    /* position: absolute; */
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+}
+
+.name {
+    font-size: 24px;
+    font-family: "GT Walsheim Pro";
+    font-weight: 700;
+    color: #070A1C;
+}
+
+.username {
+    font-size: 16px;
+    font-family: "GT Walsheim Pro";
+    font-weight: 600;
+    color: #070A1C;
+}
