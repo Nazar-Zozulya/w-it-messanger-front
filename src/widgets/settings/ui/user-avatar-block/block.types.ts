@@ -1,4 +1,4 @@
 export interface UserAvatarChangeForm {
     avatar: string
-    username: string
+    username: string | undefined
 }

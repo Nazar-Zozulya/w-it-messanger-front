@@ -10,5 +10,7 @@ export interface Profile {
 
     dateOfBirth?: Date | string
 
+    activeAvatarId: number | undefined
+
     avatars: Avatar[]
 }

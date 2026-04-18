@@ -25,7 +25,9 @@ export function UserAvatarBlock() {
 		setUsername(user?.username || "")
 	}, [user])
 
-	const [newAvatar, setNewAvatar] = useState<string>("")
+	const [newAvatar, setNewAvatar] = useState<string | null>(null)
+
+	const [error, setError] = useState<string | null>(null)
 
 	const [isChanging, setIsChanging] = useState<boolean>(false)
 
@@ -33,9 +35,8 @@ export function UserAvatarBlock() {
 
 	async function onSubmit(data: UserAvatarChangeForm) {
 		setIsChanging(false)
-		setUsername(data.username)
 
-		const newData = {...data, id: user?.id, avatar: newAvatar}
+		const newData = { ...data, id: user?.id, avatar: newAvatar }
 
 		const response = await POST({
 			whichService: "userService",
@@ -43,6 +44,18 @@ export function UserAvatarBlock() {
 			method: "PATCH",
 			body: newData,
 		})
+
+		if (response.status === "error") {
+			setError(response.message ?? "unknown error")
+
+			return
+		}
+
+		if (data.username) {
+			setUsername(data.username)
+		}
+		
+		setError(null)
 
 		console.log(response)
 	}
@@ -104,12 +117,24 @@ export function UserAvatarBlock() {
 					/>
 					<img
 						src={
-							user?.profile.avatars[0]
-								? user?.profile.avatars[0].image
-								: newAvatar
-									? newAvatar
+							newAvatar
+								? newAvatar
+								: user?.profile.avatars[0]
+									? user.profile.avatars[
+											user.profile.activeAvatarId
+												? user.profile.activeAvatarId -
+													1
+												: -1
+										].image
 									: DEFAULT_AVATAR
 						}
+						// src={
+						// 	user?.profile.avatars[0]
+						// 		? user?.profile.avatars[0].image
+						// 		: newAvatar
+						// 			? newAvatar
+						// 			: DEFAULT_AVATAR
+						// }
 						alt=""
 						className={styles.avatar}
 					/>
@@ -130,7 +155,10 @@ export function UserAvatarBlock() {
 						size="small"
 					/>
 				) : (
-					<p className={styles.username}>{username}</p>
+					<>
+						<p className={styles.username}>{username}</p>
+						<p className={styles.error}>{error}</p>
+					</>
 				)}
 			</div>
 		</UniversalBlockCard>

@@ -42,3 +42,9 @@
     font-weight: 600;
     color: #070A1C;
 }
+
+.error {
+    font-family: "GT Walsheim Pro";
+    font-size: 12px;
+    color: #FF4C4C;
+}
