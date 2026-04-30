@@ -3,7 +3,7 @@ import { UserAvatarChangeForm } from "./block.types"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { fileToBase64 } from "../../../../helpers/fileToBase64"
 import { UniversalBlockCard } from "../../../../shared/ui/universal-block-card/card"
-import { useUserContext } from "../../../../entities/user"
+import { User, useUserContext } from "../../../../entities/user"
 import { Button } from "../../../../shared/ui/button"
 import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
 import { Input } from "../../../../shared/ui/input"
@@ -17,7 +17,7 @@ import { POST } from "../../../../helpers/post"
 export function UserAvatarBlock() {
 	const { handleSubmit, formState, control } = useForm<UserAvatarChangeForm>()
 
-	const { user } = useUserContext()
+	const { user, token } = useUserContext()
 
 	const [username, setUsername] = useState<string>("")
 
@@ -36,12 +36,13 @@ export function UserAvatarBlock() {
 	async function onSubmit(data: UserAvatarChangeForm) {
 		setIsChanging(false)
 
-		const newData = { ...data, id: user?.id, avatar: newAvatar }
+		const newData = { ...data, avatar: newAvatar }
 
-		const response = await POST({
+		const response = await POST<User>({
 			whichService: "userService",
 			endpoint: "api/user/update",
 			method: "PATCH",
+			token: token ?? '',
 			body: newData,
 		})
 
@@ -87,14 +88,14 @@ export function UserAvatarBlock() {
 			title="Картка профілю"
 			button={
 				<Button
-					text={isChanging ? "" : "Редагувати Інформацію"}
+					text={isChanging ? "Зберегти" : "Редагувати Інформацію"}
 					function={() => {
 						isChanging
 							? handleSubmit(onSubmit)()
 							: setIsChanging(true)
 					}}
 					fill={false}
-					icon={isChanging ? <Check /> : <Edit />}
+					icon={<Edit />}
 				/>
 			}
 		>

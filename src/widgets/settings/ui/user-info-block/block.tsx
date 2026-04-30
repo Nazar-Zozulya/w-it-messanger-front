@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import { UserInfoChangeForm } from "./block.types"
 import { useState } from "react"
 import { POST } from "../../../../helpers/post"
-import { useUserContext } from "../../../../entities/user"
+import { User, useUserContext } from "../../../../entities/user"
 import { UniversalBlockCard } from "../../../../shared/ui/universal-block-card"
 import { Input } from "../../../../shared/ui/input"
 import { Button } from "../../../../shared/ui/button"
@@ -13,7 +13,7 @@ import { ReactComponent as Edit } from "../../../../shared/ui/icons/edit.svg"
 import { ReactComponent as Check } from "../../../../shared/ui/icons/check.svg"
 
 export function UserInfoBlock() {
-	const { user } = useUserContext()
+	const { user, token } = useUserContext()
 
 	const { handleSubmit, formState, control } = useForm<UserInfoChangeForm>()
 
@@ -26,11 +26,12 @@ export function UserInfoBlock() {
 			console.log("no data")
 		}
 
-		const response = await POST({
+		const response = await POST<User>({
 			whichService: "userService",
 			endpoint: "api/user/update",
 			method: "PATCH",
-			body: { ...data, id: user?.id },
+			token: token ?? '',
+			body: { data },
 		})
 
 		console.log(response)
@@ -41,14 +42,14 @@ export function UserInfoBlock() {
 			title="Особиста інформація"
 			button={
 				<Button
-					text={isChanging ? "" : "Редагувати Інформацію"}
+					text={isChanging ? "Зберегти" : "Редагувати Інформацію"}
 					function={() => {
 						isChanging
 							? handleSubmit(onSubmit)()
 							: setIsChanging(true)
 					}}
 					fill={false}
-					icon={isChanging ? <Check /> : <Edit />}
+					icon={<Edit />}
 				/>
 			}
 		>

@@ -60,10 +60,11 @@ export function Input(props: InputProps) {
 				/>
 				{isPassword && (
 					<button
+						disabled={disabled}
 						style={{
 							border: "none",
 							background: "none",
-							cursor: "pointer",
+							cursor: !disabled ? "pointer" : undefined,
 						}}
 						onClick={() => setIsVisible(!isVisible)}
 					>
