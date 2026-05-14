@@ -39,6 +39,8 @@ export function MainPage() {
                 <CreatePostBlock />
 
                 <PostsList />
+
+                <div className={styles.bottomSpace}></div>
             </div> 
         </div>
     )

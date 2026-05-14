@@ -15,7 +15,7 @@ export function CreatePostBlock() {
                 <textarea placeholder='Текст публікації' rows={2} />
             </form>
             <div className={styles.buttons}>
-                <Button fill={false} function={()=>console.log(123)} icon={<Smile style={{height: "20vh", width: "2.1vh"}} />} />
+                <Button fill={false} function={()=>console.log(123)} icon={<Smile style={{height: "2.1vh", width: "2.1vh", fill: '#543C52'}} />}  />
                 <Button fill={true} function={()=>{openModal("createPost")}} text='Перейти до оформлення' />
             </div>
         </div>

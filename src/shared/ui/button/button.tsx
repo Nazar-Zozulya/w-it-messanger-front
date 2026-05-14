@@ -34,7 +34,7 @@ export function Button(props: ButtonProps) {
 					disabled ? styles.disabled : "" // Стиль для отключенной кнопки
 				}
 				${
-					icon && !text ? styles.onlyIcon : null // Стиль для кнопки, которая содержит только иконку
+					icon && !text ? styles.onlyIcon : styles.withText // Стиль для кнопки, которая содержит только иконку
 				}
 				`}
 

@@ -160,11 +160,11 @@ export function PostCard(props: Post) {
 				<div className={styles.postStatistics}>
 					<div className={styles.likes}>
 						<Like />
-						<p>{props.likes}</p>
+						<p>{props.likes ? `${props.likes} ` : '0'} Вподобань</p>
 					</div>
 					<div className={styles.views}>
 						<Eye />
-						<p>{props.views}</p>
+						<p>{props.views ? `${props.views} ` : '0'} Переглядів</p>
 					</div>
 				</div>
 			</div>
