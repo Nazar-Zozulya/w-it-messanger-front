@@ -33,39 +33,39 @@ export function Header() {
 
 	return (
 		<div className={styles.container}>
-			<Logo />
+			<Logo style={{height: "1.9vh"}	} />
 
 			<div className={styles.navigation}>
 				<NavigationButton
-					icon={<House width={17} height={17} />}
+					icon={<House style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Головна"
 					redirect="/"
 					onClick={()=>{setWhichSelected('main')}}
 					isSelected={whichSelected == "main"}
 				/>
 				<NavigationButton
-					icon={<Gallery width={17} height={17} />}
+					icon={<Gallery style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Мої публікації"
 					redirect=""
 					onClick={()=>{setWhichSelected('my posts')}}
 					isSelected={whichSelected == "my posts"}
 				/>
 				<NavigationButton
-					icon={<People width={17} height={17} />}
+					icon={<People style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Друзі"
 					redirect=""
 					onClick={()=>{setWhichSelected('friends')}}
 					isSelected={whichSelected == "friends"}
 				/>
 				<NavigationButton
-					icon={<Chat width={17} height={17} />}
+					icon={<Chat style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Чати"
 					redirect=""
 					onClick={()=>{setWhichSelected('chats')}}
 					isSelected={whichSelected == "chats"}
 				/>
 				<NavigationButton
-					icon={<Settings width={17} height={17} />}
+					icon={<Settings style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Налаштування"
 					redirect="/settings"
 					onClick={()=>{setWhichSelected('settings')}}
@@ -75,7 +75,7 @@ export function Header() {
 				<Button
 					fill={false}
 					function={() => {logout()}}
-					icon={<Logout width={17} height={17} />}
+					icon={<Logout style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Вихід"
 				/>
 			</div>

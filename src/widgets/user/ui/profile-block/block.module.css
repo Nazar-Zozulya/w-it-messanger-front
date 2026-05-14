@@ -2,13 +2,14 @@
     border: 1px solid #CDCED2;
     background: #fff;
     border-radius: 10px;
-    width: 350px;
+    width: 24.4vw;
+    height: 28.2vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 16px;
-    padding: 10px 0;
+    gap: 1.7vh;
+    padding: 0.7vw 0;
 }
 
 
@@ -18,11 +19,11 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 24px;
+    gap: 2.5vh;
 }
 
 .NameBlock {
-    gap: 10px;
+    gap: 1vh;
     color: #070A1C;
     display: flex;
     justify-content: center;
@@ -33,13 +34,13 @@
 .Name {
     font-family: "GT Walsheim Pro";
     font-weight: 700;
-    font-size: 20px;
+    font-size: clamp(12px, 1.4vw, 20px);
 }
 
 .Username {
     font-family: "GT Walsheim Pro";
     font-weight: 500;
-    font-size: 16px;
+    font-size: clamp(10px, 1.2vw, 16px);
 }
 
 
@@ -52,12 +53,20 @@
     width: 100%;
 }
 
+.ProfileStats > :first-child {
+    border-right: 1px solid #CDCED2;
+}
+
+.ProfileStats > :last-child {
+    border-left: 1px solid #CDCED2;
+}
+
 .StatBlock {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 7px;
+    gap: 0.7vh;
     flex: 1;
 }
 
@@ -65,12 +74,12 @@
     color: #070A1C;
     font-family: "GT Walsheim Pro";
     font-weight: 700;
-    font-size: 20px;
+    font-size: clamp(12px, 1.4vw, 20px);
 }
 
 .StatName {
     color: #81818D;
     font-family: "GT Walsheim Pro";
     font-weight: 500;
-    font-size: 16px;
+    font-size: clamp(10px, 1.2vw, 16px);
 }

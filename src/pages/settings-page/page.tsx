@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { AlbumBlock, SettingsBlock } from "../../widgets/settings"
+import { SettingsBlock } from "../../widgets/settings"
+import { AlbumBlock } from '../../widgets/album'
 
 export function SettingsPage() {
 	const [pageSelector, setPageSelector] = useState<"settings" | "album">(

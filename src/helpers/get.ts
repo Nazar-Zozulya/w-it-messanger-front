@@ -1,4 +1,3 @@
-import { get } from "http";
 import { ServicesUrlPath } from "../types/api";
 import { Result } from "../types/result";
 import { servicesUrlPath } from "../constants/api";

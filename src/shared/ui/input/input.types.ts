@@ -29,4 +29,4 @@ export interface TextAreaProps extends Omit<InputProps, "type" | "isPassword"> {
 	rows?: number
 }
 
-type typesOfInput = "text" | "password" | "email" | "date"
+type typesOfInput = "text" | "password" | "email" | "date" | "checkbox"

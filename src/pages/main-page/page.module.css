@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 0.3vw;
+    justify-content: center;
+    position: relative;
+    justify-content: space-between;
+}
+
+.leftBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8vh;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3vw;
+}

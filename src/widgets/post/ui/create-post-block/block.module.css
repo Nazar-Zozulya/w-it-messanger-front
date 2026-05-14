@@ -1,15 +1,17 @@
 .container {
-    width: 925px;
+    width: 64.1vw;
+    /* 24,4 */
+    height: 12.5vh;
     box-sizing: border-box;
     border: 1px solid #CDCED2;
     background: #fff;
     border-radius: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     flex-direction: column;
-    gap: 20px;
-    padding: 16px;
+    /* gap: 20px; */
+    padding: 2vh 1.2vw;
 }
 
 .form {
@@ -22,9 +24,8 @@
     resize: none;
     font-family: "GT Walsheim Pro";
     font-weight: 500;
-    font-size: 16px;
+    font-size: clamp(12px, 1.2vw, 16px);
     color: #070A1C;
-    padding: 2px;
 }
 
 .form textarea::placeholder {
@@ -38,5 +39,5 @@
     flex-direction: row;
     justify-content: end;
     align-items: center;
-    gap: 10px;
+    gap: 0.7vw;
 }

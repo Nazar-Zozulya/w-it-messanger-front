@@ -31,10 +31,13 @@ export function ProfileBlock() {
                         <p className={styles.StatName}>Дописи</p>
                     </div>
 
+
+
                     <div className={styles.StatBlock + " " + styles.BorderedSides}>
                         <p className={styles.StatCount}>566</p>
                         <p className={styles.StatName}>Читачі</p>
                     </div>
+
 
                     <div className={styles.StatBlock}>
                         <p className={styles.StatCount}>566</p>

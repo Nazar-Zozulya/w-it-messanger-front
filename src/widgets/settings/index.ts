@@ -1,1 +1,1 @@
-export { AlbumBlock, SettingsBlock } from './ui'
+export { SettingsBlock } from './ui'

@@ -1,4 +1,5 @@
 import { Profile } from ".";
+import { UserImage } from "./userImage";
 
 
 export interface User{
@@ -13,6 +14,8 @@ export interface User{
     name?: string;
     surname?: string;
     username?: string;
+
+    images?: UserImage[];
 
     lastLogin?: Date | string
     createdAt: Date | string

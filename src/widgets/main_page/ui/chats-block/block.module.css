@@ -2,17 +2,18 @@
     border: 1px solid #CDCED2;
     background: #fff;
     border-radius: 10px;
-    width: 350px;
+    width: 24.4vw;
+    height: 28.2vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 24px;
-    padding: 20px 0;
+    gap: 2.5vh;
+    padding: 1.7vh 1.2vh;
 }
 
 .header {
-    width: calc(100% - 30px);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,13 +25,13 @@
 .title {
     display: flex;
     align-items: center;
-    gap: 8px;    
+    gap: 0.6vw;    
 }
 
 .title p {
     font-family: "GT Walsheim Pro";
     /* font-weight: 500; */
-    font-size: 20px;
+    font-size: clamp(12px, 1.4vw, 20px);
     color: #81818D;
 }
 
@@ -40,46 +41,44 @@
     cursor: pointer;
     font-family: "GT Walsheim Pro";
     font-weight: 700;
-    font-size: 16px;
+    font-size: clamp(10px, 1.2vw, 16px);
     color: #543C52;
 }
 
 .requestsList {
     width: 100%;
-    padding: 5px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1.7vh;
 }
 
 .request {
     width: 100%;
     display: flex;
-    gap: 16px;
-    padding: 0 10px;
+    gap: 0.8vw;
 }
 
 .avatar {
-    width: 45px;
-    height: 45px;
+    width: 4.7vh;
+    height: 4.7vh;
     border-radius: 1000px;
 }
 
 .textInfo {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.4vh;
 }
 
 .name {
     color: #070A1C;
     font-family: "GT Walsheim Pro";
-    font-size: 16px;
+    font-size: clamp(10px, 1.2vw, 16px);
 }
 
 .lastMessage {
     color: #81818D;
     font-family: "GT Walsheim Pro";
     font-weight: 400;
-    font-size: 14px;
+    font-size: clamp(8px, 1vw, 14px);
 }

@@ -5,7 +5,7 @@ import { ProfileBlock } from "../../widgets/user";
 import { useCookies } from "react-cookie";
 import { useModalManagerStore } from "../../entities/modal/model/storage/modalManager";
 import { useUserContext } from "../../entities/user";
-
+import styles from './page.module.css'
 
 
 
@@ -29,13 +29,13 @@ export function MainPage() {
     }, [cookies])
 
     return(
-        <div style={{display: "flex", flexDirection: "row", padding: "10px 80px", gap: "5px", width:"100%",justifyContent: "center", position: "relative"}}>
-            <div style={{display: "flex", flexDirection:"column", gap:"20px"}}>
+        <div className={styles.container}>
+            <div className={styles.leftBlock}>
                 <ProfileBlock />
                 <RequestBlock />
                 <ChatsBlock />
             </div>
-            <div style={{display: "flex", flexDirection: "column", gap: "5px"}}>
+            <div className={styles.content}>
                 <CreatePostBlock />
 
                 <PostsList />
