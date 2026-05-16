@@ -5,14 +5,6 @@ import { CompleteProfileModal } from "../widgets/user"
 
 export function ModalsShower(props: { children: React.ReactNode }) {
 	const { activeModal } = useModalManagerStore()
-	useEffect(() => {
-		console.log("Active modal changed to: ", activeModal)
-
-		if (activeModal ){
-			console.log('sosi')
-		}
-	}, [activeModal])
-
 
 	return (
 		<>
@@ -20,9 +12,7 @@ export function ModalsShower(props: { children: React.ReactNode }) {
 
 			{activeModal == "createPost" && <CreatePostModal />}
 
-			{activeModal == "completeProfile" && (
-				<CompleteProfileModal isClosingFromCover={false} />
-			)}
+			{activeModal == "completeProfile" && <CompleteProfileModal />}
 		</>
 	)
 }

@@ -36,6 +36,7 @@ export function LoginForm() {
 						label="Електронна пошта"
 						placeholder="you@example.com"
 						type="email"
+						fullWidth={true}
 						rules={{
 							required: {
 								value: true,
@@ -55,12 +56,13 @@ export function LoginForm() {
 								message: "Пароль обов'язковий",
 							},
 						}}
+						fullWidth={true}
 						isPassword={true}
 						control={control}
 						name="password"
 					/>
 
-				<p className={styles.errorField}>{validationError} error field</p>
+				<p className={styles.errorField}>{validationError}</p>
 
 				<Button type="submit" fill={true} text="Повернутися в акаунт" className={styles.submitButton} />
 			</form>

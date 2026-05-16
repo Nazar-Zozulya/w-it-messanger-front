@@ -4,5 +4,11 @@
     align-items: center;
     justify-content: center;
     background-color: #fff;
-    height: 100px;
+    height: 9.2vh;
+}
+
+.logoButton {
+    background: none;
+    border: none;
+    cursor: pointer;
 }

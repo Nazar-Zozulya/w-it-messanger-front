@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { SettingsBlock } from "../../widgets/settings"
-import { AlbumBlock } from '../../widgets/album'
+import { AlbumBlock } from "../../widgets/album"
+import styles from "./page.module.css"
 
 export function SettingsPage() {
 	const [pageSelector, setPageSelector] = useState<"settings" | "album">(
@@ -8,58 +9,22 @@ export function SettingsPage() {
 	)
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				justifyContent: "space-between",
-				padding: "2% 10%",
-				alignItems: "flex-start",
-				flexDirection: "row",
-				width: "100%",
-			}}
-		>
-			<div
-				style={{
-					display: "flex",
-					alignItems: "flex-start",
-					justifyContent: "center",
-					flexDirection: "column",
-					gap: "10px",
-				}}
-			>
+		<div className={styles.container}>
+			<div className={styles.content}>
 				<button
-					style={{
-						border: "none",
-						background: "none",
-						fontSize: "16",
-						fontFamily: "GT Walsheim Pro",
-						fontWeight: pageSelector === "settings" ? "800" : "600",
-						color:
-							pageSelector === "settings" ? "#070A1C" : "#81818D",
-						cursor: "pointer",
+					className={`${styles.selectButton} ${pageSelector === "settings" ? styles.selected : ""}`}
+					onClick={() => {
+						setPageSelector("settings")
 					}}
-					onClick={() => {setPageSelector("settings")}}
 				>
 					Особиста інформація
 				</button>
-				<div
-					style={{
-						width: "100%",
-						height: "2px",
-						background: "#543C52",
-					}}
-				></div>
+				<div className={styles.line}></div>
 				<button
-					style={{
-						border: "none",
-						background: "none",
-						fontSize: "16",
-						fontFamily: "GT Walsheim Pro",
-						fontWeight: pageSelector === "album" ? "800" : "600",
-						color: pageSelector === "album" ? "#070A1C" : "#81818D",
-						cursor: "pointer",
+					className={`${styles.selectButton} ${pageSelector === "album" ? styles.selected : ""}`}
+					onClick={() => {
+						setPageSelector("album")
 					}}
-					onClick={() => {setPageSelector("album")}}
 				>
 					Альбоми
 				</button>

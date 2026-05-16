@@ -64,9 +64,22 @@ export function CreatePostModal() {
 		setTags(newTags)
 	}
 
-	function addNewTag(data: { tag: string }) {
+	function addNewTag(data: { tag: string | undefined }) {
 		let newTag = data.tag
 
+		// проверка на наличие символов в строке
+		if (!newTag) {
+			tagReset()
+			return
+		}
+
+		// проверка на наличие не только пробелов в строке
+		if (newTag.trim().length === 0) {
+			tagReset()
+			return
+		}
+
+		// проверка на наличие # в начале
 		if (!newTag.startsWith("#")) newTag = `#${newTag}`
 
 		const newTags = [...tags, newTag]

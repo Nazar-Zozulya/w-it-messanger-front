@@ -6,6 +6,8 @@ import { useCookies } from "react-cookie";
 import { useModalManagerStore } from "../../entities/modal/model/storage/modalManager";
 import { useUserContext } from "../../entities/user";
 import styles from './page.module.css'
+import { Button } from "../../shared/ui/button";
+import { ReactComponent as Send} from '../../shared/ui/icons/send.svg'
 
 
 

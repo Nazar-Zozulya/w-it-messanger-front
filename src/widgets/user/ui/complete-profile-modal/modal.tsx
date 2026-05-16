@@ -9,10 +9,11 @@ import { useState } from "react"
 import { useCookies } from "react-cookie"
 import { useUserContext } from "../../../../entities/user"
 import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
+import { CloseModalButton } from "../../../../features/modal"
 
 export function CompleteProfileModal(props: CompleteProfileProps) {
 	const { handleSubmit, control, formState } = useForm<CompleteProfileForm>()
-	const [cookies, setCookie, removeCookie] = useCookies(['complete-profile'])
+	const [cookies, setCookie, removeCookie] = useCookies(["complete-profile"])
 	const { closeModal } = useModalManagerStore()
 	const { completeProfile } = useUserContext()
 	const [error, setError] = useState<string>("")
@@ -35,9 +36,13 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 	return (
 		<Modal isClosingFromCover={props.isClosingFromCover}>
 			<div className={styles.container}>
+				<div className={styles.closeModalButtonDiv}>
+					<CloseModalButton />
+				</div>
+				<div className={styles.content}>
 				<p className={styles.title}>Додай деталі про себе</p>
 				<form
-					className={styles.content}
+					className={styles.form}
 					onSubmit={handleSubmit(onSubmit)}
 				>
 					<div className={styles.inputsContainer}>
@@ -45,6 +50,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 							label="Ім'я"
 							placeholder="Введіть ваше ім'я"
 							error={formState.errors.name?.message}
+							fullWidth={true}
 							rules={{
 								minLength: {
 									value: 2,
@@ -64,6 +70,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 							label="Прізвище"
 							placeholder="Введіть прізвище"
 							error={formState.errors.surname?.message}
+							fullWidth={true}
 							rules={{
 								minLength: {
 									value: 2,
@@ -83,6 +90,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 							label="Ім'я користувача"
 							placeholder="@"
 							error={formState.errors.username?.message}
+							fullWidth={true}
 							rules={{
 								minLength: {
 									value: 2,
@@ -113,6 +121,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 						className={styles.button}
 					/>
 				</form>
+				</div>
 			</div>
 		</Modal>
 	)

@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 5px;
+    gap: 0.5vh;
 }
 
 .changeAvatar {
@@ -24,20 +24,20 @@
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
+    width: 96px;
+    height: 96px;
     border-radius: 100px;
 }
 
 .name {
-    font-size: 24px;
+    font-size: clamp(18px, 1.7vw, 24px);
     font-family: "GT Walsheim Pro";
     font-weight: 700;
     color: #070A1C;
 }
 
 .username {
-    font-size: 16px;
+    font-size: clamp(12px, 1.2vw, 16px);
     font-family: "GT Walsheim Pro";
     font-weight: 600;
     color: #070A1C;
@@ -45,6 +45,6 @@
 
 .error {
     font-family: "GT Walsheim Pro";
-    font-size: 12px;
+    font-size: clamp(8px, 0.8vw, 12px);
     color: #FF4C4C;
 }

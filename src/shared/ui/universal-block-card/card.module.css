@@ -3,9 +3,9 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 1000px;
-    padding: 1% 2%;
-    gap: 40px;
+    width: 64vw;
+    padding: 1.7vh 1.1vw;
+    gap: 4.2vh;
     border: solid 1px #CDCED2;
     background: #fff;
     border-radius: 15px;
@@ -30,6 +30,6 @@
 .title {
     color: #070A1C;
     font-family: "GT Walsheim Pro";
-    font-size: 16px;
+    font-size: clamp(12px, 1.2vw, 16px);
     font-weight: 500;
 }

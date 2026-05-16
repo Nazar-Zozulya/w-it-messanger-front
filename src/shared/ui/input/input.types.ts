@@ -14,6 +14,7 @@ export interface InputProps {
 	// onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 	// value?: any
 	control: Control<any, any, any>
+	fullWidth?: boolean
 	name: string
 	className?: string
 	isInputOnFullWidth?: boolean

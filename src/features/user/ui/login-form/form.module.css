@@ -4,12 +4,12 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 30px;
+    gap: 3.1vh;
 }
 
 .optionalTitle {
     font-family: "GT Walsheim Pro";
-    font-size: 24px;
+    font-size: clamp(18px, 1.7vw, 24px);
     font-weight: 500;
     color: #070A1C;
 }
@@ -20,7 +20,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 30px;
+    gap: 3.1vh;
 }
 
 .submitButton {
@@ -28,8 +28,16 @@
     height: 50px  !important;
 }
 
+.submitButton > p {
+    font-size: 16px !important;
+}
+
 .errorField {
     font-family: "GT Walsheim Pro";
     font-size: 12px;
     color: #FF4C4C;
+}
+
+.input {
+    width: 100%;
 }

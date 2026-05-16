@@ -1,160 +1,160 @@
-.container{
-    width: 800px;
-    /* height: 950px; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #FFFFFF;
-    background: color(display-p3 1.000 1.000 1.000);
-    border-radius: 20px;
-    padding: 20px 40px 40px 40px;
+.container {
+	width: 54vw;
+	/* height: 950px; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	background: color(display-p3 1 1 1);
+	border-radius: 20px;
+	padding: 2.1vh 2.7vw 4.2vh 2.7vw;
 }
 
 .closeModalButtonDiv {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    flex-direction: column;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	flex-direction: column;
 }
 
 .title {
-    width: 100%;
-    text-align: start;
-    font-family: 'GT Walsheim Pro';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 34px;
-    color: #060A1D;
+	width: 100%;
+	text-align: start;
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 500;
+	font-size: clamp(28px, 2.4vw, 34px);
+	color: #060a1d;
 }
 
 .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    gap: 16px;
-    padding-top: 30px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: start;
+	gap: 1.7vh;
+	padding-top: 3.1vh;
 }
 
 .tagList {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    align-content: flex-start;
-    gap: 10px;
-    width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: flex-start;
+	gap: 0.7vw;
+	width: 100%;
 }
 
 .tag {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 6px;
-    gap: 10px;
-    height: 28px;
-    background: #EAE5EF;
-    border-radius: 6px;
-    border: none;
-    transition: all 0.2s ease;
-    cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 0.6vh 0.4vw;
+	/* gap: 10px; */
+	height: 2.9vh;
+	background: #eae5ef;
+	border-radius: 6px;
+	border: none;
+	transition: all 0.2s ease;
+	cursor: pointer;
 }
 
 .addTagInput {
-    height: 28px;
-    width: auto;
-    min-width: 50px;
-    padding-left: 5px;
-    border: 1px solid #CDCED2;
-    border-radius: 10px;
-    font-family: "GT Walsheim Pro";
-    color: #000;
-    font-size: 16px;
-    font-weight: 400;
+	height: 2.9vh;
+	width: auto;
+	min-width: 3.5vw;
+	padding-left: 0.3vw;
+	border: 1px solid #cdced2;
+	border-radius: 10px;
+	font-family: "GT Walsheim Pro";
+	color: #000;
+	font-size: clamp(12px, 1.2vw, 16px);
+	font-weight: 400;
 }
 
 .tag:hover {
-    background: #583B53;
+	background: #583b53;
 }
 
 .tag p {
-    font-family: 'GT Walsheim Pro';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: #583B53;
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(8px, 1vw, 14px);
+	color: #583b53;
 }
 
 .tag:hover p {
-    color: #EAE5EF;
+	color: #eae5ef;
 }
 
 .linksList {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 6px;
-    width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0px;
+	gap: 0.6vh;
+	width: 100%;
 }
 
 .linksTitle {
-    font-family: "GT Walsheim Pro";
-    font-weight: 400;
-    font-size: 16px;
+	font-family: "GT Walsheim Pro";
+	font-weight: 400;
+	font-size: clamp(12px, 1.2vw, 16px);
 }
 
 .linkItem {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 10px;
 }
 
 .footerButtons {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-direction: row;
-    width: 100%;
-    gap: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-direction: row;
+	width: 100%;
+	gap: 0.6vw;
 }
 
 .imageSelectInput {
-    display: none;
+	display: none;
 }
 
 .imagesList {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 3%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	gap: 3%;
 }
 
 .postImage {
-    width: 31%;
-    position: relative;
-    /* max-height: 260px;
+	width: 31%;
+	position: relative;
+	/* max-height: 260px;
     border-radius: 15px; */
 }
 
 .postImage img {
-    width: 100%;
-    height: 260px;
-    border-radius: 15px;
-    object-fit: cover;
+	width: 100%;
+	height: 260px;
+	border-radius: 15px;
+	object-fit: cover;
 }
 
 .postImageDeleteButton {
-    position: absolute;
-    top: 5%;
-    right: 5%;
-    background: #fff !important;
+	position: absolute;
+	top: 5%;
+	right: 5%;
+	background: #fff !important;
 }

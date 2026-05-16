@@ -1,7 +1,7 @@
 .setSignatureBlock {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 2.5vh;
     align-items: flex-start;
     justify-content: center;
     width: 100%;
@@ -10,14 +10,14 @@
 .setVisibleName {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1.7vh;
     align-items: flex-start;
 }
 
 .changedPart {
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 0.6vw;
     align-items: center;
 }
 
@@ -33,7 +33,7 @@
     font-family: 'GT Walsheim Pro';
     font-style: normal;
     font-weight: 500;
-    font-size: 16px;
+    font-size: clamp(12px, 1.2vw, 16px);
     color: #583B53;
 }
 
@@ -45,17 +45,17 @@
     font-family: 'GT Walsheim Pro';
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
+    font-size: clamp(12px, 1.2vw, 16px);
     color: #060A1D;
 }
 
 .setVisibseSignature {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1.7vh;
     align-items: flex-start;
 }
 
 .signature {
-    height: 50px;
+    height: 5.2vh;
 }

@@ -1,31 +1,18 @@
 import { Input } from "../../shared/ui/input"
 import { AuthFormBlock, AuthUserHeader } from "../../widgets/user"
+import styles from './page.module.css'
 
 export function AuthPage() {
 	return (
 		<div
-			style={{
-				width: "100%",
-				height: "100vh",
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "start",
-				backgroundColor: "#E9E5EE",
-				// paddingTop: "2%",
-				overflowY: "hidden",
-				gap: "40px",
-			}}
+			className={styles.container}
 		>
 			<AuthUserHeader />
-			{/* <div style={{
-        width: "100%",
-        position: "absolute",
-        top: 0,
-      }}>
-      </div> */}
 
-			<AuthFormBlock />
+			<div className={styles.content}>
+				<AuthFormBlock />
+			</div>
+
 		</div>
 	)
 }

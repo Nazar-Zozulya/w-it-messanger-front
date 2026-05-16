@@ -9,7 +9,7 @@ import { Button } from "../../../../shared/ui/button"
 import { useCookies } from "react-cookie"
 
 export function RegisterForm() {
-	const [cookies, setCookie, removeCookie] = useCookies(['complete-profile'])
+	const [cookies, setCookie, removeCookie] = useCookies(["complete-profile"])
 	const { handleSubmit, control } = useForm<RegisterFormTypes>()
 	const [validationError, setValidationError] = useState<string | null>(null)
 	const navigate = useNavigate()
@@ -22,10 +22,10 @@ export function RegisterForm() {
 
 		if (result.status === "error") {
 			setValidationError(result.status)
-		}
-
-		else {
-			setCookie("complete-profile", "yes", { expires: new Date(Date.now() + 1000 * 1000) })
+		} else {
+			setCookie("complete-profile", "yes", {
+				expires: new Date(Date.now() + 1000 * 1000),
+			})
 			// localStorage.setItem("completeProfile", "yes")
 			navigate("/")
 		}
@@ -36,11 +36,12 @@ export function RegisterForm() {
 			<p className={styles.optionalTitle}>Приєднуйся до World IT</p>
 
 			<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-				<div className={styles.inputsBlock}>
+				{/* <div className={styles.inputsBlock}> */}
 					<Input
 						label="Електронна пошта"
 						placeholder="you@example.com"
 						type="email"
+						fullWidth={true}
 						rules={{
 							required: {
 								value: true,
@@ -54,6 +55,7 @@ export function RegisterForm() {
 					<Input
 						label="Пароль"
 						placeholder="Введи пароль"
+						fullWidth={true}
 						rules={{
 							required: {
 								value: true,
@@ -68,6 +70,7 @@ export function RegisterForm() {
 					<Input
 						label="Підтверди пароль"
 						placeholder="Повтори пароль"
+						fullWidth={true}
 						rules={{
 							required: {
 								value: true,
@@ -78,11 +81,18 @@ export function RegisterForm() {
 						control={control}
 						name="repeatPassword"
 					/>
-				</div>
+				{/* </div> */}
 
-				<p className={styles.errorField}>{validationError} error field</p>
+				<p className={styles.errorField}>
+					{validationError}
+				</p>
 
-				<Button type="submit" fill={true} text="Створити акаунт" className={styles.submitButton} />
+				<Button
+					type="submit"
+					fill={true}
+					text="Створити акаунт"
+					className={styles.submitButton}
+				/>
 			</form>
 		</div>
 	)

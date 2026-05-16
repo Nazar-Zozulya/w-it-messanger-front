@@ -17,12 +17,14 @@ export function SettingsBlock() {
 	return (
 		<div className={styles.container}>
 			<UserAvatarBlock />
-
+			
 			<UserInfoBlock />
 
 			<ChangePasswordBlock />
 
 			<SetSignatureBlock />
+
+			<div className={styles.bottomSpace}></div>{" "}
 		</div>
 	)
 }

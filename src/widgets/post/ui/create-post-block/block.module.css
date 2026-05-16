@@ -1,17 +1,18 @@
 .container {
     width: 64.1vw;
     /* 24,4 */
-    height: 12.5vh;
+    /* height: 12.5vh; */
     box-sizing: border-box;
     border: 1px solid #CDCED2;
     background: #fff;
     border-radius: 10px;
     display: flex;
+    gap: 1vh;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
     /* gap: 20px; */
-    padding: 2vh 1.2vw;
+    padding: 1.7vh 1.1vw;
 }
 
 .form {

@@ -15,3 +15,13 @@
     align-items: center;
     gap: 1.7vw;
 }
+
+.logoButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}

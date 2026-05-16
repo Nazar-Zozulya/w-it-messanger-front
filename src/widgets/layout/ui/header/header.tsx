@@ -11,10 +11,12 @@ import { ReactComponent as Logout } from "../../../../shared/ui/icons/logout.svg
 import { WhichSelected } from "./header.types"
 import { useEffect, useState } from "react"
 import { useUserContext } from "../../../../entities/user"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export function Header() {
 	const [whichSelected, setWhichSelected] = useState<WhichSelected>("main")
+
+	const navigation = useNavigate()
 
 	const location = useLocation()
 
@@ -33,7 +35,9 @@ export function Header() {
 
 	return (
 		<div className={styles.container}>
-			<Logo style={{height: "1.9vh"}	} />
+			<button className={styles.logoButton} onClick={()=> {navigation('/'); setWhichSelected('main')}}>
+				<Logo style={{height: "1.9vh"}	} />
+			</button>
 
 			<div className={styles.navigation}>
 				<NavigationButton

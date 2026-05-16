@@ -1,7 +1,21 @@
 .container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    justify-content: flex-start;
+    gap: 1vh;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 89.8vh;
+    
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+.bottomSpace {
+    height: 35vh;
+    flex-shrink: 0;
 }

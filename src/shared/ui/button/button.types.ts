@@ -3,6 +3,7 @@ import { ReactNode } from "react"
 export interface ButtonProps {
     fill: boolean
     function?: () => void
+    size?: "M" | "L"
     icon?: ReactNode,
     rightIcon?: ReactNode
     text?: string

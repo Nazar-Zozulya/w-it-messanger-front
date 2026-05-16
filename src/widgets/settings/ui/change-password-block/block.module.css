@@ -4,11 +4,11 @@
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    gap: 15px;
+    gap: 1.6vh;
 }
 
 .error {
     font-family: "GT Walsheim Pro";
-    font-size: 18px;
+    font-size: clamp(14px, 1.25vw, 18px);
     color: #FF4C4C;
 }

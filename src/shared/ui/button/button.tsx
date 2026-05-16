@@ -12,6 +12,7 @@ export function Button(props: ButtonProps) {
 		disabled = false,
 		className,
 		children,
+		size="M",
 		type,
 	} = props
 
@@ -31,10 +32,13 @@ export function Button(props: ButtonProps) {
 					fill ? styles.fill : styles.unFill // Стиль для заполненной или незаполненной кнопки
 				} 
 				 ${
-					disabled ? styles.disabled : "" // Стиль для отключенной кнопки
+					disabled ? fill ? styles.disabledFill : styles.disabledUnfill : ''  // Стиль для отключенной кнопки
 				}
 				${
 					icon && !text ? styles.onlyIcon : styles.withText // Стиль для кнопки, которая содержит только иконку
+				}
+				${
+					size === 'L' && styles.LSize
 				}
 				`}
 
