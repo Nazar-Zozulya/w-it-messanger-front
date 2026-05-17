@@ -19,6 +19,7 @@ export function RegisterForm() {
 	async function onSubmit(data: RegisterFormTypes) {
 		const { email, password, repeatPassword } = data
 		const result = await register(email, password, repeatPassword)
+		console.log("==============================================================")
 
 		if (result.status === "error") {
 			setValidationError(result.status)

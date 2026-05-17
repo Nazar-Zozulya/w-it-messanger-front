@@ -2,46 +2,31 @@ import { ConfirmForm, LoginForm, RegisterForm } from "../../../../features/user"
 import styles from "./block.module.css"
 import bgImage from "../photos/bg-photo-for-auth-page.png"
 import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 
 export function AuthFormBlock() {
-	const [logOrReg, setLogOrReg] = useState<"log" | "reg" | "confirm">("confirm")
+	const [logOrReg, setLogOrReg] = useState<"log" | "reg" | "confirm">("reg")
+
+	const [searchParams] = useSearchParams()
 
 	useEffect(() => {
-		// получаем ссылку
-		const url = document.location.href
-		// проверяем на наличие query параметров
-		if (!url.split("?")[1]) {
-			return
-		}
+		// получаем query параметр
+		const mode = searchParams.get("mode")
 
-		// деструктуризируем query параметры
-		const [key, value] = url.split("=")
-		// соединяем их в виде обьекта
-		const queryParameters = { [key]: value }
-
-		// проверяем на наличие параметра mode
-		if (queryParameters.mode) {
-			// проверяем на значения параметра mode через switch case
-			switch (queryParameters.mode) {
-				case "log":
-					console.log("log")
-					setLogOrReg("log")
-					break
-				case "reg":
-					console.log("reg")
-					setLogOrReg("reg")
-					break
-				case "confirm":
-					console.log("confirm")
-					setLogOrReg("confirm")
-					break
-				default:
-					console.log("defalt")
-					setLogOrReg("log")
-					break
-			}
+		switch (mode) {
+			case "log":
+				setLogOrReg("log")
+				break
+			case "reg":
+				setLogOrReg("reg")
+				break
+			case "confirm":
+				setLogOrReg("confirm")
+				break
+			default:
+				setLogOrReg("log")
 		}
-	}, [])
+	}, [searchParams])
 
 	return (
 		<div className={styles.container}>

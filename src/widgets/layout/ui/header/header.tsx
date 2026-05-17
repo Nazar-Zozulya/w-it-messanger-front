@@ -78,7 +78,7 @@ export function Header() {
 
 				<Button
 					fill={false}
-					function={() => {logout(); navigation('/auth?mode=reg')}}
+					function={() => {logout(); navigation('/auth')}}
 					icon={<Logout style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Вихід"
 				/>
