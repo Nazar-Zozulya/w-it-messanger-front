@@ -17,13 +17,13 @@ interface userContextTypes {
 	register: (
 		email: string,
 		password: string,
-		repeatPassword: string
+		repeatPassword: string,
 	) => Promise<Result<string>>
 	logout: () => void
 	completeProfile: (
 		name?: string,
 		surname?: string,
-		username?: string
+		username?: string,
 	) => Promise<Result<User>>
 	getUser: (token: string) => Promise<Result<User>>
 }
@@ -79,7 +79,7 @@ export function UserContextProvider(props: userProviderProps) {
 	async function register(
 		email: string,
 		password: string,
-		repeatPassword: string
+		repeatPassword: string,
 	) {
 		if (password !== repeatPassword) {
 			return {
@@ -112,7 +112,7 @@ export function UserContextProvider(props: userProviderProps) {
 	async function completeProfile(
 		name?: string,
 		surname?: string,
-		username?: string
+		username?: string,
 	) {
 		const result = await POST<User>({
 			whichService: "userService",
@@ -153,18 +153,25 @@ export function UserContextProvider(props: userProviderProps) {
 
 	// юзефект при измененний токена
 	useEffect(() => {
-		if (!token) return
-		console.log(45)
+		console.log("TOKEN: ", token)
+		// если нету токена то проверяем наличие его в localStorage и если и там его нету то очищаем localStorage
+		if (!token) {
+			const storagedToken = localStorage.getItem("token")
 
-		getUser(token)
-		console.log(user)
+			if (!storagedToken) {
+				localStorage.removeItem("token")
+			}
+		}
+		// если есть токен то получаем по нему юзера и сохраняем в localStorage
+		else {
+			getUser(token)
 
-		localStorage.setItem("token", token)
+			localStorage.setItem("token", token)
+		}
 	}, [token])
 
 	// юзефект при запуске сайта на получение токена
 	useEffect(() => {
-		console.log(44)
 		const userToken = localStorage.getItem("token")
 
 		if (!userToken) return
@@ -172,9 +179,9 @@ export function UserContextProvider(props: userProviderProps) {
 		setToken(userToken)
 	}, [])
 
-	useEffect(() => {
-		console.log("user changed:", user)
-	}, [user])
+	// useEffect(() => {
+	// 	console.log("user changed:", user)
+	// }, [user])
 
 	return (
 		<UserContext.Provider

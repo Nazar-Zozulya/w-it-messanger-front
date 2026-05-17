@@ -315,7 +315,7 @@ export function CreatePostModal() {
 					<div className={styles.footerButtons}>
 						<Button
 							fill={false}
-							icon={<Gallery />}
+							icon={<Gallery width={20} height={20} />}
 							type="button"
 							children={
 								<input
@@ -332,13 +332,13 @@ export function CreatePostModal() {
 						<Button
 							fill={false}
 							type="button"
-							icon={<Smile />}
+							icon={<Smile width={20} height={20} />}
 							children
 							function={() => {}}
 						/>
 						<Button
 							fill={true}
-							rightIcon={<Send />}
+							rightIcon={<Send width={20} height={20} />}
 							text="Публікація"
 							type="submit"
 							function={() => {}}

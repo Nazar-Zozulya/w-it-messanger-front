@@ -27,7 +27,7 @@ export function RegisterForm() {
 				expires: new Date(Date.now() + 1000 * 1000),
 			})
 			// localStorage.setItem("completeProfile", "yes")
-			navigate("/")
+			navigate("/auth?mode=confirm")
 		}
 	}
 

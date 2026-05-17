@@ -1,4 +1,3 @@
-import { Input } from "../../shared/ui/input"
 import { AuthFormBlock, AuthUserHeader } from "../../widgets/user"
 import styles from './page.module.css'
 
