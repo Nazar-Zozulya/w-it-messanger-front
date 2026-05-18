@@ -17,7 +17,7 @@ interface userContextTypes {
 	register: (
 		email: string,
 		password: string,
-		repeatPassword: string,
+		// repeatPassword: string,
 	) => Promise<Result<string>>
 	logout: () => void
 	completeProfile: (
@@ -34,7 +34,7 @@ const initalValue: userContextTypes = {
 	login: async (email, password) => {
 		return { status: "error" } as Error
 	},
-	register: async (email, password, repeatPassword) => {
+	register: async (email, password) => {
 		return { status: "error" } as Error
 	},
 	logout: () => {},
@@ -79,15 +79,15 @@ export function UserContextProvider(props: userProviderProps) {
 	async function register(
 		email: string,
 		password: string,
-		repeatPassword: string,
+		// repeatPassword: string,
 	) {
-		if (password !== repeatPassword) {
-			return {
-				status: "error",
-				message: "Паролі не спвпадають",
-				code: 400,
-			} as Error
-		}
+		// if (password !== repeatPassword) {
+		// 	return {
+		// 		status: "error",
+		// 		message: "Паролі не спвпадають",
+		// 		code: 400,
+		// 	} as Error
+		// }
 
 		const result = await POST<string>({
 			whichService: "userService",
@@ -107,6 +107,8 @@ export function UserContextProvider(props: userProviderProps) {
 	function logout() {
 		setToken(null)
 		setUser(null)
+
+		localStorage.removeItem("token")
 	}
 
 	async function completeProfile(

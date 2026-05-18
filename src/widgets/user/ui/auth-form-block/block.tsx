@@ -3,9 +3,20 @@ import styles from "./block.module.css"
 import bgImage from "../photos/bg-photo-for-auth-page.png"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
+import { User } from "../../../../entities/user"
 
 export function AuthFormBlock() {
 	const [logOrReg, setLogOrReg] = useState<"log" | "reg" | "confirm">("reg")
+
+	const [regUserData, setRegUserData] = useState<{
+		email: string
+		password: string
+	} | null>(null)
+
+	// useEffect(()=>{
+	// 	console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+	// 	console.log(regUserData)
+	// }, [regUserData])
 
 	const [searchParams] = useSearchParams()
 
@@ -64,8 +75,15 @@ export function AuthFormBlock() {
 					</div>
 				) : null}
 				{logOrReg === "log" && <LoginForm />}
-				{logOrReg === "reg" && <RegisterForm />}
-				{logOrReg === "confirm" && <ConfirmForm />}
+				{logOrReg === "reg" && (
+					<RegisterForm setUserData={setRegUserData} />
+				)}
+				{logOrReg === "confirm" && (
+					<ConfirmForm
+						email={regUserData?.email ?? ""}
+						password={regUserData?.password ?? ""}
+					/>
+				)}
 			</div>
 			<img src={bgImage} alt="" className={styles.bgImage} />
 		</div>

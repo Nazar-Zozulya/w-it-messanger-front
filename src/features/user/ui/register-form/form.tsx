@@ -7,8 +7,11 @@ import { useUserContext } from "../../../../entities/user"
 import { useNavigate } from "react-router-dom"
 import { Button } from "../../../../shared/ui/button"
 import { useCookies } from "react-cookie"
+import { POST } from "../../../../helpers/post"
 
-export function RegisterForm() {
+export function RegisterForm(props: {
+	setUserData: (data :{email: string, password: string} | null) => void //функція яка передасті вверх дані з форми
+}) {
 	const [cookies, setCookie, removeCookie] = useCookies(["complete-profile"])
 	const { handleSubmit, control } = useForm<RegisterFormTypes>()
 	const [validationError, setValidationError] = useState<string | null>(null)
@@ -18,16 +21,28 @@ export function RegisterForm() {
 
 	async function onSubmit(data: RegisterFormTypes) {
 		const { email, password, repeatPassword } = data
-		const result = await register(email, password, repeatPassword)
-		console.log("==============================================================")
+		if (password !== repeatPassword) {
+			setValidationError('Паролі не співпадають')
+		}
+
+		const result = await POST({
+			whichService: "userService",
+			endpoint: "api/user/pre-comfirm-email",
+			body: {
+				email
+			}
+		})
+		// const result = await register(email, password, repeatPassword)
+
+		props.setUserData({email, password})
 
 		if (result.status === "error") {
-			setValidationError(result.status)
+			setValidationError(`${result.message}`)
 		} else {
-			setCookie("complete-profile", "yes", {
-				expires: new Date(Date.now() + 1000 * 1000),
-			})
-			// localStorage.setItem("completeProfile", "yes")
+			// setCookie("complete-profile", "yes", {
+			// 	expires: new Date(Date.now() + 1000 * 1000),
+			// })
+			// // localStorage.setItem("completeProfile", "yes")
 			navigate("/auth?mode=confirm")
 		}
 	}
@@ -38,55 +53,53 @@ export function RegisterForm() {
 
 			<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 				{/* <div className={styles.inputsBlock}> */}
-					<Input
-						label="Електронна пошта"
-						placeholder="you@example.com"
-						type="email"
-						fullWidth={true}
-						rules={{
-							required: {
-								value: true,
-								message: "Ел. пошта обов'язкова",
-							},
-						}}
-						control={control}
-						name="email"
-					/>
+				<Input
+					label="Електронна пошта"
+					placeholder="you@example.com"
+					type="email"
+					fullWidth={true}
+					rules={{
+						required: {
+							value: true,
+							message: "Ел. пошта обов'язкова",
+						},
+					}}
+					control={control}
+					name="email"
+				/>
 
-					<Input
-						label="Пароль"
-						placeholder="Введи пароль"
-						fullWidth={true}
-						rules={{
-							required: {
-								value: true,
-								message: "Пароль обов'язковий",
-							},
-						}}
-						isPassword={true}
-						control={control}
-						name="password"
-					/>
+				<Input
+					label="Пароль"
+					placeholder="Введи пароль"
+					fullWidth={true}
+					rules={{
+						required: {
+							value: true,
+							message: "Пароль обов'язковий",
+						},
+					}}
+					isPassword={true}
+					control={control}
+					name="password"
+				/>
 
-					<Input
-						label="Підтверди пароль"
-						placeholder="Повтори пароль"
-						fullWidth={true}
-						rules={{
-							required: {
-								value: true,
-								message: "Повторення обов'язкове",
-							},
-						}}
-						isPassword={true}
-						control={control}
-						name="repeatPassword"
-					/>
+				<Input
+					label="Підтверди пароль"
+					placeholder="Повтори пароль"
+					fullWidth={true}
+					rules={{
+						required: {
+							value: true,
+							message: "Повторення обов'язкове",
+						},
+					}}
+					isPassword={true}
+					control={control}
+					name="repeatPassword"
+				/>
 				{/* </div> */}
 
-				<p className={styles.errorField}>
-					{validationError}
-				</p>
+				<p className={styles.errorField}>{validationError}</p>
 
 				<Button
 					type="submit"
