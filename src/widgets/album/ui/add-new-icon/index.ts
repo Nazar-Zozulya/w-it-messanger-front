@@ -1,0 +1,1 @@
+export { AddNewIcon } from './icon'

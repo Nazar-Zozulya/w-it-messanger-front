@@ -1,0 +1,1 @@
+export { AlbumIcon } from './icon'

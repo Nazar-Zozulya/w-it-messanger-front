@@ -22,16 +22,13 @@ export function UserInfoBlock() {
 	async function onSubmit(data: UserInfoChangeForm) {
 		setIsChanging(false)
 		console.log(data)
-		if (!data.name && !data.surname && !data.dateOfBirth && !data.email) {
-			console.log("no data")
-		}
 
 		const response = await POST<User>({
 			whichService: "userService",
 			endpoint: "api/user/update",
 			method: "PATCH",
 			token: token ?? '',
-			body: { data },
+			body: data ,
 		})
 
 		console.log(response)
