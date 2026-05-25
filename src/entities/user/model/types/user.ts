@@ -22,3 +22,7 @@ export interface User{
     createdAt: Date | string
     updatedAt?: Date | string
 }
+
+export type UserToPost = Pick<User, "name" | "surname" | "username" | "id" > & {
+    avatar?: string
+}

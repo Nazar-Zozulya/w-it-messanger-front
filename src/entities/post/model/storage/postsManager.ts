@@ -57,6 +57,8 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 
 	createPost: async (data) => {
 		try {
+			console.log("new posts data:", data)
+
 			const response = await POST<Post>({
 				whichService: "postService",
 				endpoint: "api/post/create",

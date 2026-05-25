@@ -10,7 +10,9 @@ export interface Profile {
 
     dateOfBirth?: Date | string
 
-    activeAvatarId: number | undefined
+    activeAvatar?: string | undefined
+
+    activeAvatarId?: number | undefined
 
     avatars: Avatar[]
 }

@@ -1,8 +1,11 @@
+import { User } from "../../../user"
+import { UserToPost } from "../../../user/model/types/user"
+
 export interface createPostData {
     title: string
     content?: string
 
-    authorId: number
+    author: UserToPost
 
     images?: string[]
 

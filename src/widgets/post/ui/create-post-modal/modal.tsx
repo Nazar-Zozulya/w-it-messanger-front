@@ -13,10 +13,11 @@ import { Controller, useForm } from "react-hook-form"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { Button } from "../../../../shared/ui/button"
 import { CloseModalButton } from "../../../../features/modal"
-import { useUserContext } from "../../../../entities/user"
+import { User, useUserContext } from "../../../../entities/user"
 import { createPostData, usePostsManager } from "../../../../entities/post"
 import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 import { fileToBase64 } from "../../../../helpers/fileToBase64"
+import { UserToPost } from "../../../../entities/user/model/types/user"
 
 export function CreatePostModal() {
 	const [tags, setTags] = useState<string[]>([])
@@ -124,10 +125,17 @@ export function CreatePostModal() {
 
 	async function onSubmit(data: createPostForm) {
 		if (!user) return
+		const postAuthor: UserToPost = {
+			username: user.username,
+			id: user.id,
+			name: user.name,
+			surname: user.surname,
+			avatar: user.profile.activeAvatar
+		}
 
-		const 	newData: createPostData = {
+		const newData: createPostData = {
 			...data,
-			authorId: user.id,
+			author: postAuthor,
 			tags,
 			images,
 			links,

@@ -1,6 +1,7 @@
 import { Image } from "../../../image"
 import { Tag } from "../../../tag"
 import { User } from "../../../user"
+import { UserToPost } from "../../../user/model/types/user"
 
 export interface Post {
     id: number
@@ -8,7 +9,7 @@ export interface Post {
     content?: string
 
     authorId: number
-    author: User
+    author: UserToPost
 
     images?: Image[]
     views: number

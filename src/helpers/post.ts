@@ -23,15 +23,15 @@ export async function POST<T>(params: POSTTypes): Promise<Result<T>> {
 		requestHeaders.set("Authorization", `Bearer ${token}`)
 	}
 	try {
-		console.log("POST BODY:", body)
-		console.log("POST BODY JSON:", JSON.stringify(body))
+		// console.log("POST BODY:", body)
+		// console.log("POST BODY JSON:", JSON.stringify(body))
 
 		const response = await fetch(`${serviceUrl}/${endpoint}`, {
 			method: method,
 			headers: requestHeaders,
 			body: JSON.stringify(body),
 		})
-		console.log(response)
+		// console.log(response)
 
 		const result = await response.json()
 

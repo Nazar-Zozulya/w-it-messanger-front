@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { Image } from "../../../../entities/image/model/types"
 import { AddNewIcon } from "../add-new-icon"
 import { fileToBase64 } from "../../../../helpers/fileToBase64"
+import { AlbumIcon } from "../album-icon"
 
 export function MyImagesBlock() {
 	const [images, setImages] = useState<string[]>([])
@@ -30,6 +31,7 @@ export function MyImagesBlock() {
 		if (!imageBase64) return
 
 		setImages(prev => [...prev, imageBase64])
+
 	}
 
 	useEffect(() => {
@@ -69,7 +71,7 @@ export function MyImagesBlock() {
 				) : images.length > 0 ? (
 					<div className={styles.imagesList}>{images.map((image)=> {
 						return (
-							<img src={image} alt="" />
+							<AlbumIcon image={image} />
 						)
 					})}</div>
 				) : (
