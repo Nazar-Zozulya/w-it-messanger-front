@@ -155,7 +155,7 @@ export function UserContextProvider(props: userProviderProps) {
 
 	// юзефект при измененний токена
 	useEffect(() => {
-		console.log("TOKEN: ", token)
+		// console.log("TOKEN: ", token)
 		// если нету токена то проверяем наличие его в localStorage и если и там его нету то очищаем localStorage
 		if (!token) {
 			const storagedToken = localStorage.getItem("token")
@@ -181,9 +181,9 @@ export function UserContextProvider(props: userProviderProps) {
 		setToken(userToken)
 	}, [])
 
-	// useEffect(() => {
-	// 	console.log("user changed:", user)
-	// }, [user])
+	useEffect(() => {
+		console.log("user changed:", user)
+	}, [user])
 
 	return (
 		<UserContext.Provider

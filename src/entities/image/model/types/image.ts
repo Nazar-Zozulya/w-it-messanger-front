@@ -1,5 +1,5 @@
 export interface Image {
-    id: Number
+    id: number
     base64: string
     shown: boolean
     createdAt: Date
