@@ -7,7 +7,8 @@ export interface Album {
     createdAt: Date
     previewImage: string
     shown: boolean
-    tag: string
+    topic: string
+    year: number
     user: User
     images: Image[]
 }

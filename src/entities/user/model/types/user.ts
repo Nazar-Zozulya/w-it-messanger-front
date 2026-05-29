@@ -15,8 +15,8 @@ export interface User{
     surname?: string;
     username?: string;
 
-    images?: Image[];
-    albums?: Album[]
+    images: Image[];
+    albums: Album[]
 
     lastLogin?: Date | string
     createdAt: Date | string

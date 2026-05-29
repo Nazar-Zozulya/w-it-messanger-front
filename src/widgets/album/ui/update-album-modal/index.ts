@@ -1,0 +1,1 @@
+export { UpdateAlbumModal } from './modal'

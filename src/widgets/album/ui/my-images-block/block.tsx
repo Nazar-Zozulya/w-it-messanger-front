@@ -4,9 +4,8 @@ import styles from "./block.module.css"
 import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.svg"
 import { useEffect, useRef, useState } from "react"
 import { Image } from "../../../../entities/image/model/types"
-import { AddNewIcon } from "../add-new-icon"
+import { AddNewIcon, AlbumIcon } from "../../../../features/album"
 import { fileToBase64 } from "../../../../helpers/fileToBase64"
-import { AlbumIcon } from "../album-icon"
 import { useUserContext } from "../../../../entities/user"
 import { POST } from "../../../../helpers/post"
 
@@ -28,14 +27,42 @@ export function MyImagesBlock() {
 	const inputRef = useRef<HTMLInputElement>(null)
 
 	async function deleteImage(id: number) {
-		const newImages = images.filter((image) => {
-			return image.id !== id
+		if (!token) return
+
+		const response = await POST<string>({
+			method: "DELETE",
+			whichService: "userService",
+			endpoint: "api/user/image/delete",
+			token,
+			body: { imageId: id },
 		})
 
-		setImages(newImages)
+		if (response.status === "success") {
+
+			
+			const newImages = images.filter((image) => {
+				return image.id !== id
+			})
+			
+			setImages(newImages)
+		}
 	}
 
 	async function switchShown(id: number) {
+
+		if (!token) return
+
+		const response = await POST<string>({
+			method: "PATCH",
+			whichService: "userService",
+			endpoint: "api/user/image/switch-shown",
+			token,
+			body: { imageId: id },
+		})
+
+		if (response.status === "success") {
+
+
 		const switchedImage = images.map((image) => {
 			if (image.id === id) {
 				image.shown = !image.shown
@@ -43,40 +70,31 @@ export function MyImagesBlock() {
 			return image
 		})
 
-		setImages(switchedImage)
+		setImages(switchedImage)}
 	}
 
 	async function openFilePicker() {
 		const image = await inputRef.current?.click()
 	}
 
-	async function addNewImage(event: React.ChangeEvent<HTMLInputElement>) {
-		const image = event.target.files?.[0]
-
-		if (!image) return
-
+	async function addNewImage(image: string) {
 		if (!token) return
 
-		const imageBase64 = await fileToBase64(image)
-
-		console.log(imageBase64)
-
-		if (!imageBase64) return
-		setPreImages((prev) => [...prev, imageBase64])
+		setPreImages((prev) => [...prev, image])
 
 		const response = await POST<Image>({
 			whichService: "userService",
 			endpoint: "api/user/image/add",
 			token: token,
 			body: {
-				image: imageBase64,
+				image: image,
 			},
 		})
 
 		if (response.status === "error") {
 			setPreImages(
 				preImages.filter((image) => {
-					return image !== imageBase64
+					return image !== image
 				}),
 			)
 			return
@@ -84,11 +102,24 @@ export function MyImagesBlock() {
 
 		setPreImages(
 			preImages.filter((image) => {
-				return image !== imageBase64
+				return image !== image
 			}),
 		)
 
 		setImages((prev) => [...prev, response.data])
+	}
+
+	async function getImage(event: React.ChangeEvent<HTMLInputElement>) {
+		const image = event.target.files?.[0]
+
+		if (!image) return
+
+
+		const imageBase64 = await fileToBase64(image)
+
+		if (!imageBase64) return
+
+		await addNewImage(imageBase64)
 	}
 
 	useEffect(() => {
@@ -119,7 +150,7 @@ export function MyImagesBlock() {
 					type="file"
 					className={styles.hiddenInput}
 					ref={inputRef}
-					onChange={addNewImage}
+					onChange={getImage}
 				/>
 				{isLoading ? (
 					<div className={styles.loadingBlock}>
@@ -131,7 +162,6 @@ export function MyImagesBlock() {
 							return (
 								<AlbumIcon
 									image={image.base64}
-									isLoading={false}
 									id={image.id}
 									shown={image.shown}
 									onDelete={deleteImage}
@@ -139,10 +169,17 @@ export function MyImagesBlock() {
 								/>
 							)
 						})}
+						{preImages.map((image) => {
+							return (
+								<AlbumIcon.Loading
+									image={image}
+								/>
+							)
+						})}
 					</div>
 				) : (
 					<div className={styles.imagesList}>
-						<AddNewIcon setImage={setNewImage} />
+						<AddNewIcon addImage={addNewImage} />
 					</div>
 				)}
 			</>

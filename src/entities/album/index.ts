@@ -1,0 +1,1 @@
+export { useAlbumsManager } from './model/storage'

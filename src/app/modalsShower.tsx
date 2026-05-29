@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useModalManagerStore } from "../entities/modal/model/storage/modalManager"
 import { CreatePostModal } from "../widgets/post"
 import { CompleteProfileModal } from "../widgets/user"
+import { CreateAlbumModal, UpdateAlbumModal } from "../widgets/album"
 
 export function ModalsShower(props: { children: React.ReactNode }) {
 	const { activeModal } = useModalManagerStore()
@@ -13,6 +14,10 @@ export function ModalsShower(props: { children: React.ReactNode }) {
 			{activeModal == "createPost" && <CreatePostModal />}
 
 			{activeModal == "completeProfile" && <CompleteProfileModal />}
+
+			{activeModal == "createAlbum" && <CreateAlbumModal />}
+
+			{activeModal == "updateAlbum" && <UpdateAlbumModal />}
 		</>
 	)
 }

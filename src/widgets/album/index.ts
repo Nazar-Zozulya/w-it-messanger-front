@@ -1,2 +1,4 @@
 export { AlbumBlock } from './ui/album-block'
 export { AddAlbumBlock } from './ui/add-album-block'
+export { CreateAlbumModal } from './ui/create-album-modal'
+export { UpdateAlbumModal } from './ui/update-album-modal'

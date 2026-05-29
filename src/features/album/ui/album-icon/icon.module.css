@@ -36,3 +36,7 @@
 .imageButton {
     background: #fff !important;
 }
+
+.loading {
+	filter: brightness(70%);
+}

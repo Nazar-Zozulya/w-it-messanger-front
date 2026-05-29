@@ -2,10 +2,13 @@ import { create } from "zustand";
 
 
 
-type ModalType = 'createPost' | "completeProfile" | null;
+type ModalType = 'createPost' | "completeProfile" | "createAlbum" | "updateAlbum" | null;
 
 interface ModalManagerStoreTypes {
     activeModal: ModalType;
+    anyData: any
+    setData: (data: any) => void
+    clearData: () => void
     openModal: (modal: ModalType) => void;
     closeModal: () => void;
     switchModal: (modal: ModalType) => void;
@@ -13,6 +16,9 @@ interface ModalManagerStoreTypes {
 
 export const useModalManagerStore = create<ModalManagerStoreTypes>((set) => ({
     activeModal: null,
+    anyData: null,
+    setData: (data) => set({anyData: data}),
+    clearData: () => set({anyData: null}),
     openModal: (modal) => set({ activeModal: modal }),
     closeModal: () => set({ activeModal: null }),
     switchModal: (modal) => set({ activeModal: modal }),

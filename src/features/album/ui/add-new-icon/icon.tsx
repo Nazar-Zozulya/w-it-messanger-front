@@ -19,7 +19,7 @@ export function AddNewIcon(props: AddNewIconProps) {
 
         const imageBase64 = await fileToBase64(image)
 
-		props.setImage(imageBase64 ?? "")
+		props.addImage(imageBase64 ?? "")
 	}
 
 	return (

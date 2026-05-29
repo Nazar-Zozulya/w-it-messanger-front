@@ -1,8 +1,9 @@
 import { ReactNode } from "react"
 
 export interface universalBlockCardProps {
-	children: ReactNode
+	children?: ReactNode
 	className?: string
     button: ReactNode
     title: string
+    onlyHeader?: boolean
 }

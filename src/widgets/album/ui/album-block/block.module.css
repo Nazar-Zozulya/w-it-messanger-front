@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 0.8vh;
+    max-height: 89.8vh;
+    overflow-y: auto;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.bottomSpace {
+    height: 30vh;
+    flex-shrink: 0;
+}

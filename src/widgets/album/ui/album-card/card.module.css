@@ -1,0 +1,128 @@
+.headerButtonsDiv {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	flex-direction: row;
+	gap: 1.7vw;
+}
+
+.threeDotsButton {
+	border: none;
+	background: none;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 1.7vh;
+	width: 100%;
+	top: 2.1vh;
+	right: 2.1vw;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+    gap: 1.1vw;
+}
+
+.topic {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #060a1d;
+}
+
+.year {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #81818e;
+}
+
+.line {
+	height: 1px;
+	background: #cdced2;
+	width: 100%;
+}
+
+.content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 1.7vh;
+}
+
+.title {
+    font-family: 'GT Walsheim Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-size: clamp(12px, 1.2vw, 16px);
+    color: #060A1D;
+}
+
+.imagesList {
+    width: 100%;
+    display: grid;
+    /* align-items: center;
+    justify-content: center;
+    flex-direction: row; */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.7vh;
+    flex-wrap: wrap;
+}
+
+.moreOptionsButton {
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+.moreOptionsModal {
+	position: absolute;
+	background: #E9E5EE;
+	padding: 1.7vh 1.1vw;
+	gap: 1.7vh;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+	width: 23.8vw;
+	border-radius: 10px;
+	top: -3.8vh;
+	right: -1.1vw;
+}
+
+
+.moreOptionsModalButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	border: none;
+	background: none;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.moreOptionsModalButton p {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 500;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #070A1C;
+}

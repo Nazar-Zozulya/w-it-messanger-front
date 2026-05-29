@@ -7,11 +7,11 @@ import styles from './button.module.css'
 
 export function CloseModalButton() {
 
-    const { closeModal } = useModalManagerStore()
+    const { closeModal, clearData } = useModalManagerStore()
 
 
     return (
-        <button className={styles.button} onClick={() => closeModal()}>
+        <button className={styles.button} onClick={() => {closeModal(); clearData()}}>
             <XMark width={18} height={18} />
         </button>
     )
