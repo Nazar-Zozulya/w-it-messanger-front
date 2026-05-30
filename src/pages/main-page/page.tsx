@@ -1,49 +1,50 @@
-import { useEffect, useState } from "react";
-import { ChatsBlock, RequestBlock } from "../../widgets/main_page";
-import { CreatePostBlock, CreatePostModal, PostsList } from "../../widgets/post";
-import { ProfileBlock } from "../../widgets/user";
-import { useCookies } from "react-cookie";
-import { useModalManagerStore } from "../../entities/modal/model/storage/modalManager";
-import { useUserContext } from "../../entities/user";
-import styles from './page.module.css'
-import { Button } from "../../shared/ui/button";
-import { ReactComponent as Send} from '../../shared/ui/icons/send.svg'
+import { useEffect, useState } from "react"
+import { ChatsBlock, RequestBlock } from "../../widgets/main_page"
+import { CreatePostBlock, CreatePostModal, PostsList } from "../../widgets/post"
+import { ProfileBlock } from "../../widgets/user"
+import { useCookies } from "react-cookie"
+import { useModalManagerStore } from "../../entities/modal/model/storage/modalManager"
+import { useUserContext } from "../../entities/user"
+import styles from "./page.module.css"
+import { MainPageProps } from "./page.types"
 
+export function MainPage(props: MainPageProps) {
+	const { openModal } = useModalManagerStore()
 
+	const { token } = useUserContext()
 
-export function MainPage() {
-    const { openModal } = useModalManagerStore()
+	const [cookies, setCookie, removeCookie] = useCookies(["complete-profile"])
 
-    const { token } = useUserContext()
+	useEffect(() => {
+		if (!token) {
+			removeCookie("complete-profile")
+		}
 
-    const [cookies, setCookie, removeCookie] = useCookies(['complete-profile'])
+		if (cookies["complete-profile"] === "yes" && token) {
+			openModal("completeProfile")
+			// удаления не надо ведь ето куки бует жить 10 секунд
+			// removeCookie("complete-profile")
+		}
+	}, [cookies])
 
-    useEffect(() => {
-        if (!token) {
-            removeCookie('complete-profile')
-        }
+	return (
+		<div className={styles.container}>
+			<div className={styles.leftBlock}>
+				<ProfileBlock />
+				{props.mode === "main" && (
+					<>
+						<RequestBlock />
+						<ChatsBlock />
+					</>
+				)}
+			</div>
+			<div className={styles.content}>
+				<CreatePostBlock />
 
-        if (cookies["complete-profile"] === "yes" && token) {
-            openModal("completeProfile")
-            // удаления не надо ведь ето куки бует жить 10 секунд
-            // removeCookie("complete-profile")
-        }
-    }, [cookies])
+				<PostsList  mode={props.mode} />
 
-    return(
-        <div className={styles.container}>
-            <div className={styles.leftBlock}>
-                <ProfileBlock />
-                <RequestBlock />
-                <ChatsBlock />
-            </div>
-            <div className={styles.content}>
-                <CreatePostBlock />
-
-                <PostsList />
-
-                <div className={styles.bottomSpace}></div>
-            </div> 
-        </div>
-    )
+				<div className={styles.bottomSpace}></div>
+			</div>
+		</div>
+	)
 }

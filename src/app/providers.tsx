@@ -9,7 +9,8 @@ export function AppProviders() {
 				<Route path="/auth" element={<AuthPage />} />
 				<Route path="*" element={<div>not found</div>} />
 				<Route path="/" element={<Layout />}> 
-					<Route path="/" element={<MainPage />} />
+					<Route path="/" element={<MainPage mode="main" />} />
+					<Route path="/my-posts" element={<MainPage mode="myPosts" />} />
 					<Route path="/settings" element={<SettingsPage />} />
 				</ Route>
 				

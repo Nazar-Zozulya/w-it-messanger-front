@@ -8,9 +8,9 @@ interface InitialFetchesProps {
 }
 
 export function InitialFetches(props: InitialFetchesProps) {
-	const { getPosts } = usePostsManager()
+	const { getPosts, getMyPosts } = usePostsManager()
 
-	const { token } = useUserContext()
+	const { token, user } = useUserContext()
 
 	const { getAlbums } = useAlbumsManager()
 
@@ -24,6 +24,12 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 		getAlbums(token)
 	}, [token])
+
+	useEffect(() => {
+		if (!user) return
+
+		getMyPosts(user.id)
+	}, [user])
 
 	return <>{props.children}</>
 }

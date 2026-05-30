@@ -27,6 +27,9 @@ export function Header() {
 			case "/":
 				setWhichSelected('main')
 				break
+			case "/my-posts":
+				setWhichSelected("my posts")
+				break
 			case "/settings":
 				setWhichSelected("settings")
 				break
@@ -50,7 +53,7 @@ export function Header() {
 				<NavigationButton
 					icon={<Gallery style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Мої публікації"
-					redirect=""
+					redirect="/my-posts"
 					onClick={()=>{setWhichSelected('my posts')}}
 					isSelected={whichSelected == "my posts"}
 				/>
