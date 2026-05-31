@@ -60,7 +60,7 @@ export function Header() {
 				<NavigationButton
 					icon={<People style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Друзі"
-					redirect=""
+					redirect="/friends"
 					onClick={()=>{setWhichSelected('friends')}}
 					isSelected={whichSelected == "friends"}
 				/>

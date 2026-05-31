@@ -4,4 +4,6 @@ export interface Image {
     shown: boolean
     createdAt: Date
     updatedAt: Date
+    userId: number | null
+    albumId: number | null
 }

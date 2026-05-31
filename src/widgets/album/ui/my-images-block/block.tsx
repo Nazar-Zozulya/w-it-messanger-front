@@ -14,7 +14,7 @@ export function MyImagesBlock() {
 	const [preImages, setPreImages] = useState<string[]>([])
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [newImage, setNewImage] = useState<string | null>(null)
-	const { user, token } = useUserContext()
+	const { user, token, setUser } = useUserContext()
 
 	useEffect(() => {
 		if (!user) return
@@ -22,12 +22,12 @@ export function MyImagesBlock() {
 		if (!user.images) return
 
 		setImages(user.images)
-	}, [user])
+	}, [user?.images])
 
 	const inputRef = useRef<HTMLInputElement>(null)
 
 	async function deleteImage(id: number) {
-		if (!token) return
+		if (!token || !user) return
 
 		const response = await POST<string>({
 			method: "DELETE",
@@ -37,19 +37,35 @@ export function MyImagesBlock() {
 			body: { imageId: id },
 		})
 
-		if (response.status === "success") {
+		if (response.status !== "success") return
 
-			
-			const newImages = images.filter((image) => {
-				return image.id !== id
-			})
-			
-			setImages(newImages)
+		// images
+		const newImages = images.filter((img) => img.id !== id)
+		setImages(newImages)
+
+		// user
+		const profile = user.profile
+
+		const remainingAvatars =
+			profile.avatars?.filter((a) => a.imageId !== id) ?? []
+
+		const isActiveAvatar = profile.activeAvatar?.imageId === id
+
+		const newUser = {
+			...user,
+			profile: {
+				...profile,
+				avatars: remainingAvatars,
+				activeAvatar: isActiveAvatar
+					? remainingAvatars.at(-1)
+					: profile.activeAvatar,
+			},
 		}
+
+		setUser(newUser)
 	}
 
 	async function switchShown(id: number) {
-
 		if (!token) return
 
 		const response = await POST<string>({
@@ -61,16 +77,15 @@ export function MyImagesBlock() {
 		})
 
 		if (response.status === "success") {
+			const switchedImage = images.map((image) => {
+				if (image.id === id) {
+					image.shown = !image.shown
+				}
+				return image
+			})
 
-
-		const switchedImage = images.map((image) => {
-			if (image.id === id) {
-				image.shown = !image.shown
-			}
-			return image
-		})
-
-		setImages(switchedImage)}
+			setImages(switchedImage)
+		}
 	}
 
 	async function openFilePicker() {
@@ -113,7 +128,6 @@ export function MyImagesBlock() {
 		const image = event.target.files?.[0]
 
 		if (!image) return
-
 
 		const imageBase64 = await fileToBase64(image)
 
@@ -170,11 +184,7 @@ export function MyImagesBlock() {
 							)
 						})}
 						{preImages.map((image) => {
-							return (
-								<AlbumIcon.Loading
-									image={image}
-								/>
-							)
+							return <AlbumIcon.Loading image={image} />
 						})}
 					</div>
 				) : (

@@ -14,7 +14,7 @@ export function ProfileBlock() {
     return (
         <div className={styles.container}>
             <div className={styles.ProfileInfo}>
-                <UserAvatar />
+                <UserAvatar avatar={user?.profile.activeAvatar?.image.base64 ?? undefined} />
 
                 <div className={styles.NameBlock}>
                     <p className={styles.Name}>{user?.name}</p>

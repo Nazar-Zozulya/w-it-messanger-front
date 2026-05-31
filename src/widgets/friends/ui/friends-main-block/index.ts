@@ -1,0 +1,1 @@
+export { FriendsMainBlock } from './block'

@@ -1,0 +1,52 @@
+.container {
+	width: 20.07vw;
+	height: 27.4vh;
+	border-radius: 10px;
+	border: 1px solid #cdced2;
+    padding: 1.7vh 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+}
+
+.dataDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2.5vh;
+}
+
+.textDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2.5vh;
+}
+
+.name {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 700;
+	font-size: clamp(18px, 1.7vw, 24px);
+	color: #060a1d;
+}
+
+.username {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 500;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #060a1d;
+}
+
+.buttonsDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1.1vw;
+}

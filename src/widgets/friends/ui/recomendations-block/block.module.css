@@ -1,0 +1,48 @@
+.container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 0.83vh;
+}
+
+.block {
+    /* max-height: 89.8vh; */
+	height: 86.8vh;
+    
+    overflow-y: auto;
+    
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+	justify-content: flex-start !important;
+}
+
+.block::-webkit-scrollbar {
+	display: none;
+}
+
+.headerButton {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 700;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #583b53;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.list {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 0.83vh;
+	flex-wrap: wrap;
+}

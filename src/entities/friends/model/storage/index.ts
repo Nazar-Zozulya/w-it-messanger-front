@@ -1,0 +1,1 @@
+export { useFriendsManager } from './friendsManager'

@@ -1,1 +1,1 @@
-export { useAlbumsManager } from './model/storage'
+export { useAlbumsManager } from './model/storage/albumsManager'

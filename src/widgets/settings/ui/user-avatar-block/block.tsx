@@ -17,7 +17,7 @@ import { POST } from "../../../../helpers/post"
 export function UserAvatarBlock() {
 	const { handleSubmit, formState, control } = useForm<UserAvatarChangeForm>()
 
-	const { user, token } = useUserContext()
+	const { user, token, update } = useUserContext()
 
 	const [username, setUsername] = useState<string>("")
 
@@ -38,13 +38,7 @@ export function UserAvatarBlock() {
 
 		const newData = { ...data, avatar: newAvatar }
 
-		const response = await POST<User>({
-			whichService: "userService",
-			endpoint: "api/user/update",
-			method: "PATCH",
-			token: token ?? '',
-			body: newData,
-		})
+		const response = await update(newData)
 
 		if (response.status === "error") {
 			setError(response.message ?? "unknown error")
@@ -55,7 +49,7 @@ export function UserAvatarBlock() {
 		if (data.username) {
 			setUsername(data.username)
 		}
-		
+
 		setError(null)
 
 		console.log(response)
@@ -121,12 +115,7 @@ export function UserAvatarBlock() {
 							newAvatar
 								? newAvatar
 								: user?.profile.avatars[0]
-									? user.profile.avatars[
-											user.profile.activeAvatarId
-												? user.profile.activeAvatarId -
-													1
-												: -1
-										].image
+									? user.profile.activeAvatar?.image.base64
 									: DEFAULT_AVATAR
 						}
 						// src={

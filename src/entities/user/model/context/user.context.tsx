@@ -13,6 +13,7 @@ import { Error, Result } from "../../../../types/result"
 interface userContextTypes {
 	user: User | null
 	token: string | null
+	setUser: (user: User) => void
 	login: (email: string, password: string) => Promise<Result<string>>
 	register: (
 		email: string,
@@ -26,11 +27,17 @@ interface userContextTypes {
 		username?: string,
 	) => Promise<Result<User>>
 	getUser: (token: string) => Promise<Result<User>>
+	update: (
+		data: Partial<User> & { avatar: string | null },
+	) => Promise<Result<User>>
 }
 
 const initalValue: userContextTypes = {
 	user: null,
 	token: null,
+	setUser: (user: User) => {
+		return
+	},
 	login: async (email, password) => {
 		return { status: "error" } as Error
 	},
@@ -42,6 +49,9 @@ const initalValue: userContextTypes = {
 		return { status: "error" } as Error
 	},
 	getUser: async (token) => {
+		return { status: "error" } as Error
+	},
+	update: async (data) => {
 		return { status: "error" } as Error
 	},
 }
@@ -153,6 +163,26 @@ export function UserContextProvider(props: userProviderProps) {
 		return result
 	}
 
+	async function update(data: Partial<User> & { avatar: string | null }) {
+		const result = await POST<User>({
+			whichService: "userService",
+			endpoint: "api/user/update",
+			method: "PATCH",
+			token: token ?? "",
+			body: data,
+		})
+
+		if (result.status === "error") {
+			return result
+		}
+
+		console.log("user:", result.data)
+
+		setUser(result.data)
+
+		return result
+	}
+
 	// юзефект при измененний токена
 	useEffect(() => {
 		// console.log("TOKEN: ", token)
@@ -190,11 +220,13 @@ export function UserContextProvider(props: userProviderProps) {
 			value={{
 				user,
 				token,
+				setUser,
 				logout,
 				login,
 				register,
 				completeProfile,
 				getUser,
+				update,
 			}}
 		>
 			{props.children}

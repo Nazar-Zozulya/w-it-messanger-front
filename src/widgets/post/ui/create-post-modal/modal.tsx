@@ -130,7 +130,7 @@ export function CreatePostModal() {
 			id: user.id,
 			name: user.name,
 			surname: user.surname,
-			avatar: user.profile.activeAvatar
+			avatar: user.profile.activeAvatar?.image.base64
 		}
 
 		const newData: createPostData = {

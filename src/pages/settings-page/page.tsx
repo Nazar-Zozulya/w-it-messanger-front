@@ -10,7 +10,7 @@ export function SettingsPage() {
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.content}>
+			<div className={styles.navigation}>
 				<button
 					className={`${styles.selectButton} ${pageSelector === "settings" ? styles.selected : ""}`}
 					onClick={() => {
@@ -19,7 +19,6 @@ export function SettingsPage() {
 				>
 					Особиста інформація
 				</button>
-				<div className={styles.line}></div>
 				<button
 					className={`${styles.selectButton} ${pageSelector === "album" ? styles.selected : ""}`}
 					onClick={() => {
