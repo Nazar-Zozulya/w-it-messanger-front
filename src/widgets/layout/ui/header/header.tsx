@@ -33,8 +33,14 @@ export function Header() {
 			case "/settings":
 				setWhichSelected("settings")
 				break
+			case "/chats":
+				setWhichSelected("chats")
+				break
+			case "/friends":
+				setWhichSelected("friends")
+				break
 		}
-	},[])
+	},[location])
 
 	return (
 		<div className={styles.container}>
@@ -67,7 +73,7 @@ export function Header() {
 				<NavigationButton
 					icon={<Chat style={{height: "1.8vh", width: "1.8vh"}} />}
 					text="Чати"
-					redirect=""
+					redirect="/chats"
 					onClick={()=>{setWhichSelected('chats')}}
 					isSelected={whichSelected == "chats"}
 				/>

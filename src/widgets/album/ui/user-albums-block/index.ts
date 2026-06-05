@@ -1,0 +1,1 @@
+export { UserAlbumsBlock } from './block'

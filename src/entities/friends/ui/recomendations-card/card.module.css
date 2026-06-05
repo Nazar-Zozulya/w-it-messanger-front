@@ -17,6 +17,9 @@
     justify-content: center;
     flex-direction: column;
     gap: 2.5vh;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
 .textDiv {

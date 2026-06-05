@@ -30,6 +30,9 @@
 	flex-direction: row;
 	align-items: center;
 	gap: 0.7vw;
+	border: none;
+	background: none;
+	cursor: pointer;
 }
 
 .profile img {

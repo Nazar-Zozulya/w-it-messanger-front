@@ -1,12 +1,21 @@
+import { useNavigate } from "react-router-dom"
 import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
 import { Button } from "../../../../shared/ui/button"
-import { User, UserAvatar } from "../../../user"
+import { User, UserAvatar, useUserContext } from "../../../user"
 import styles from "./card.module.css"
+import { useFriendsManager } from "../../model/storage"
 
 export function RecomendationsCard(props: User) {
+	const navigate = useNavigate()
+	const { token } = useUserContext()
+	const { sendRequest } = useFriendsManager()
+
 	return (
 		<div className={styles.container}>
-			<div className={styles.dataDiv}>
+			<button
+				onClick={() => navigate(`/${props.id}`)}
+				className={styles.dataDiv}
+			>
 				<UserAvatar
 					avatar={
 						props.profile?.activeAvatar?.image?.base64 ??
@@ -20,11 +29,19 @@ export function RecomendationsCard(props: User) {
 					</p>
 					<p className={styles.username}></p>
 				</div>
-			</div>
+			</button>
 
 			<div className={styles.buttonsDiv}>
-				<Button text="Додати" fill={true} />
-				<Button text="Видалити" fill={false} />
+				<Button
+					text="Додати"
+					fill={true}
+					function={() => navigate(`/${props.id}`)}
+				/>
+				<Button
+					text="Видалити"
+					fill={false}
+					function={() => navigate(`/${props.id}`)}
+				/>
 			</div>
 		</div>
 	)

@@ -44,10 +44,10 @@ export function FriendsPage() {
 				</button>
 			</div>
 
-            { pageSelector === "main" && <FriendsMainBlock /> }
-            { pageSelector === "requests" && <RequestsBlock /> }
-            { pageSelector === "recomendations" && <RecomendationsBlock /> }
-            { pageSelector === "friends" && <FriendsBlock /> }
+            { pageSelector === "main" && <FriendsMainBlock goToRequests={ ()=> setPageSelector("requests") } goToRecomendations={ ()=> setPageSelector("recomendations") } goToFriends={ ()=> setPageSelector("friends") } /> }
+            { pageSelector === "requests" && <RequestsBlock goToMain={ ()=> setPageSelector("main") } /> }
+            { pageSelector === "recomendations" && <RecomendationsBlock goToMain={ ()=> setPageSelector("main") } /> }
+            { pageSelector === "friends" && <FriendsBlock goToMain={ ()=> setPageSelector("main") } /> }
 		</div>
 	)
 }

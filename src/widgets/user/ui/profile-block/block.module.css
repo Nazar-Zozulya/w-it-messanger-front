@@ -12,6 +12,9 @@
     padding: 0.7vw 0;
 }
 
+.anotherUserSize {
+    height: 36.1vh !important;
+}
 
 .ProfileInfo {
     width: 100%;
@@ -43,6 +46,14 @@
     font-size: clamp(10px, 1.2vw, 16px);
 }
 
+.anotherOrMyProfileStats {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.7vh;
+}
 
 .ProfileStats {
     display: flex;
@@ -82,4 +93,13 @@
     font-family: "GT Walsheim Pro";
     font-weight: 500;
     font-size: clamp(10px, 1.2vw, 16px);
+}
+
+.anotherUserButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: row;
+    gap: 1.1vw;
 }

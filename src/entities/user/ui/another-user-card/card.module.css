@@ -1,0 +1,30 @@
+.container {
+	width: 22.15vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 0.8vw;
+}
+.avatar {
+	width: 4.8vh;
+	height: 4.8vh;
+	border-radius: 12345px;
+}
+
+.text {
+	height: 4.8vh;
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.name {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 700;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #060a1d;
+}

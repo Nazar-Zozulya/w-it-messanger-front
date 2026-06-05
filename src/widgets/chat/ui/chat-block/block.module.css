@@ -1,0 +1,37 @@
+.container {
+	width: 39.2vw;
+	height: 87vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	border: 1px solid #cdced2;
+	border-radius: 10px;
+}
+
+.noSelectedChatDiv {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 2.5vh;
+}
+
+.noSelectedChatTitle {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 700;
+	font-size: clamp(18px, 1.7vw, 24px);
+	color: #060a1d;
+}
+
+.noSelectedChatText {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #060a1d;
+    width: 50%;
+    text-align: center;
+}
