@@ -13,7 +13,7 @@
 
 .allContacts {
 	width: 100%;
-	height: 81.9vh;
+	height: calc(81.9vh - 10px);
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;

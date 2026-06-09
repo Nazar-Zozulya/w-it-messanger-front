@@ -3,6 +3,7 @@ import { usePostsManager } from "../entities/post"
 import { useUserContext } from "../entities/user"
 import { useAlbumsManager } from "../entities/album"
 import { useFriendsManager } from "../entities/friends"
+import { useSocketStore } from "../shared/socket"
 
 interface InitialFetchesProps {
 	children: ReactNode
@@ -10,6 +11,8 @@ interface InitialFetchesProps {
 
 export function InitialFetches(props: InitialFetchesProps) {
 	const { getPosts, getMyPosts } = usePostsManager()
+
+	const { connect } = useSocketStore()
 
 	const { getAllFriends, getAllRecommendations, getAllRequests } = useFriendsManager()
 
@@ -20,6 +23,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 	useEffect(() => {
 		// не надо токен для получения
         getPosts()
+		connect()
 	}, [])
     
 	useEffect(() => {

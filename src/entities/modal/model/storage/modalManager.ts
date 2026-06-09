@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 
 
-type ModalType = 'createPost' | "completeProfile" | "createAlbum" | "updateAlbum" | null;
+type ModalType = 'createPost' | "completeProfile" | "createAlbum" | "updateAlbum" | "createGroupStepOne" | null;
 
 interface ModalManagerStoreTypes {
     activeModal: ModalType;
@@ -23,3 +23,5 @@ export const useModalManagerStore = create<ModalManagerStoreTypes>((set) => ({
     closeModal: () => set({ activeModal: null }),
     switchModal: (modal) => set({ activeModal: modal }),
 }));
+
+// GsP79I6ZRB2fnSYdBD3EdA
