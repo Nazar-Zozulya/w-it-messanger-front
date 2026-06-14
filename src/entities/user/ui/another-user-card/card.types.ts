@@ -6,4 +6,5 @@ export interface AbotherUserCardProps {
     username: string
     lastMessage?: string
     subscribersCount?: number
+    function? :() => void
 }

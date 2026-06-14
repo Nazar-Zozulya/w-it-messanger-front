@@ -1,7 +1,6 @@
 import { Image } from "../../../image"
 import { Tag } from "../../../tag"
-import { User } from "../../../user"
-import { UserToPost } from "../../../user/model/types/user"
+import { UserToPost } from "../../../user"
 
 export interface Post {
     id: number

@@ -3,7 +3,8 @@ import { usePostsManager } from "../entities/post"
 import { useUserContext } from "../entities/user"
 import { useAlbumsManager } from "../entities/album"
 import { useFriendsManager } from "../entities/friends"
-import { useSocketStore } from "../shared/socket"
+import { useChatSocketStore, useGlobalChatSocketStore } from "../shared/socket"
+import { useChatsManager } from "../entities/chat"
 
 interface InitialFetchesProps {
 	children: ReactNode
@@ -12,22 +13,28 @@ interface InitialFetchesProps {
 export function InitialFetches(props: InitialFetchesProps) {
 	const { getPosts, getMyPosts } = usePostsManager()
 
-	const { connect } = useSocketStore()
+	const { connect } = useChatSocketStore()
 
-	const { getAllFriends, getAllRecommendations, getAllRequests } = useFriendsManager()
+	const { connect: connectGlobal } = useGlobalChatSocketStore()
+
+	const { getAllFriends, getAllRecommendations, getAllRequests } =
+		useFriendsManager()
 
 	const { token, user } = useUserContext()
 
 	const { getAlbums } = useAlbumsManager()
 
+	const { getIndividualChats } = useChatsManager()
+
 	useEffect(() => {
 		// не надо токен для получения
-        getPosts()
+		getPosts()
 		connect()
+		connectGlobal()
 	}, [])
-    
+
 	useEffect(() => {
-        if (!token) return
+		if (!token) return
 
 		getAlbums(token)
 		getAllRecommendations(token)
@@ -39,6 +46,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 		if (!user) return
 
 		getMyPosts(user.id)
+		getIndividualChats(user.id)
 	}, [user])
 
 	return <>{props.children}</>

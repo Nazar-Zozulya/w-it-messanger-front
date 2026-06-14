@@ -8,7 +8,7 @@ export interface InputProps {
 	isPassword?: boolean
 	error?: string
 	type?: typesOfInput
-	defaultValue?: string
+	// defaultValue?: string
 	style?: React.CSSProperties
 	size?: "small" | "default"
 	// onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -18,6 +18,7 @@ export interface InputProps {
 	name: string
 	className?: string
 	isInputOnFullWidth?: boolean
+	onReset?: () => void
 	rules?:
 		| Omit<
 				RegisterOptions<any, string>,

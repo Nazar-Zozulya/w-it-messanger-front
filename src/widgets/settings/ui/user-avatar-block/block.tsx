@@ -15,11 +15,15 @@ import { ReactComponent as Check } from "../../../../shared/ui/icons/check.svg"
 import { POST } from "../../../../helpers/post"
 
 export function UserAvatarBlock() {
-	const { handleSubmit, formState, control } = useForm<UserAvatarChangeForm>()
+	const [username, setUsername] = useState<string>("")
+	const { handleSubmit, formState, control } = useForm<UserAvatarChangeForm>({
+		defaultValues: {
+			username: username
+		}
+	})
 
 	const { user, token, update } = useUserContext()
 
-	const [username, setUsername] = useState<string>("")
 
 	useEffect(() => {
 		setUsername(user?.username || "")
@@ -137,7 +141,7 @@ export function UserAvatarBlock() {
 				{isChanging ? (
 					<Input
 						control={control}
-						defaultValue={username}
+						// defaultValue={username}
 						placeholder="Введіть ваш логін"
 						style={{ textAlign: "center" }}
 						error={formState.errors.username?.message}

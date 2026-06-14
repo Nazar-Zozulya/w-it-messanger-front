@@ -13,17 +13,19 @@ interface SocketStore {
     connect: () => void;
     disconnect: () => void;
 
-    send: (event: string, data: unknown) => void;
+    send: <T>(event: string, data: T) => void;
+
+    sendNewMessage: () => void
 }
 
-export const useSocketStore = create<SocketStore>((set, get) => ({
+export const useChatSocketStore = create<SocketStore>((set, get) => ({
     socket: null,
     isConnected: false,
 
     connect: () => {
         if (get().socket) return;
 
-        const socket = createSocket();
+        const socket = createSocket("chat");
 
         socket.on("connect", () => {
             console.log(1111111)
@@ -58,6 +60,6 @@ export const useSocketStore = create<SocketStore>((set, get) => ({
     send: (event, data) => {
         const socket = get().socket;
 
-        socket?.emit(event, {data: data});
+        socket?.emit(event, data);
     },
 }));

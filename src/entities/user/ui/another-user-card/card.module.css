@@ -5,6 +5,9 @@
 	justify-content: center;
 	flex-direction: row;
 	gap: 0.8vw;
+	border: none;
+	background: none;
+	cursor: pointer;
 }
 .avatar {
 	width: 4.8vh;

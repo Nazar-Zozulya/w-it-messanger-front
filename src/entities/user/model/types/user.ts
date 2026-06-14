@@ -13,7 +13,7 @@ export interface User{
 
     name?: string;
     surname?: string;
-    username?: string;
+    username: string;
 
     images: Image[];
     albums: Album[]
@@ -24,5 +24,9 @@ export interface User{
 }
 
 export type UserToPost = Pick<User, "name" | "surname" | "username" | "id" > & {
+    avatar?: string
+}
+
+export type UserToChat = Pick<User, "name" | "surname" | "username" | "id" > & {
     avatar?: string
 }

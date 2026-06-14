@@ -1,0 +1,1 @@
+export { OtherMessageEntity } from "./entity"

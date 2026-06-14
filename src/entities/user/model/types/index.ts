@@ -1,4 +1,4 @@
-export { type User } from './user'
+export { type User, type UserToPost, type UserToChat } from './user'
 export { type Profile } from './profile'
 export { type Avatar } from './avatar'
 export { type Album } from './album'

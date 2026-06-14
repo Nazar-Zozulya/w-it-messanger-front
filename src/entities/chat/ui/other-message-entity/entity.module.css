@@ -1,0 +1,71 @@
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: row;
+	width: 100%;
+}
+
+.allMessageBlock {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 0.3vw;
+}
+
+.avatar {
+	height: 4.8vh;
+	width: 4.8vh;
+	border-radius: 1000px;
+}
+
+.messageBlock {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-end;
+	padding: 1.4vh 0.7vw;
+	gap: 0.7vw;
+	border: 1px solid #eae5ef;
+	border-radius: 6px;
+}
+
+.textBlock {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-direction: column;
+}
+
+.name {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(6px, 0.69vw, 10px);
+	color: #583b53;
+}
+
+.text {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(8px, 1vw, 14px);
+	color: #060a1d;
+}
+
+.addicInfo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 0.35vw;
+}
+
+.createdAt {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(6px, 0.69vw, 10px);
+	color: #81818e;
+}

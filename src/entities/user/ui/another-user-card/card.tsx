@@ -4,7 +4,7 @@ import { AbotherUserCardProps } from "./card.types"
 
 export function AnotherUserCard(props: AbotherUserCardProps) {
 	return (
-		<div className={styles.container}>
+		<button className={styles.container} onClick={props.function}>
 			<img
 				src={props.avatar ? props.avatar : DEFAULT_AVATAR}
 				className={styles.avatar}
@@ -17,6 +17,6 @@ export function AnotherUserCard(props: AbotherUserCardProps) {
 						: props.username}
 				</p>
 			</div>
-		</div>
+		</button>
 	)
 }

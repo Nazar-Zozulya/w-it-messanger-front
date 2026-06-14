@@ -15,7 +15,14 @@ import { ReactComponent as Check } from "../../../../shared/ui/icons/check.svg"
 export function UserInfoBlock() {
 	const { user, token } = useUserContext()
 
-	const { handleSubmit, formState, control } = useForm<UserInfoChangeForm>()
+	const { handleSubmit, formState, control } = useForm<UserInfoChangeForm>({
+		defaultValues: {
+			name: user?.name,
+			surname: user?.surname,
+			dateOfBirth: user?.profile?.dateOfBirth as Date,
+			email: user?.email,
+		},
+	})
 
 	const [isChanging, setIsChanging] = useState<boolean>(false)
 
@@ -27,8 +34,8 @@ export function UserInfoBlock() {
 			whichService: "userService",
 			endpoint: "api/user/update",
 			method: "PATCH",
-			token: token ?? '',
-			body: data ,
+			token: token ?? "",
+			body: data,
 		})
 
 		console.log(response)
@@ -54,7 +61,7 @@ export function UserInfoBlock() {
 				<Input
 					control={control}
 					label="Ім'я"
-					defaultValue={user?.name}
+					// defaultValue={user?.name}
 					placeholder="Введіть ваше ім'я"
 					error={formState.errors.name?.message}
 					name={"name"}
@@ -63,7 +70,7 @@ export function UserInfoBlock() {
 				<Input
 					control={control}
 					label="Прізвище"
-					defaultValue={user?.surname}
+					// defaultValue={user?.surname}
 					placeholder="Введіть ваше прізвище"
 					error={formState.errors.surname?.message}
 					name={"surname"}
@@ -73,9 +80,9 @@ export function UserInfoBlock() {
 					control={control}
 					label="Дата народження"
 					type={"date"}
-					defaultValue={
-						user?.profile?.dateOfBirth?.toString().split("T")[0]
-					}
+					// defaultValue={
+					// 	user?.profile?.dateOfBirth?.toString().split("T")[0]
+					// }
 					error={formState.errors.dateOfBirth?.message}
 					name={"dateOfBirth"}
 					disabled={!isChanging}
@@ -83,7 +90,7 @@ export function UserInfoBlock() {
 				<Input
 					control={control}
 					label="Електронна адреса"
-					defaultValue={user?.email}
+					// defaultValue={user?.email}
 					placeholder="Введіть вашу електронну адресу"
 					error={formState.errors.email?.message}
 					name={"email"}

@@ -17,7 +17,13 @@ export function UpdateAlbumModal() {
 
 	const { updateAlbum } = useAlbumsManager()
 
-	const { handleSubmit, control } = useForm<CreateAlbumCredentials>()
+	const { handleSubmit, control } = useForm<CreateAlbumCredentials>({
+		defaultValues: {
+			name: anyData.name,
+			topic: anyData.topic,
+			year: anyData.year
+		}
+	})
 
 	async function onSubmit(data: CreateAlbumCredentials) {
 		console.log(data)
@@ -45,7 +51,7 @@ export function UpdateAlbumModal() {
 							label="Назва альбому"
 							placeholder="Настрій"
 							fullWidth={true}
-							defaultValue={anyData.name}
+							// defaultValue={anyData.name}
 						/>
 						<Input
 							control={control}
@@ -53,7 +59,7 @@ export function UpdateAlbumModal() {
 							label="Оберіть тему"
 							placeholder="Настрій"
 							fullWidth={true}
-							defaultValue={anyData.topic}
+							// defaultValue={anyData.topic}
 						/>
 						<Input
 							control={control}
@@ -62,7 +68,7 @@ export function UpdateAlbumModal() {
 							label="Рік альбому"
 							placeholder="Оберіть рік"
 							fullWidth={true}
-							defaultValue={`${anyData.year}`}
+							// defaultValue={`${anyData.year}`}
 						/>
 					</div>
 					<div className={styles.buttonsDiv}>

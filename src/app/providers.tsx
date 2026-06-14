@@ -15,7 +15,8 @@ export function AppProviders() {
 					<Route path="/:id" element={<MainPage mode="anotherUser" />} />
 					<Route path="/friends" element={<FriendsPage />} />
 					<Route path="/settings" element={<SettingsPage />} />
-					<Route path="/chats" element={<ChatPage />} />
+					<Route path="/chats" element={<ChatPage mode="no-chat"/>} />
+					<Route path="/chat/:id" element={<ChatPage mode="chat"/>} />
 				</ Route>
 				
 			</Routes>

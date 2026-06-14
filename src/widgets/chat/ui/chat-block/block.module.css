@@ -3,11 +3,139 @@
 	height: 87vh;
 	display: flex;
 	align-items: center;
-	justify-content: center;
 	flex-direction: column;
 	border: 1px solid #cdced2;
 	border-radius: 10px;
+	padding: 1.7vh 1.1vw;
+	gap: 2.5vh;
 }
+
+.noChatStyles {
+	justify-content: center;
+}
+
+.chatStyles {
+	justify-content: space-between;
+}
+
+.header {
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+	gap: 1.04vh;
+}
+
+.headerContent {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: row;
+}
+
+.headerLeftData {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 1.1vw;
+}
+
+.arrow {
+	rotate: 90deg;
+}
+
+.arrowButton{
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+.headerChatWithDiv {
+	gap: 0.7vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.avatar {
+	height: 4.8vh;
+	width: 4.8vh;
+	border-radius: 1000px;
+}
+
+.chatName {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 700;
+	font-size: clamp(18px, 1.7vw, 24px);
+	color: #060a1d;
+}
+
+.headerLine {
+	width: 100%;
+	height: 1px;
+	background: #CDCED2;
+}
+
+.messagesList {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-direction: column;
+	gap: 1.04vh;
+
+
+
+
+	overflow-y: auto;
+
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.messagesList::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+
+.sendInput {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 1.7vw;
+}
+
+.sendInputButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 1.7vw;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .noSelectedChatDiv {
 	width: 100%;
@@ -32,6 +160,6 @@
 	font-weight: 400;
 	font-size: clamp(12px, 1.2vw, 16px);
 	color: #060a1d;
-    width: 50%;
-    text-align: center;
+	width: 50%;
+	text-align: center;
 }

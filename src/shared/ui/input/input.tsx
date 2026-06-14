@@ -18,7 +18,7 @@ export function Input(props: InputProps) {
 		size = "default",
 		name,
 		rules,
-		defaultValue,
+		// defaultValue,
 		className,
 		disabled,
 		fullWidth = false,
@@ -53,7 +53,7 @@ export function Input(props: InputProps) {
 								className={`${styles.input} ${className ? className : ""} ${disabled ? styles.disabled : ""} ${size === "small" ? styles.smallInput : ""} `}
 								value={field.value}
 								style={style}
-								defaultValue={defaultValue}
+								// defaultValue={defaultValue}
 								onChange={(e) => field.onChange(e)}
 								// onChange={}
 								{...otherProps}
@@ -64,6 +64,7 @@ export function Input(props: InputProps) {
 				{isPassword && (
 					<button
 						disabled={disabled}
+						type="button"
 						style={{
 							border: "none",
 							background: "none",
@@ -91,7 +92,7 @@ function TextArea(props: TextAreaProps) {
 		name,
 		rules,
 		rows = 1,
-		defaultValue,
+		// defaultValue,
 		...otherProps
 	} = props
 
@@ -105,17 +106,18 @@ function TextArea(props: TextAreaProps) {
 					control={control}
 					name={name}
 					rules={rules}
+				
 					render={({ field }) => {
 						return (
 							<textarea
 								placeholder={placeholder}
 								className={styles.textarea}
-								value={field.value}
-								onChange={(e) => field.onChange(e)}
 								rows={rows}
 								wrap="soft"
-								defaultValue={defaultValue}
 								{...otherProps}
+								// defaultValue={defaultValue}
+								value={field.value}
+								onChange={(e) => field.onChange(e)}
 							/>
 						)
 					}}
