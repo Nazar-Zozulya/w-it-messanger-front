@@ -6,6 +6,7 @@ import { Result } from "../../../../types/result"
 
 interface ChatsManagerStoreTypes {
 	chats: Chat[] | null
+	setChats: (value: Chat[] | ((prev: Chat[] | null) => Chat[] | null)) => void
 	getChat: (userId: number, anotherUserId: number) => Promise<Result<Chat>>
 	// getMessagesFromChat: (chatId: number) => void
 	getIndividualChats: (userId: number) => void
@@ -13,6 +14,12 @@ interface ChatsManagerStoreTypes {
 
 export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 	chats: null,
+
+	setChats: (value) =>
+		set((state) => ({
+			chats: typeof value === "function" ? value(state.chats) : value,
+		})),
+
 	getChat: async (userId, anotherUserId) => {
 		const getChat = await POST<Chat>({
 			whichService: "chatService",
@@ -80,6 +87,5 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 		console.log("chats: ", getChats.data)
 
 		set({ chats: getChats.data })
-
 	},
 }))

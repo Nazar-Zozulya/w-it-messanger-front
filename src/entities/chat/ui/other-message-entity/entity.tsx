@@ -8,7 +8,7 @@ export function OtherMessageEntity(props: OtherMessageEntityProps) {
 		<div className={styles.container}>
 			<div className={styles.allMessageBlock}>
 				<img
-					src={props.user.avatar || DEFAULT_AVATAR}
+					src={DEFAULT_AVATAR}
 					className={styles.avatar}
 					alt=""
 				/>

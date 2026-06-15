@@ -1,100 +1,123 @@
-import { POST } from "../../../../helpers/post"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { useParams } from "react-router-dom"
+
 import { useChatSocketStore } from "../../../../shared/socket"
 import { Button } from "../../../../shared/ui/button"
+import { Input } from "../../../../shared/ui/input"
+
 import styles from "./block.module.css"
 import { ChatBlockProps, SendMessageForm } from "./block.types"
+
 import { ReactComponent as Arrow } from "../../../../shared/ui/icons/arrow.svg"
-import { Input } from "../../../../shared/ui/input"
-import { useForm } from "react-hook-form"
 import { ReactComponent as Smile } from "../../../../shared/ui/icons/smile.svg"
 import { ReactComponent as Gallery } from "../../../../shared/ui/icons/gallery.svg"
 import { ReactComponent as Send } from "../../../../shared/ui/icons/send.svg"
+
 import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
-import { useParams } from "react-router-dom"
-import { useEffect, useState } from "react"
+
 import {
-	Chat,
 	MyMessageEntity,
 	OtherMessageEntity,
 	useChatsManager,
 } from "../../../../entities/chat"
-import { UserToChat, useUserContext } from "../../../../entities/user"
+
+import { useUserContext } from "../../../../entities/user"
 
 export function ChatBlock(props: ChatBlockProps) {
-	const { send } = useChatSocketStore()
+	const { sendNewMessage, enterChat } = useChatSocketStore()
 
-	const { getChat } = useChatsManager()
+	const { getChat, setChats } = useChatsManager()
+	const chats = useChatsManager((s) => s.chats)
 
 	const { user } = useUserContext()
+	const { id } = useParams()
+
+	const chatId = id ? Number(id) : null
+
+	const chat = chats?.find((c) => c.id === chatId)
+
+	console.log("chats:", chats)
+	console.log("chatId:", chatId)
+	console.log("chat:", chat)
+
+	const anotherUser = chat?.users?.find((u) => u.id !== user?.id) ?? null
 
 	const { handleSubmit, control, reset } = useForm<SendMessageForm>({
 		defaultValues: {
-			text: ""
-		}
+			text: "",
+		},
 	})
 
-	const [chatData, setChatData] = useState<Chat | null>(null)
-
-	const [anotherUser, setAnotherUser] = useState<UserToChat | null>(null)
-
-	function sendMessage(data: SendMessageForm) {
-
-		function fetchMessage () {
-			const newMessage = await 
-		
-		reset()
-		}
-
-		fetchMessage()
-
-	}
-
-	const { id } = useParams()
-
+	// 📌 загрузка чата
 	useEffect(() => {
 		async function fetchChat() {
-			if (!id) return
+			if (!chatId || !user) return
 
-			if (!user) return
+			const response = await getChat(user.id, chatId)
 
-			const response = await getChat(user.id, +id)
-
-			console.log(4252)
 			if (response.status === "error") return
 
-			setChatData(response.data)
-			setAnotherUser(
-				response.data.users.find(
-					(findUser) => findUser.id !== user.id,
-				) ?? null,
-			)
+			setChats((prev) => {
+				if (!prev) return [response.data]
+
+				const exists = prev.some((c) => c.id === response.data.id)
+
+				if (exists) {
+					return prev.map((c) =>
+						c.id === response.data.id ? response.data : c,
+					)
+				}
+
+				return [...prev, response.data]
+			})
+
+			enterChat(response.data.id)
 		}
 
 		fetchChat()
-	}, [id, user])
+	}, [chatId, user])
+
+	// 📌 отправка сообщения
+	function sendMessage(data: SendMessageForm) {
+		if (!chatId || !user || !anotherUser || !chat) return
+
+		sendNewMessage({
+			chatId: chat.id,
+			receiverId: anotherUser.id,
+			senderId: user.id,
+			text: data.text,
+		})
+
+		reset()
+	}
 
 	return (
 		<div
-			className={`${styles.container} ${props.mode === "chat" ? styles.chatStyles : styles.noChatStyles}`}
+			className={`${styles.container} ${
+				props.mode === "chat" ? styles.chatStyles : styles.noChatStyles
+			}`}
 		>
 			{props.mode === "chat" ? (
 				<>
+					{/* HEADER */}
 					<div className={styles.header}>
 						<div className={styles.headerContent}>
 							<div className={styles.headerLeftData}>
 								<button className={styles.arrowButton}>
 									<Arrow className={styles.arrow} />
 								</button>
+
 								<div className={styles.headerChatWithDiv}>
 									<img
 										src={
-											anotherUser?.avatar
-												? anotherUser.avatar
-												: DEFAULT_AVATAR
+											anotherUser?.avatar ||
+											DEFAULT_AVATAR
 										}
 										className={styles.avatar}
 										alt=""
 									/>
+
 									<p className={styles.chatName}>
 										{anotherUser?.name
 											? `${anotherUser.name} ${anotherUser.surname}`
@@ -106,30 +129,45 @@ export function ChatBlock(props: ChatBlockProps) {
 
 						<div className={styles.headerLine}></div>
 					</div>
+
+					{/* MESSAGES */}
 					<div className={styles.messagesList}>
-						<MyMessageEntity
-							text="idi nahuy!"
-							createdAt={new Date()}
-							readers={[]}
-						/>
-						<OtherMessageEntity
-							text="idi nahuy!"
-							createdAt={new Date()}
-							readers={[]}
-							user={{ username: "123123", id: 2 }}
-						/>
+						{chat?.messages?.map((message) =>
+							message.senderId === user?.id ? (
+								<MyMessageEntity
+									key={message.id}
+									text={message.text}
+									createdAt={
+										new Date(message.createdAt as string)
+									}
+									readers={message.readers}
+								/>
+							) : (
+								<OtherMessageEntity
+									key={message.id}
+									text={message.text}
+									createdAt={
+										new Date(message.createdAt as string)
+									}
+									readers={message.readers}
+									user={message.sender}
+								/>
+							),
+						)}
 					</div>
+
+					{/* INPUT */}
 					<form
 						className={styles.sendInput}
 						onSubmit={handleSubmit(sendMessage)}
 					>
 						<Input
 							control={control}
-							name={"text"}
+							name="text"
 							placeholder="Повідомлення"
-							fullWidth={true}
-							// defaultValue=""
+							fullWidth
 						/>
+
 						<div className={styles.sendInputButton}>
 							<Button
 								fill={false}
@@ -141,22 +179,21 @@ export function ChatBlock(props: ChatBlockProps) {
 								type="button"
 								icon={<Gallery />}
 							/>
-							<Button fill={true} icon={<Send />} />
+							<Button fill icon={<Send />} />
 						</div>
 					</form>
 				</>
 			) : (
-				<>
-					<div className={styles.noSelectedChatDiv}>
-						<p className={styles.noSelectedChatTitle}>
-							Почніть нове спілкування
-						</p>
-						<p className={styles.noSelectedChatText}>
-							Оберіть контакт зі списку ліворуч або створіть
-							групу, щоб почати спілкування
-						</p>
-					</div>
-				</>
+				/* EMPTY STATE */
+				<div className={styles.noSelectedChatDiv}>
+					<p className={styles.noSelectedChatTitle}>
+						Почніть нове спілкування
+					</p>
+					<p className={styles.noSelectedChatText}>
+						Оберіть контакт зі списку ліворуч або створіть групу,
+						щоб почати спілкування
+					</p>
+				</div>
 			)}
 		</div>
 	)
