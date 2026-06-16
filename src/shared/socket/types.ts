@@ -4,3 +4,8 @@ export interface newMessageCredentials {
 	senderId: number
 	text: string
 }
+
+export interface seeMessageCredentials {
+    messageId: number
+	readerId: number
+}

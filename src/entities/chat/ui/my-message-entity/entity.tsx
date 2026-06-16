@@ -15,7 +15,13 @@ export function MyMessageEntity(props: MyMessageEntityProps) {
 								.slice(11, 16) /**  "14:05"*/
 						}
 					</p>
-					<SendMessage width={10} height={10} stroke="#81818E" />
+					<SendMessage
+						width={10}
+						height={10}
+						color={
+							props.readers.length === 0 ? "#81818E" : "#583b53"
+						}
+					/>
 				</div>
 			</div>
 		</div>

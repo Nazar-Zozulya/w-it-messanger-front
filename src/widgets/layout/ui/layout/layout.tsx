@@ -1,14 +1,14 @@
-import { Outlet } from "react-router-dom";
-import { Header } from "../header";
-import styles from './layout.module.css'
+import { Outlet, useLocation } from "react-router-dom"
+import { Header } from "../header"
+import styles from "./layout.module.css"
 
 export function Layout() {
-    return (
-        <div className={styles.container}>
-            <Header/>
-            <div className={styles.content}>
-                <Outlet />
-            </div>
-        </div>
-    )
+	return (
+		<div className={styles.container}>
+			<Header />
+			<div className={styles.content}>
+				<Outlet />
+			</div>
+		</div>
+	)
 }

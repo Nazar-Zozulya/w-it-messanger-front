@@ -31,3 +31,41 @@
 	font-size: clamp(12px, 1.2vw, 16px);
 	color: #060a1d;
 }
+
+.lastMessage {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(8px, 1vw, 14px);
+	color: #060a1d;
+	color: color(display-p3 0.027 0.039 0.11);
+}
+
+.chatText {
+	height: 4.8vh;
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-direction: row;
+}
+
+.textLeftPart {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+	height: 100%;
+}
+
+.createdAt {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 400;
+	font-size: clamp(8px, 0.8vw, 12px);
+	color: #81818e;
+}
+
+.newMessage {
+	color: #E9E5EE;
+}

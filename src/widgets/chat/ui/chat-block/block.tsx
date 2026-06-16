@@ -1,8 +1,11 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useForm } from "react-hook-form"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
-import { useChatSocketStore } from "../../../../shared/socket"
+import {
+	useChatSocketStore,
+	useGlobalChatSocketStore,
+} from "../../../../shared/socket"
 import { Button } from "../../../../shared/ui/button"
 import { Input } from "../../../../shared/ui/input"
 
@@ -25,7 +28,9 @@ import {
 import { useUserContext } from "../../../../entities/user"
 
 export function ChatBlock(props: ChatBlockProps) {
-	const { sendNewMessage, enterChat } = useChatSocketStore()
+	const { sendNewMessage, enterChat, leaveChat, send } = useChatSocketStore()
+
+	const { send: globalSend } = useGlobalChatSocketStore()
 
 	const { getChat, setChats } = useChatsManager()
 	const chats = useChatsManager((s) => s.chats)
@@ -37,11 +42,9 @@ export function ChatBlock(props: ChatBlockProps) {
 
 	const chat = chats?.find((c) => c.id === chatId)
 
-	console.log("chats:", chats)
-	console.log("chatId:", chatId)
-	console.log("chat:", chat)
-
 	const anotherUser = chat?.users?.find((u) => u.id !== user?.id) ?? null
+
+	const messagesRef = useRef<HTMLDivElement>(null)
 
 	const { handleSubmit, control, reset } = useForm<SendMessageForm>({
 		defaultValues: {
@@ -49,7 +52,6 @@ export function ChatBlock(props: ChatBlockProps) {
 		},
 	})
 
-	// 📌 загрузка чата
 	useEffect(() => {
 		async function fetchChat() {
 			if (!chatId || !user) return
@@ -76,9 +78,19 @@ export function ChatBlock(props: ChatBlockProps) {
 		}
 
 		fetchChat()
+
+		return () => {
+			if (!chatId) return
+			leaveChat(chatId)
+		}
 	}, [chatId, user])
 
-	// 📌 отправка сообщения
+	useEffect(() => {
+		if (!messagesRef.current) return
+
+		messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+	}, [chat?.messages])
+
 	function sendMessage(data: SendMessageForm) {
 		if (!chatId || !user || !anotherUser || !chat) return
 
@@ -100,13 +112,15 @@ export function ChatBlock(props: ChatBlockProps) {
 		>
 			{props.mode === "chat" ? (
 				<>
-					{/* HEADER */}
 					<div className={styles.header}>
 						<div className={styles.headerContent}>
 							<div className={styles.headerLeftData}>
-								<button className={styles.arrowButton}>
+								<Link
+									className={styles.arrowButton}
+									to={"/chats"}
+								>
 									<Arrow className={styles.arrow} />
-								</button>
+								</Link>
 
 								<div className={styles.headerChatWithDiv}>
 									<img
@@ -130,33 +144,39 @@ export function ChatBlock(props: ChatBlockProps) {
 						<div className={styles.headerLine}></div>
 					</div>
 
-					{/* MESSAGES */}
-					<div className={styles.messagesList}>
-						{chat?.messages?.map((message) =>
-							message.senderId === user?.id ? (
-								<MyMessageEntity
-									key={message.id}
-									text={message.text}
-									createdAt={
-										new Date(message.createdAt as string)
-									}
-									readers={message.readers}
-								/>
-							) : (
+					<div className={styles.messagesList}  ref={messagesRef}>
+						{chat?.messages?.map((message) => {
+							console.log("message:", message.readers)
+							if (message.senderId === user?.id) {
+								return (
+									<MyMessageEntity
+										key={message.id}
+										text={message.text}
+										createdAt={
+											new Date(
+												message.createdAt as string,
+											)
+										}
+										readers={message.readers ?? []}
+									/>
+								)
+							}
+
+							return (
 								<OtherMessageEntity
 									key={message.id}
+									id={message.id}
 									text={message.text}
 									createdAt={
 										new Date(message.createdAt as string)
 									}
-									readers={message.readers}
+									readers={message.readers ?? []}
 									user={message.sender}
 								/>
-							),
-						)}
+							)
+						})}
 					</div>
 
-					{/* INPUT */}
 					<form
 						className={styles.sendInput}
 						onSubmit={handleSubmit(sendMessage)}
@@ -173,18 +193,23 @@ export function ChatBlock(props: ChatBlockProps) {
 								fill={false}
 								type="button"
 								icon={<Smile width={20} height={20} />}
+								function={() => {
+									send("rooms", {})
+								}}
 							/>
 							<Button
 								fill={false}
 								type="button"
 								icon={<Gallery />}
+								function={() => {
+									globalSend("global-rooms", {})
+								}}
 							/>
 							<Button fill icon={<Send />} />
 						</div>
 					</form>
 				</>
 			) : (
-				/* EMPTY STATE */
 				<div className={styles.noSelectedChatDiv}>
 					<p className={styles.noSelectedChatTitle}>
 						Почніть нове спілкування

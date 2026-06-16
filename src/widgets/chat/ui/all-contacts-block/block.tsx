@@ -7,10 +7,14 @@ import { AnotherUserCard, useUserContext } from "../../../../entities/user"
 import { useFriendsManager } from "../../../../entities/friends"
 import { POST } from "../../../../helpers/post"
 import { use } from "react"
+import { useNavigate } from "react-router-dom"
+import { Chat } from "../../../../entities/chat"
 
 export function AllContactsBlock() {
 	const { allFriends } = useFriendsManager()
 	const { user } = useUserContext()
+	const navigate = useNavigate()
+
 	return (
 		<div className={styles.container}>
 			<Button
@@ -40,7 +44,7 @@ export function AllContactsBlock() {
 							<AnotherUserCard
 								username={friend.username}
 								function={async () => {
-									const response = await POST({
+									const response = await POST<Chat>({
 										whichService: "chatService",
 										endpoint: "api/chat/get-chat",
 										body: {
@@ -48,6 +52,12 @@ export function AllContactsBlock() {
 											anotherUserId: friend.id,
 										},
 									})
+
+									if (response.status === "error") {
+										console.log("chat found or create problems")
+										return
+									}
+									navigate(`/chat/${response.data.id}`)
 								}}
 								name={friend.name}
 								surname={friend.surname}

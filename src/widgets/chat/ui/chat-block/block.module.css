@@ -20,6 +20,7 @@
 
 .header {
 	width: 100%;
+	height: 6.04vh;
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
@@ -46,7 +47,7 @@
 	rotate: 90deg;
 }
 
-.arrowButton{
+.arrowButton {
 	border: none;
 	background: none;
 	cursor: pointer;
@@ -77,31 +78,31 @@
 .headerLine {
 	width: 100%;
 	height: 1px;
-	background: #CDCED2;
+	background: #cdced2;
 }
 
 .messagesList {
-	height: 100%;
 	width: 100%;
+	height: calc(80.96vh - 42px);
+
 	display: flex;
-	align-items: center;
-	justify-content: flex-end;
 	flex-direction: column;
 	gap: 1.04vh;
 
-
-
-
 	overflow-y: auto;
 
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
 
 .messagesList::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+	display: none;
 }
 
+.messagesList::before {
+	content: "";
+	flex: 1 0 auto;
+}
 
 .sendInput {
 	width: 100%;
@@ -119,23 +120,6 @@
 	flex-direction: row;
 	gap: 1.7vw;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .noSelectedChatDiv {
 	width: 100%;

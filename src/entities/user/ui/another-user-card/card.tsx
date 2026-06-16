@@ -1,6 +1,7 @@
 import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
+import { useUserContext } from "../../model/context"
 import styles from "./card.module.css"
-import { AbotherUserCardProps } from "./card.types"
+import { AbotherUserCardProps, AbotherUserChatCardProps } from "./card.types"
 
 export function AnotherUserCard(props: AbotherUserCardProps) {
 	return (
@@ -15,6 +16,44 @@ export function AnotherUserCard(props: AbotherUserCardProps) {
 					{props.name && props.surname
 						? `${props.name} ${props.surname}`
 						: props.username}
+				</p>
+			</div>
+		</button>
+	)
+}
+
+export function AnotherUserChatCard(props: AbotherUserChatCardProps) {
+	const { user } = useUserContext()
+
+	return (
+		<button
+			className={`${styles.container} ${
+				props.lastMessage?.readers?.find(
+					(reader) => reader.id === user?.id,
+				)
+					? undefined
+					: styles.newMessage
+			}`}
+			onClick={props.function}
+		>
+			<img
+				src={props.avatar ? props.avatar : DEFAULT_AVATAR}
+				className={styles.avatar}
+				alt=""
+			/>
+			<div className={styles.chatText}>
+				<div className={styles.textLeftPart}>
+					<p className={styles.name}>
+						{props.name && props.surname
+							? `${props.name} ${props.surname}`
+							: props.username}
+					</p>
+					<p className={styles.lastMessage}>
+						{props.lastMessage.text}
+					</p>
+				</div>
+				<p className={styles.createdAt}>
+					{props.createdAt.toISOString().slice(11, 16) /**  "14:05"*/}
 				</p>
 			</div>
 		</button>

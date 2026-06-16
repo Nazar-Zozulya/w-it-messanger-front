@@ -13,7 +13,10 @@ interface SocketStore {
     connect: () => void;
     disconnect: () => void;
 
-    send: (event: string, data: unknown) => void;
+    send: <T>(event: string, data: T) => void
+        // sendNewMessage: (data: newMessageCredentials) => void
+    enterGlobalChat: (userId: number) => void
+    leaveGlobalChat: (userId: number) => void
 }
 
 export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
@@ -30,7 +33,7 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
             set({ isConnected: true });
         });
 
-        socket.on("evev", (data: any) => {
+        socket.on("global-message:new", (data: any) => {
             console.log("WS message:", data);
         });
 
@@ -60,4 +63,12 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 
         socket?.emit(event, {data: data});
     },
+
+    enterGlobalChat: (chatId) => {
+		get().socket?.emit("globalChat:join", chatId)
+	},
+
+	leaveGlobalChat: (chatId) => {
+		get().socket?.emit("globalChat:leave", chatId)
+	},
 }));

@@ -5,6 +5,7 @@ import { useAlbumsManager } from "../entities/album"
 import { useFriendsManager } from "../entities/friends"
 import { useChatSocketStore, useGlobalChatSocketStore } from "../shared/socket"
 import { useChatsManager } from "../entities/chat"
+import { useLocation } from "react-router-dom"
 
 interface InitialFetchesProps {
 	children: ReactNode
@@ -15,7 +16,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 	const { connect } = useChatSocketStore()
 
-	const { connect: connectGlobal } = useGlobalChatSocketStore()
+	const { connect: connectGlobal, enterGlobalChat } = useGlobalChatSocketStore()
 
 	const { getAllFriends, getAllRecommendations, getAllRequests } =
 		useFriendsManager()
@@ -32,10 +33,10 @@ export function InitialFetches(props: InitialFetchesProps) {
 		connect()
 		connectGlobal()
 	}, [])
-
+	
 	useEffect(() => {
 		if (!token) return
-
+		
 		getAlbums(token)
 		getAllRecommendations(token)
 		getAllFriends(token)
@@ -47,6 +48,8 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 		getMyPosts(user.id)
 		getIndividualChats(user.id)
+
+		enterGlobalChat(user.id)
 	}, [user])
 
 	return <>{props.children}</>

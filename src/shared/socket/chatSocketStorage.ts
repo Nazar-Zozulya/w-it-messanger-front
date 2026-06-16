@@ -2,7 +2,7 @@ import { create } from "zustand"
 import { Socket } from "socket.io-client"
 import { createSocket } from "./socket"
 import { Result } from "../../types/result"
-import { newMessageCredentials } from "./types"
+import { newMessageCredentials, seeMessageCredentials } from "./types"
 import { Message } from "../../entities/chat"
 import { useChatsManager } from "../../entities/chat"
 
@@ -15,7 +15,9 @@ interface SocketStore {
 
 	send: <T>(event: string, data: T) => void
 	sendNewMessage: (data: newMessageCredentials) => void
+	seeMessage: (data: seeMessageCredentials) => void
 	enterChat: (chatId: number) => void
+	leaveChat: (chatId: number) => void
 }
 
 export const useChatSocketStore = create<SocketStore>((set, get) => ({
@@ -48,10 +50,37 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 
 					return {
 						...chat,
-						messages: [
-							...(chat.messages ?? []),
-							message,
-						],
+						messages: [...(chat.messages ?? []), message],
+					}
+				})
+			})
+		})
+
+		socket.on("message:saw", (message: Message) => {
+			const { setChats } = useChatsManager.getState()
+
+			console.log("message:new:", message)
+
+			setChats((prev) => {
+				if (!prev) return []
+
+				return prev.map((chat) => {
+					if (Number(chat.id) !== Number(message.chatId)) {
+						return chat
+					}
+
+					return {
+						...chat,
+						messages: chat.messages?.map((oldMessage) => {
+							if (oldMessage.id !== message.id) {
+								return oldMessage
+							}
+
+							return {
+								...oldMessage,
+								readers: message.readers,
+							}
+						}),
 					}
 				})
 			})
@@ -88,7 +117,15 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 		get().socket?.emit("message:send", data)
 	},
 
+	seeMessage: (data) => {
+		get().socket?.emit("message:see", data)
+	},
+
 	enterChat: (chatId) => {
 		get().socket?.emit("chat:join", chatId)
+	},
+
+	leaveChat: (chatId) => {
+		get().socket?.emit("chat:leave", chatId)
 	},
 }))

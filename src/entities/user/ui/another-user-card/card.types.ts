@@ -1,10 +1,19 @@
+import { Message } from "../../../chat"
+
 export interface AbotherUserCardProps {
-    mode: "default" | "chat" | "request"
     avatar?: string
     name?: string | null
     surname?: string | null
     username: string
-    lastMessage?: string
-    subscribersCount?: number
+    function? :() => void
+}
+
+export interface AbotherUserChatCardProps {
+    avatar?: string
+    name?: string | null
+    surname?: string | null
+    username: string
+    lastMessage: Omit<Message, "createdAt">
+    createdAt: Date
     function? :() => void
 }

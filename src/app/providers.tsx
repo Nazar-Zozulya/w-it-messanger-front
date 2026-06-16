@@ -4,6 +4,7 @@ import { Layout } from "../widgets/layout"
 import { ChatPage } from "../pages/chat-page"
 
 export function AppProviders() {
+
 	return (
 		<BrowserRouter>
 			<Routes>
