@@ -1,5 +1,6 @@
 import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
 import { useUserContext } from "../../model/context"
+import { useUserStatusStore } from "../../model/storage"
 import styles from "./card.module.css"
 import { AbotherUserCardProps, AbotherUserChatCardProps } from "./card.types"
 
@@ -25,14 +26,18 @@ export function AnotherUserCard(props: AbotherUserCardProps) {
 export function AnotherUserChatCard(props: AbotherUserChatCardProps) {
 	const { user } = useUserContext()
 
+	const { users } = useUserStatusStore()
+
 	return (
 		<button
 			className={`${styles.container} ${styles.chatContainer} ${
-				props.lastMessage?.readers?.find(
-					(reader) => reader.id === user?.id,
-				)
+				props.lastMessage.senderId === user?.id
 					? undefined
-					: styles.newMessage
+					: props.lastMessage?.readers?.find(
+								(reader) => reader.id === user?.id,
+						  )
+						? undefined
+						: styles.newMessage
 			}`}
 			onClick={props.function}
 		>
@@ -41,6 +46,15 @@ export function AnotherUserChatCard(props: AbotherUserChatCardProps) {
 				className={styles.avatar}
 				alt=""
 			/>
+			<p>{users?.map((userStatus) =>{
+				console.log("userStatus:",userStatus)
+				if (userStatus.id === props.id) {
+					return `${userStatus.status}`
+				}
+				else { 
+					return "ff"
+				}
+			})}</p>
 			<div className={styles.chatText}>
 				<div className={styles.textLeftPart}>
 					<p className={styles.name}>

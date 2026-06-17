@@ -10,6 +10,7 @@ export interface AbotherUserCardProps {
 
 export interface AbotherUserChatCardProps {
     avatar?: string
+    id: number
     name?: string | null
     surname?: string | null
     username: string

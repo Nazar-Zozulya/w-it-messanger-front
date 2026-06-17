@@ -2,6 +2,8 @@ import { create } from "zustand"
 import { createSocket } from "./socket"
 import { Socket } from "socket.io-client"
 import { Message, useChatsManager } from "../../entities/chat"
+import { useUserStatusStore } from "../../entities/user"
+import { UserStatus } from "../../entities/user/model/types"
 
 interface SocketStore {
 	socket: Socket | null
@@ -15,6 +17,7 @@ interface SocketStore {
 	// sendNewMessage: (data: newMessageCredentials) => void
 	enterGlobalChat: (userId: number) => void
 	leaveGlobalChat: (userId: number) => void
+	getStatuses: (userId: number) => void
 }
 
 export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
@@ -29,6 +32,14 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 		socket.on("connect", () => {
 			console.log(1111111)
 			set({ isConnected: true })
+		})
+
+		socket.on("user:active", (id: number) => {
+			useUserStatusStore.getState().setUserNewStatus("active", id)
+		})
+
+		socket.on("user:deactive", (id: number) => {
+			useUserStatusStore.getState().setUserNewStatus("deactive", id)
 		})
 
 		socket.on("global-message:new", (message: Message) => {
@@ -50,6 +61,11 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 					}
 				})
 			})
+		})
+
+		socket.on("user:all-statuses", (data: UserStatus[]) => {
+			const { setInitialStatuses } = useUserStatusStore.getState()
+			setInitialStatuses(data)
 		})
 
 		socket.on("disconnect", () => {
@@ -85,5 +101,9 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 
 	leaveGlobalChat: (chatId) => {
 		get().socket?.emit("globalChat:leave", chatId)
+	},
+
+	getStatuses: (userId) => {
+		get().socket?.emit("user:get-statuses", userId)
 	},
 }))

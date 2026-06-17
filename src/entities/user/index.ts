@@ -2,3 +2,4 @@ export { type User, type Profile, type Avatar, type Album, type UserToPost, type
 export { UserContextProvider, useUserContext } from './model/context'
 export { UserAvatar } from './ui/user-avatar'
 export { AnotherUserCard } from './ui/another-user-card'
+export { useUserStatusStore } from './model/storage'

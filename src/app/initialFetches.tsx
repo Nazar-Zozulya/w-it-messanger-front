@@ -16,7 +16,12 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 	const { connect } = useChatSocketStore()
 
-	const { connect: connectGlobal, enterGlobalChat } = useGlobalChatSocketStore()
+	const {
+		connect: connectGlobal,
+		enterGlobalChat,
+		leaveGlobalChat,
+		getStatuses,
+	} = useGlobalChatSocketStore()
 
 	const { getAllFriends, getAllRecommendations, getAllRequests } =
 		useFriendsManager()
@@ -33,10 +38,10 @@ export function InitialFetches(props: InitialFetchesProps) {
 		connect()
 		connectGlobal()
 	}, [])
-	
+
 	useEffect(() => {
 		if (!token) return
-		
+
 		getAlbums(token)
 		getAllRecommendations(token)
 		getAllFriends(token)
@@ -50,6 +55,18 @@ export function InitialFetches(props: InitialFetchesProps) {
 		getIndividualChats(user.id)
 
 		enterGlobalChat(user.id)
+
+		getStatuses(user.id)
+
+		const handleLeave = () => {
+			leaveGlobalChat(user.id)
+		}
+
+		window.addEventListener("beforeunload", handleLeave)
+
+		return () => {
+			window.removeEventListener("beforeunload", handleLeave)
+		}
 	}, [user])
 
 	return <>{props.children}</>

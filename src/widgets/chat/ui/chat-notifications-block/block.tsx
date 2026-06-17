@@ -39,6 +39,7 @@ export function ChatNotificationsBlock() {
 									chat.messages[chat.messages.length - 1] ??
 									[]
 								}
+								id={anotherUser?.id as number}
 								createdAt={
 									chat.messages.length === 0
 										? undefined

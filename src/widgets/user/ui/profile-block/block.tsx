@@ -7,6 +7,9 @@ import {
 	useFriendsManager,
 } from "../../../../entities/friends"
 import { Button } from "../../../../shared/ui/button"
+import { POST } from "../../../../helpers/post"
+import { Chat } from "../../../../entities/chat"
+import { useNavigate } from "react-router-dom"
 
 export function ProfileBlock(props: ProfileBlockProps) {
 	const { user, token } = useUserContext()
@@ -20,6 +23,8 @@ export function ProfileBlock(props: ProfileBlockProps) {
 	const [selectedUser, setSelectedUser] = useState<User | null | undefined>(
 		null,
 	)
+
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		async function fetchAnotherUser() {
@@ -150,7 +155,28 @@ export function ProfileBlock(props: ProfileBlockProps) {
 							)}
 
 							{friendshipStatus === "friends" && (
-								<Button fill={true} text={"Повідомлення"} />
+								<Button
+									fill={true}
+									text={"Повідомлення"}
+									function={async () => {
+										const response = await POST<Chat>({
+											whichService: "chatService",
+											endpoint: "api/chat/get-chat",
+											body: {
+												userId: user?.id,
+												anotherUserId: selectedUser?.id,
+											},
+										})
+
+										if (response.status === "error") {
+											console.log(
+												"chat found or create problems",
+											)
+											return
+										}
+										navigate(`/chat/${response.data.id}`)
+									}}
+								/>
 							)}
 
 							{/* <Button fill={true} text={friendshipStatus ?? ""} /> */}
