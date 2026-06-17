@@ -36,13 +36,17 @@ export function ChatNotificationsBlock() {
 								name={anotherUser?.name}
 								surname={anotherUser?.surname}
 								lastMessage={
-									chat.messages[chat.messages.length - 1] ?? []
+									chat.messages[chat.messages.length - 1] ??
+									[]
 								}
 								createdAt={
-									new Date(
-										chat.messages[chat.messages.length - 1]
-											.createdAt as string,
-									)
+									chat.messages.length === 0
+										? undefined
+										: new Date(
+												chat.messages[
+													chat.messages.length - 1
+												].createdAt as string,
+											)
 								}
 								// avatar={}
 								function={async () => {

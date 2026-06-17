@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import { useForm } from "react-hook-form"
-import { Link, useParams } from "react-router-dom"
+import { data, Link, useParams } from "react-router-dom"
 
 import {
 	useChatSocketStore,
@@ -144,7 +144,7 @@ export function ChatBlock(props: ChatBlockProps) {
 						<div className={styles.headerLine}></div>
 					</div>
 
-					<div className={styles.messagesList}  ref={messagesRef}>
+					<div className={styles.messagesList} ref={messagesRef}>
 						{chat?.messages?.map((message) => {
 							console.log("message:", message.readers)
 							if (message.senderId === user?.id) {

@@ -27,7 +27,7 @@ export function AnotherUserChatCard(props: AbotherUserChatCardProps) {
 
 	return (
 		<button
-			className={`${styles.container} ${
+			className={`${styles.container} ${styles.chatContainer} ${
 				props.lastMessage?.readers?.find(
 					(reader) => reader.id === user?.id,
 				)
@@ -53,7 +53,9 @@ export function AnotherUserChatCard(props: AbotherUserChatCardProps) {
 					</p>
 				</div>
 				<p className={styles.createdAt}>
-					{props.createdAt.toISOString().slice(11, 16) /**  "14:05"*/}
+					{props.createdAt
+						?.toISOString()
+						.slice(11, 16) /**  "14:05"*/}
 				</p>
 			</div>
 		</button>

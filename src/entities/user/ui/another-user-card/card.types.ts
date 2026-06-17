@@ -14,6 +14,6 @@ export interface AbotherUserChatCardProps {
     surname?: string | null
     username: string
     lastMessage: Omit<Message, "createdAt">
-    createdAt: Date
+    createdAt?: Date
     function? :() => void
 }

@@ -9,6 +9,14 @@
 	background: none;
 	cursor: pointer;
 }
+
+.chatContainer {
+	width: 100%;
+	padding: 0.83vh 1.1vw;
+}
+
+/* padding: 1.7vh 1.1vw; */
+
 .avatar {
 	width: 4.8vh;
 	height: 4.8vh;
@@ -67,5 +75,5 @@
 }
 
 .newMessage {
-	color: #E9E5EE;
+	background: #E9E5EE !important;
 }
