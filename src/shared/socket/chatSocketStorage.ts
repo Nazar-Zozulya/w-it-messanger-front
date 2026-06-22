@@ -2,7 +2,7 @@ import { create } from "zustand"
 import { Socket } from "socket.io-client"
 import { createSocket } from "./socket"
 import { Result } from "../../types/result"
-import { newMessageCredentials, seeMessageCredentials } from "./types"
+import { newGroupMessageCredentials, newMessageCredentials, seeMessageCredentials } from "./types"
 import { Message } from "../../entities/chat"
 import { useChatsManager } from "../../entities/chat"
 
@@ -15,7 +15,9 @@ interface SocketStore {
 
 	send: <T>(event: string, data: T) => void
 	sendNewMessage: (data: newMessageCredentials) => void
+	sendNewGroupMessage: (data: newGroupMessageCredentials) => void
 	seeMessage: (data: seeMessageCredentials) => void
+	seeGroupMessage: (data: seeMessageCredentials) => void
 	enterChat: (chatId: number) => void
 	leaveChat: (chatId: number) => void
 }
@@ -56,6 +58,27 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 			})
 		})
 
+		socket.on("message-group:new", (message: Message) => {
+			const { setGroups } = useChatsManager.getState()
+
+			console.log("message:new:", message)
+
+			setGroups((prev) => {
+				if (!prev) return []
+
+				return prev.map((group) => {
+					if (Number(group.id) !== Number(message.chatId)) {
+						return group
+					}
+
+					return {
+						...group,
+						messages: [...(group.messages ?? []), message],
+					}
+				})
+			})
+		})
+
 		socket.on("message:saw", (message: Message) => {
 			const { setChats } = useChatsManager.getState()
 
@@ -72,6 +95,36 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 					return {
 						...chat,
 						messages: chat.messages?.map((oldMessage) => {
+							if (oldMessage.id !== message.id) {
+								return oldMessage
+							}
+
+							return {
+								...oldMessage,
+								readers: message.readers,
+							}
+						}),
+					}
+				})
+			})
+		})
+
+		socket.on("message-group:saw", (message: Message) => {
+			const { setGroups } = useChatsManager.getState()
+
+			console.log("message:new:", message)
+
+			setGroups((prev) => {
+				if (!prev) return []
+
+				return prev.map((group) => {
+					if (Number(group.id) !== Number(message.chatId)) {
+						return group
+					}
+
+					return {
+						...group,
+						messages: group.messages?.map((oldMessage) => {
 							if (oldMessage.id !== message.id) {
 								return oldMessage
 							}
@@ -117,8 +170,16 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 		get().socket?.emit("message:send", data)
 	},
 
+	sendNewGroupMessage: (data) => {
+		get().socket?.emit("message-group:send", data)
+	},
+
 	seeMessage: (data) => {
 		get().socket?.emit("message:see", data)
+	},
+
+	seeGroupMessage: (data) => {
+		get().socket?.emit("message-group:see", data)
 	},
 
 	enterChat: (chatId) => {

@@ -1,13 +1,16 @@
 import styles from "./block.module.css"
 import { ReactComponent as ChatIcon } from "../../../../shared/ui/icons/chat.svg"
-import { AnotherUserCard, useUserContext } from "../../../../entities/user"
+import {
+	AnotherUserChatCard,
+	AnotherUserGroupCard,
+	useUserContext,
+} from "../../../../entities/user"
 import { Chat, useChatsManager } from "../../../../entities/chat"
 import { POST } from "../../../../helpers/post"
 import { useNavigate } from "react-router-dom"
-import { AnotherUserChatCard } from "../../../../entities/user/ui/another-user-card"
 
 export function ChatNotificationsBlock() {
-	const { chats } = useChatsManager()
+	const { chats, groups } = useChatsManager()
 	const { user } = useUserContext()
 
 	const navigate = useNavigate()
@@ -35,6 +38,7 @@ export function ChatNotificationsBlock() {
 								username={anotherUser?.username ?? ""}
 								name={anotherUser?.name}
 								surname={anotherUser?.surname}
+								avatar={anotherUser?.avatar}
 								lastMessage={
 									chat.messages[chat.messages.length - 1] ??
 									[]
@@ -84,16 +88,53 @@ export function ChatNotificationsBlock() {
 					</button>
 				</div>
 				<div className={styles.list}>
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
-					<AnotherUserCard username="123123" />
+					{groups?.map((group) => {
+						// const anotherUser = chat.users.find(
+						// 	(chatUser) => chatUser.id !== user?.id,
+						// )
+
+						return (
+							<AnotherUserGroupCard
+								name={group.name ?? "Нова група"}
+								// name={anotherUser?.name}
+								// surname={anotherUser?.surname}
+								lastMessage={
+									group.messages[group.messages.length - 1] ??
+									[]
+								}
+								avatar={group.avatar?.base64}
+								id={group.id}
+								createdAt={
+									group.messages.length === 0
+										? undefined
+										: new Date(
+												group.messages[
+													group.messages.length - 1
+												].createdAt as string,
+											)
+								}
+								// avatar={}
+								function={async () => {
+									// const response = await POST<Chat>({
+									// 	whichService: "chatService",
+									// 	endpoint: "api/chat/get-chat",
+									// 	body: {
+									// 		userId: user?.id,
+									// 		anotherUserId: anotherUser?.id,
+									// 	},
+									// })
+
+									// if (response.status === "error") {
+									// 	console.log(
+									// 		"chat found or create problems",
+									// 	)
+									// 	return
+									// }
+									navigate(`/group/${group.id}`)
+								}}
+							/>
+						)
+					})}
 				</div>
 			</div>
 		</div>

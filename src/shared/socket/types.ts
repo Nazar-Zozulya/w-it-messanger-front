@@ -5,6 +5,13 @@ export interface newMessageCredentials {
 	text: string
 }
 
+export interface newGroupMessageCredentials {
+    chatId: number
+	receiversIds: number[]
+	senderId: number
+	text: string
+}
+
 export interface seeMessageCredentials {
     messageId: number
 	readerId: number

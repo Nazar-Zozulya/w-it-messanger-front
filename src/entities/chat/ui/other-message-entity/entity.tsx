@@ -6,10 +6,12 @@ import { useEffect, useRef } from "react"
 import { useChatSocketStore } from "../../../../shared/socket"
 import { useUserContext } from "../../../user"
 
-export function OtherMessageEntity(props: OtherMessageEntityProps) {
+export function OtherMessageEntity(
+	props: OtherMessageEntityProps,
+) {
 	const targetRef = useRef(null)
 
-	const { seeMessage } = useChatSocketStore()
+	const { seeMessage, seeGroupMessage } = useChatSocketStore()
 
 	const { user } = useUserContext()
 
@@ -23,10 +25,15 @@ export function OtherMessageEntity(props: OtherMessageEntityProps) {
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
-					seeMessage({
-						messageId: props.id,
-						readerId: user.id,
-					})
+					props.mode === "chat"
+						? seeMessage({
+								messageId: props.id,
+								readerId: user.id,
+							})
+						: seeGroupMessage({
+								messageId: props.id,
+								readerId: user.id,
+							})
 
 					observer.disconnect()
 				}

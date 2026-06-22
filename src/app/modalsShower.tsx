@@ -3,7 +3,7 @@ import { useModalManagerStore } from "../entities/modal/model/storage/modalManag
 import { CreatePostModal } from "../widgets/post"
 import { CompleteProfileModal } from "../widgets/user"
 import { CreateAlbumModal, UpdateAlbumModal } from "../widgets/album"
-import { CreateGroupStepOneModal } from "../widgets/chat"
+import { CreateGroupModal } from "../widgets/chat"
 
 export function ModalsShower(props: { children: React.ReactNode }) {
 	const { activeModal } = useModalManagerStore()
@@ -20,7 +20,7 @@ export function ModalsShower(props: { children: React.ReactNode }) {
 
 			{activeModal === "updateAlbum" && <UpdateAlbumModal />}
 
-			{activeModal === "createGroupStepOne" && <CreateGroupStepOneModal/>}
+			{activeModal === "createGroup" && <CreateGroupModal />}
 		</>
 	)
 }

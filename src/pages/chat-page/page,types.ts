@@ -1,3 +1,3 @@
 export interface ChatPageProps {
-    mode: "no-chat" | "chat"
+    mode: "no-chat" | "chat" | "group"
 }

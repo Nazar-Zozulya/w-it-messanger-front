@@ -63,6 +63,27 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 			})
 		})
 
+		socket.on("global-message-group:new", (message: Message) => {
+			const { setGroups } = useChatsManager.getState()
+
+			console.log("message:new:", message)
+
+			setGroups((prev) => {
+				if (!prev) return []
+
+				return prev.map((group) => {
+					if (Number(group.id) !== Number(message.chatId)) {
+						return group
+					}
+
+					return {
+						...group,
+						messages: [...(group.messages ?? []), message],
+					}
+				})
+			})
+		})
+
 		socket.on("user:all-statuses", (data: UserStatus[]) => {
 			const { setInitialStatuses } = useUserStatusStore.getState()
 			setInitialStatuses(data)

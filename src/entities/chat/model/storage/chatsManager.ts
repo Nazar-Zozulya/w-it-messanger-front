@@ -3,21 +3,41 @@ import { Chat, Message } from "../types"
 import { POST } from "../../../../helpers/post"
 import { GET } from "../../../../helpers/get"
 import { Result } from "../../../../types/result"
+import { User } from "../../../user"
 
 interface ChatsManagerStoreTypes {
 	chats: Chat[] | null
+	groups: Chat[] | null
 	setChats: (value: Chat[] | ((prev: Chat[] | null) => Chat[] | null)) => void
+	setGroups: (
+		value: Chat[] | ((prev: Chat[] | null) => Chat[] | null),
+	) => void
 	getChat: (userId: number, anotherUserId: number) => Promise<Result<Chat>>
 	// getMessagesFromChat: (chatId: number) => void
 	getIndividualChats: (userId: number) => void
+
+	createGroup: (
+		users: User[],
+		name: string,
+		adminId: number,
+		avatar?: string,
+	) => Promise<Result<Chat>>
+	getGroup: (groupId: number) => Promise<Result<Chat>>
+	getAllGroups: (userId: number) => void
 }
 
 export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 	chats: null,
+	groups: null,
 
 	setChats: (value) =>
 		set((state) => ({
 			chats: typeof value === "function" ? value(state.chats) : value,
+		})),
+
+	setGroups: (value) =>
+		set((state) => ({
+			groups: typeof value === "function" ? value(state.groups) : value,
 		})),
 
 	getChat: async (userId, anotherUserId) => {
@@ -53,29 +73,6 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 
 		return getChat
 	},
-	// getMessagesFromChat: async (chatId) => {
-	// 	const getMessages = await GET<Message[]>({
-	// 		whichService: "chatService",
-	// 		endpoint: `api/chat/message/${chatId}`,
-	// 	})
-
-	// 	if (getMessages.status === "error") return
-
-	// 	const chats = get().chats
-
-	// 	let selectedChat = chats?.find((chat) => chat.id === chatId) as Chat
-
-	// 	selectedChat = { ...selectedChat, messages: getMessages.data }
-
-	// 	const updatedChats = chats?.map((chat) => {
-	// 		if (chat.id === selectedChat.id) {
-	// 			return selectedChat
-	// 		}
-	// 		return chat
-	// 	})
-
-	// 	set({ chats: updatedChats })
-	// },
 	getIndividualChats: async (userId) => {
 		const getChats = await GET<Chat[]>({
 			whichService: "chatService",
@@ -84,8 +81,62 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 
 		if (getChats.status === "error") return
 
-		console.log("chats: ", getChats.data)
-
 		set({ chats: getChats.data })
+	},
+	createGroup: async (users, name, adminId, avatar) => {
+		const newGroup = await POST<Chat>({
+			whichService: "chatService",
+			endpoint: "api/chat/group/create",
+			body: {
+				users,
+				name,
+				avatar,
+				adminId,
+			},
+		})
+
+		if (newGroup.status === "error") return newGroup
+
+		const allGroups = get().groups
+
+		set({ groups: [...(allGroups ?? []), newGroup.data] })
+
+		return newGroup
+	},
+	getGroup: async (groupId) => {
+		const group = await GET<Chat>({
+			whichService: "chatService",
+			endpoint: `api/chat/group/${groupId}`,
+		})
+
+		if (group.status === "error") return group
+
+		const allGroups = get().groups ?? []
+
+		const exists = allGroups.some((item) => item.id === group.data.id)
+
+		if (exists) {
+			set({
+				groups: allGroups.map((item) =>
+					item.id === group.data.id ? group.data : item,
+				),
+			})
+		} else {
+			set({
+				groups: [...allGroups, group.data],
+			})
+		}
+
+		return group
+	},
+	getAllGroups: async (userId) => {
+		const gettedGroups = await GET<Chat[]>({
+			whichService: "chatService",
+			endpoint: `api/chat/groups/${userId}`,
+		})
+
+		if (gettedGroups.status === "error") return
+
+		set({ groups: gettedGroups.data })
 	},
 }))

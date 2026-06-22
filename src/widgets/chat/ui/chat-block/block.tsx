@@ -28,19 +28,26 @@ import {
 import { useUserContext } from "../../../../entities/user"
 
 export function ChatBlock(props: ChatBlockProps) {
-	const { sendNewMessage, enterChat, leaveChat, send } = useChatSocketStore()
+	const { sendNewMessage, sendNewGroupMessage, enterChat, leaveChat, send } =
+		useChatSocketStore()
 
 	const { send: globalSend } = useGlobalChatSocketStore()
 
-	const { getChat, setChats } = useChatsManager()
+	const { getChat, setChats, getGroup, setGroups } = useChatsManager()
 	const chats = useChatsManager((s) => s.chats)
+	const groups = useChatsManager((s) => s.groups)
 
 	const { user } = useUserContext()
 	const { id } = useParams()
 
 	const chatId = id ? Number(id) : null
 
-	const chat = chats?.find((c) => c.id === chatId)
+	const chat =
+		props.mode === "chat"
+			? chats?.find((c) => c.id === chatId)
+			: props.mode === "group"
+				? groups?.find((g) => g.id === chatId)
+				: null
 
 	const anotherUser = chat?.users?.find((u) => u.id !== user?.id) ?? null
 
@@ -56,23 +63,44 @@ export function ChatBlock(props: ChatBlockProps) {
 		async function fetchChat() {
 			if (!chatId || !user) return
 
-			const response = await getChat(user.id, chatId)
+			const response =
+				props.mode === "chat"
+					? await getChat(user.id, chatId)
+					: await getGroup(chatId)
 
 			if (response.status === "error") return
 
-			setChats((prev) => {
-				if (!prev) return [response.data]
+			if (props.mode === "chat") {
+				setChats((prev) => {
+					if (!prev) return [response.data]
 
-				const exists = prev.some((c) => c.id === response.data.id)
+					const exists = prev.some((c) => c.id === response.data.id)
 
-				if (exists) {
-					return prev.map((c) =>
-						c.id === response.data.id ? response.data : c,
-					)
-				}
+					if (exists) {
+						return prev.map((c) =>
+							c.id === response.data.id ? response.data : c,
+						)
+					}
 
-				return [...prev, response.data]
-			})
+					return [...prev, response.data]
+				})
+			}
+
+			if (props.mode === "group") {
+				setGroups((prev) => {
+					if (!prev) return [response.data]
+
+					const exists = prev.some((c) => c.id === response.data.id)
+
+					if (exists) {
+						return prev.map((c) =>
+							c.id === response.data.id ? response.data : c,
+						)
+					}
+
+					return [...prev, response.data]
+				})
+			}
 
 			enterChat(response.data.id)
 		}
@@ -92,14 +120,33 @@ export function ChatBlock(props: ChatBlockProps) {
 	}, [chat?.messages])
 
 	function sendMessage(data: SendMessageForm) {
-		if (!chatId || !user || !anotherUser || !chat) return
+		console.log("3123123")
+		if (props.mode === "chat") {
+			if (!chatId || !user || !anotherUser || !chat) return
 
-		sendNewMessage({
-			chatId: chat.id,
-			receiverId: anotherUser.id,
-			senderId: user.id,
-			text: data.text,
-		})
+			sendNewMessage({
+				chatId: chat.id,
+				receiverId: anotherUser.id,
+				senderId: user.id,
+				text: data.text,
+			})
+		}
+		console.log("123213")
+		if (props.mode === "group") {
+			console.log(chat)
+			if (!user || !chat) return
+
+			sendNewGroupMessage({
+				chatId: chat.id,
+				senderId: user.id,
+				text: data.text,
+				receiversIds: chat.users
+					.filter((chatUser) => {
+						return chatUser.id !== user.id
+					})
+					.map((chatUser) => chatUser.id),
+			})
+		}
 
 		reset()
 	}
@@ -110,7 +157,7 @@ export function ChatBlock(props: ChatBlockProps) {
 				props.mode === "chat" ? styles.chatStyles : styles.noChatStyles
 			}`}
 		>
-			{props.mode === "chat" ? (
+			{props.mode === "chat" || props.mode === "group" ? (
 				<>
 					<div className={styles.header}>
 						<div className={styles.headerContent}>
@@ -125,17 +172,22 @@ export function ChatBlock(props: ChatBlockProps) {
 								<div className={styles.headerChatWithDiv}>
 									<img
 										src={
-											anotherUser?.avatar ||
-											DEFAULT_AVATAR
+											props.mode === "chat"
+												? anotherUser?.avatar ||
+													DEFAULT_AVATAR
+												: chat?.avatar?.base64 ||
+													DEFAULT_AVATAR
 										}
 										className={styles.avatar}
 										alt=""
 									/>
 
 									<p className={styles.chatName}>
-										{anotherUser?.name
-											? `${anotherUser.name} ${anotherUser.surname}`
-											: anotherUser?.username}
+										{props.mode === "chat"
+											? anotherUser?.name
+												? `${anotherUser.name} ${anotherUser.surname}`
+												: anotherUser?.username
+											: (chat?.name ?? "Назва групи")}
 									</p>
 								</div>
 							</div>
@@ -172,6 +224,12 @@ export function ChatBlock(props: ChatBlockProps) {
 									}
 									readers={message.readers ?? []}
 									user={message.sender}
+									mode={
+										props.mode === "chat" ||
+										props.mode === "group"
+											? props.mode
+											: "chat"
+									}
 								/>
 							)
 						})}

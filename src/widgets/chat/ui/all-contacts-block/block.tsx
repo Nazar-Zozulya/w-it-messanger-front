@@ -9,11 +9,13 @@ import { POST } from "../../../../helpers/post"
 import { use } from "react"
 import { useNavigate } from "react-router-dom"
 import { Chat } from "../../../../entities/chat"
+import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 
 export function AllContactsBlock() {
 	const { allFriends } = useFriendsManager()
 	const { user } = useUserContext()
 	const navigate = useNavigate()
+	const { openModal } = useModalManagerStore()
 
 	return (
 		<div className={styles.container}>
@@ -22,6 +24,7 @@ export function AllContactsBlock() {
 				text="Створити груповий чат"
 				icon={<Plus />}
 				className={styles.createGroupButton}
+				function={() => {openModal("createGroup")}}
 			/>
 			<div className={styles.allContacts}>
 				<div className={styles.titleDiv}>
@@ -64,7 +67,6 @@ export function AllContactsBlock() {
 								// avatar={
 								// 	friend.profile.activeAvatar?.image.base64
 								// }
-								mode="default"
 							/>
 						)
 					})}

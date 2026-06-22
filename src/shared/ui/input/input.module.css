@@ -20,7 +20,7 @@
 .error {
     font-family: "GT Walsheim Pro";
     font-weight: 400;
-    font-size: 16px;
+    font-size: clamp(12px, 1.2vw, 16px);
     /* font-style: regular; */
     color: #FF4C4C;
 }
@@ -41,6 +41,8 @@
     color: #000;
     font-size: 16px;
     font-weight: 400;
+    outline: none;
+    cursor: text;
 }
 
 .input::placeholder {

@@ -1,3 +1,3 @@
 
 
-export { AnotherUserCard, AnotherUserChatCard } from './card'
+export { AnotherUserCard, AnotherUserChatCard, AnotherUserGroupCard } from './card'

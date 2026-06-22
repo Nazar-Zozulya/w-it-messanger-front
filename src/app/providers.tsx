@@ -18,6 +18,7 @@ export function AppProviders() {
 					<Route path="/settings" element={<SettingsPage />} />
 					<Route path="/chats" element={<ChatPage mode="no-chat"/>} />
 					<Route path="/chat/:id" element={<ChatPage mode="chat"/>} />
+					<Route path="/group/:id" element={<ChatPage mode="group"/>} />
 				</ Route>
 				
 			</Routes>

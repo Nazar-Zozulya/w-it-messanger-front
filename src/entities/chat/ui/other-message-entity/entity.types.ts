@@ -8,4 +8,5 @@ export interface OtherMessageEntityProps {
     createdAt: Date
     readers: UserToChat[]
     user: UserToChat
+    mode: "chat" | "group"
 }
