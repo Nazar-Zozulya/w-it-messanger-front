@@ -7,11 +7,10 @@ import { User } from "../../../user"
 
 interface ChatsManagerStoreTypes {
 	chats: Chat[] | null
-	groups: Chat[] | null
 	setChats: (value: Chat[] | ((prev: Chat[] | null) => Chat[] | null)) => void
-	setGroups: (
-		value: Chat[] | ((prev: Chat[] | null) => Chat[] | null),
-	) => void
+	// setGroups: (
+	// 	value: Chat[] | ((prev: Chat[] | null) => Chat[] | null),
+	// ) => void
 	getChat: (userId: number, anotherUserId: number) => Promise<Result<Chat>>
 	// getMessagesFromChat: (chatId: number) => void
 	getIndividualChats: (userId: number) => void
@@ -22,8 +21,8 @@ interface ChatsManagerStoreTypes {
 		adminId: number,
 		avatar?: string,
 	) => Promise<Result<Chat>>
-	getGroup: (groupId: number) => Promise<Result<Chat>>
-	getAllGroups: (userId: number) => void
+	// getGroup: (groupId: number) => Promise<Result<Chat>>
+	// getAllGroups: (userId: number) => void
 }
 
 export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
@@ -35,10 +34,10 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 			chats: typeof value === "function" ? value(state.chats) : value,
 		})),
 
-	setGroups: (value) =>
-		set((state) => ({
-			groups: typeof value === "function" ? value(state.groups) : value,
-		})),
+	// setGroups: (value) =>
+	// 	set((state) => ({
+	// 		groups: typeof value === "function" ? value(state.groups) : value,
+	// 	})),
 
 	getChat: async (userId, anotherUserId) => {
 		const getChat = await POST<Chat>({
@@ -97,46 +96,46 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 
 		if (newGroup.status === "error") return newGroup
 
-		const allGroups = get().groups
+		const allGroups = get().chats
 
-		set({ groups: [...(allGroups ?? []), newGroup.data] })
+		set({ chats: [...(allGroups ?? []), newGroup.data] })
 
 		return newGroup
 	},
-	getGroup: async (groupId) => {
-		const group = await GET<Chat>({
-			whichService: "chatService",
-			endpoint: `api/chat/group/${groupId}`,
-		})
+	// getGroup: async (groupId) => {
+	// 	const group = await GET<Chat>({
+	// 		whichService: "chatService",
+	// 		endpoint: `api/chat/group/${groupId}`,
+	// 	})
 
-		if (group.status === "error") return group
+	// 	if (group.status === "error") return group
 
-		const allGroups = get().groups ?? []
+	// 	const allGroups = get().groups ?? []
 
-		const exists = allGroups.some((item) => item.id === group.data.id)
+	// 	const exists = allGroups.some((item) => item.id === group.data.id)
 
-		if (exists) {
-			set({
-				groups: allGroups.map((item) =>
-					item.id === group.data.id ? group.data : item,
-				),
-			})
-		} else {
-			set({
-				groups: [...allGroups, group.data],
-			})
-		}
+	// 	if (exists) {
+	// 		set({
+	// 			groups: allGroups.map((item) =>
+	// 				item.id === group.data.id ? group.data : item,
+	// 			),
+	// 		})
+	// 	} else {
+	// 		set({
+	// 			groups: [...allGroups, group.data],
+	// 		})
+	// 	}
 
-		return group
-	},
-	getAllGroups: async (userId) => {
-		const gettedGroups = await GET<Chat[]>({
-			whichService: "chatService",
-			endpoint: `api/chat/groups/${userId}`,
-		})
+	// 	return group
+	// },
+	// getAllGroups: async (userId) => {
+	// 	const gettedGroups = await GET<Chat[]>({
+	// 		whichService: "chatService",
+	// 		endpoint: `api/chat/groups/${userId}`,
+	// 	})
 
-		if (gettedGroups.status === "error") return
+	// 	if (gettedGroups.status === "error") return
 
-		set({ groups: gettedGroups.data })
-	},
+	// 	set({ groups: gettedGroups.data })
+	// },
 }))

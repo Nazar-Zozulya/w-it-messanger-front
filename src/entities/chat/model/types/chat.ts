@@ -5,13 +5,13 @@ import { UserToChat } from "../../../user"
 export interface Chat {
     id: number
     name?: string
-    isGroup: boolean
+    is_group: boolean
     avatar?: Image
     avatarId?: number
     users: UserToChat[]
     admin: UserToChat
     adminId: number
-    createdAt: Date
-    updatedAt: Date
+    // createdAt: Date
+    // updatedAt: Date
     messages: Message[]
 }

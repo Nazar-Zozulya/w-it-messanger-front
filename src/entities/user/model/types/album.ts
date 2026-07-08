@@ -1,14 +1,20 @@
-import { User } from "./user"
-import { Image } from '../../../image/model/types'
+import { Profile } from "./profile"
+import { AlbumImage } from "./albumImage"
 
 export interface Album {
     id: number
     name: string
-    createdAt: Date
-    previewImage: string
-    shown: boolean
-    topic: string
+    theme: string
     year: number
-    user: User
-    images: Image[]
+
+    created_at: Date
+
+    is_shown: boolean
+
+    is_default: string
+
+    profile: Profile
+
+    previewImage: string
+    images: AlbumImage[]
 }

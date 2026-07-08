@@ -17,9 +17,9 @@ export function UserInfoBlock() {
 
 	const { handleSubmit, formState, control } = useForm<UserInfoChangeForm>({
 		defaultValues: {
-			name: user?.name,
-			surname: user?.surname,
-			dateOfBirth: user?.profile?.dateOfBirth as Date,
+			first_name: user?.first_name,
+			last_name: user?.last_name, 
+			birth_date: user?.profile?.birth_date as Date,
 			email: user?.email,
 		},
 	})
@@ -63,8 +63,8 @@ export function UserInfoBlock() {
 					label="Ім'я"
 					// defaultValue={user?.name}
 					placeholder="Введіть ваше ім'я"
-					error={formState.errors.name?.message}
-					name={"name"}
+					error={formState.errors.first_name?.message}
+					name={"first_name"}
 					disabled={!isChanging}
 				/>
 				<Input
@@ -72,8 +72,8 @@ export function UserInfoBlock() {
 					label="Прізвище"
 					// defaultValue={user?.surname}
 					placeholder="Введіть ваше прізвище"
-					error={formState.errors.surname?.message}
-					name={"surname"}
+					error={formState.errors.last_name?.message}
+					name={"last_name"}
 					disabled={!isChanging}
 				/>
 				<Input
@@ -83,8 +83,8 @@ export function UserInfoBlock() {
 					// defaultValue={
 					// 	user?.profile?.dateOfBirth?.toString().split("T")[0]
 					// }
-					error={formState.errors.dateOfBirth?.message}
-					name={"dateOfBirth"}
+					error={formState.errors.birth_date?.message}
+					name={"birth_date"}
 					disabled={!isChanging}
 				/>
 				<Input

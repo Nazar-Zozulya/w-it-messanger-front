@@ -18,12 +18,11 @@ export function UserAvatarBlock() {
 	const [username, setUsername] = useState<string>("")
 	const { handleSubmit, formState, control } = useForm<UserAvatarChangeForm>({
 		defaultValues: {
-			username: username
-		}
+			username: username,
+		},
 	})
 
 	const { user, token, update } = useUserContext()
-
 
 	useEffect(() => {
 		setUsername(user?.username || "")
@@ -118,8 +117,8 @@ export function UserAvatarBlock() {
 						src={
 							newAvatar
 								? newAvatar
-								: user?.profile.avatars[0]
-									? user.profile.activeAvatar?.image.base64
+								: user?.profile.avatar
+									? user.profile.avatar
 									: DEFAULT_AVATAR
 						}
 						// src={
@@ -134,8 +133,8 @@ export function UserAvatarBlock() {
 					/>
 				</button>
 				<p className={styles.name}>
-					{user?.name && user?.surname
-						? `${user.name} ${user.surname}`
+					{user?.first_name && user?.last_name
+						? `${user.first_name} ${user.last_name}`
 						: "Увас не вказано ім'я"}
 				</p>
 				{isChanging ? (

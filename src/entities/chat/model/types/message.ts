@@ -5,8 +5,8 @@ import { Chat } from "./chat"
 export interface Message {
     id: number
     text: string
-    createdAt: Date | string
-    updatedAt: Date | string
+    created_at: Date | string
+    // updatedAt: Date | string
     sender: UserToChat
     senderId: number
     readers: UserToChat[]

@@ -173,7 +173,7 @@ export function PostCard(props: PostCardProps) {
 					{props.post.links?.map((link) => {
 						return (
 							// <div className={styles.link}>
-							<a className={styles.link}>{link}</a>
+							<a className={styles.link}>{link.url}</a>
 							// </div>
 						)
 					})}
@@ -183,7 +183,7 @@ export function PostCard(props: PostCardProps) {
 					{props.post.images?.map((image) => {
 						return (
 							<img
-								src={image.base64}
+								src={image.compressed_image}
 								alt="123"
 								className={styles.image}
 							/>

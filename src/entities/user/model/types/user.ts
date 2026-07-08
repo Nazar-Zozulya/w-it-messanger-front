@@ -1,32 +1,35 @@
 import { Profile } from ".";
 import { Image } from '../../../image/model/types'
-import { Album } from "./album";
 
-export interface User{
+export interface User {
     id: number;
 
+    username: string;
     email: string;
     password: string;
 
-    profile: Profile
-    profileId: number
+    first_name: string;
+    last_name: string;
 
-    name?: string;
-    surname?: string;
-    username: string;
+    is_active: boolean;
+    is_staff: boolean;
+    is_superuser: boolean;
+
+    last_login?: Date | string;
+    date_joined: Date | string;
+
+    profile: Profile;
+    profileId: number;
 
     images: Image[];
-    albums: Album[]
-
-    lastLogin?: Date | string
-    createdAt: Date | string
-    updatedAt?: Date | string
+    // groups: Group[];
+    // user_permissions: Permission[];
 }
 
-export type UserToPost = Pick<User, "name" | "surname" | "username" | "id" > & {
+export type UserToPost = Pick<User, "first_name" | "last_name" | "username" | "id" > & {
     avatar?: string
 }
 
-export type UserToChat = Pick<User, "name" | "surname" | "username" | "id" > & {
+export type UserToChat = Pick<User, "first_name" | "last_name" | "username" | "id" > & {
     avatar?: string
 }

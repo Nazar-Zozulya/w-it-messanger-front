@@ -7,8 +7,6 @@ import { useFriendsManager } from "../../model/storage"
 
 export function RequestsCard(props: User) {
 	const navigate = useNavigate()
-	const { token } = useUserContext()
-	const { deleteRelationship, acceptRequest } = useFriendsManager()
 
 	return (
 		<div className={styles.container}>

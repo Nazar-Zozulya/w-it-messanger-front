@@ -13,7 +13,7 @@ export function ConfirmForm(props: { email: string; password: string }) {
 	const { handleSubmit, control } = useForm<ConfirmFormTypes>()
 	const [cookies, setCookie, removeCookie] = useCookies(["complete-profile"])
 	const [error, setError] = useState<string>("")
-	const { register } = useUserContext()
+	const { register, confirmEmail } = useUserContext()
 	const { email, password } = props
 
 	const navigate = useNavigate()
@@ -24,14 +24,7 @@ export function ConfirmForm(props: { email: string; password: string }) {
 		console.log("email: ", email)
 		console.log("code: ", code)
 
-		const result = await POST({
-			whichService: "userService",
-			endpoint: "api/user/comfirm-email",
-			body: {
-				email: email,
-				code: +code,
-			},
-		})
+		const result = await confirmEmail(email, code)
 		console.log(result)
 
 		if (result.status === "error") setError(`${result.message}`)

@@ -20,6 +20,8 @@ interface userContextTypes {
 		password: string,
 		// repeatPassword: string,
 	) => Promise<Result<string>>
+	preConfirmEmail: (email: string) => Promise<Result<string>>
+	confirmEmail: (email: string, code: string) => Promise<Result<string>>
 	logout: () => void
 	completeProfile: (
 		name?: string,
@@ -42,6 +44,12 @@ const initalValue: userContextTypes = {
 		return { status: "error" } as Error
 	},
 	register: async (email, password) => {
+		return { status: "error" } as Error
+	},
+	preConfirmEmail: async (email) => {
+		return { status: "error" } as Error
+	},
+	confirmEmail: async (email, code) => {
 		return { status: "error" } as Error
 	},
 	logout: () => {},
@@ -110,6 +118,31 @@ export function UserContextProvider(props: userProviderProps) {
 		}
 
 		setToken(result.data)
+
+		return result
+	}
+
+	async function preConfirmEmail(email: string) {
+		const result = await POST<string>({
+			whichService: "userService",
+			endpoint: "api/user/pre-confirm-email",
+			body: {
+				email
+			}
+		})
+
+		return result
+	}
+
+	async function confirmEmail(email: string, code: string) {
+		const result = await POST<string>({
+			whichService: "userService",
+			endpoint: "api/user/confirm-email",
+			body: {
+				email: email,
+				code: +code,
+			},
+		})
 
 		return result
 	}
@@ -224,6 +257,8 @@ export function UserContextProvider(props: userProviderProps) {
 				logout,
 				login,
 				register,
+				preConfirmEmail,
+				confirmEmail,
 				completeProfile,
 				getUser,
 				update,

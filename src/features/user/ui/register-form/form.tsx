@@ -10,31 +10,25 @@ import { useCookies } from "react-cookie"
 import { POST } from "../../../../helpers/post"
 
 export function RegisterForm(props: {
-	setUserData: (data :{email: string, password: string} | null) => void //функція яка передасті вверх дані з форми
+	setUserData: (data: { email: string; password: string } | null) => void //функція яка передасті вверх дані з форми
 }) {
 	const [cookies, setCookie, removeCookie] = useCookies(["complete-profile"])
 	const { handleSubmit, control } = useForm<RegisterFormTypes>()
 	const [validationError, setValidationError] = useState<string | null>(null)
 	const navigate = useNavigate()
 
-	const { register } = useUserContext()
+	const { preConfirmEmail } = useUserContext()
 
 	async function onSubmit(data: RegisterFormTypes) {
 		const { email, password, repeatPassword } = data
 		if (password !== repeatPassword) {
-			setValidationError('Паролі не співпадають')
+			setValidationError("Паролі не співпадають")
 		}
 
-		const result = await POST({
-			whichService: "userService",
-			endpoint: "api/user/pre-comfirm-email",
-			body: {
-				email
-			}
-		})
+		const result = await preConfirmEmail(email)
 		// const result = await register(email, password, repeatPassword)
 
-		props.setUserData({email, password})
+		props.setUserData({ email, password })
 
 		if (result.status === "error") {
 			setValidationError(`${result.message}`)

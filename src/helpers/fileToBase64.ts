@@ -1,5 +1,3 @@
-import { rejects } from "assert"
-import { resolve } from "path"
 
 export async function fileToBase64(file: File): Promise<string | null> {
 	return new Promise((resolve, reject) => {

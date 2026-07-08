@@ -68,7 +68,7 @@ export function MainPage(props: MainPageProps) {
 					</>
 				)}
 				{props.mode === "anotherUser" && (
-					<UserAlbumsBlock albums={anotherUser?.albums || []} />
+					<UserAlbumsBlock albums={anotherUser?.profile.albums || []} />
 				)}
 			</div>
 			<div className={styles.content}>

@@ -30,13 +30,13 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 	const { getAlbums } = useAlbumsManager()
 
-	const { getIndividualChats, getAllGroups } = useChatsManager()
+	const { getIndividualChats } = useChatsManager()
 
 	useEffect(() => {
 		// не надо токен для получения
 		getPosts()
-		connect()
-		connectGlobal()
+		// connect()
+		// connectGlobal()
 	}, [])
 
 	useEffect(() => {
@@ -53,7 +53,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 		getMyPosts(user.id)
 		getIndividualChats(user.id)
-		getAllGroups(user.id)
+		// getAllGroups(user.id)
 
 		enterGlobalChat(user.id)
 

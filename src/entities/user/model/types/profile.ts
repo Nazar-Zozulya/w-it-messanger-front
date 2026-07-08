@@ -1,18 +1,28 @@
-import { User, Avatar } from "."
+import { User, Album } from "."
 
 export interface Profile {
-    id: number
+	id: number
 
-    user: User
-    userId: number
+	user: User
+	userId: number
+
+	signature?: string
+
+	birth_date?: Date | string
+
+	avatar: string
+
+    pseudonym: string
+
+    is_image_signature: boolean
+
+    is_text_signature: boolean
     
-    signature?: string
+    albums: Album[]
 
-    dateOfBirth?: Date | string
+	// activeAvatar?: Avatar | undefined
 
-    activeAvatar?: Avatar | undefined
+	// activeAvatarId?: number | undefined
 
-    activeAvatarId?: number | undefined
-
-    avatars: Avatar[]
+	// avatars: Avatar[]
 }
