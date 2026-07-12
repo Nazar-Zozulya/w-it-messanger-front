@@ -19,9 +19,9 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 	const [error, setError] = useState<string>("")
 
 	async function onSubmit(data: CompleteProfileForm) {
-		const { name, surname, username } = data
+		const { first_name, last_name, username } = data
 		console.log("complete profile data: ", data)
-		const result = await completeProfile(name, surname, username)
+		const result = await completeProfile(first_name, last_name, username)
 
 		if (result.status === "error") {
 			setError(result.message ?? "")
@@ -49,7 +49,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 						<Input
 							label="Ім'я"
 							placeholder="Введіть ваше ім'я"
-							error={formState.errors.name?.message}
+							error={formState.errors.first_name?.message}
 							fullWidth={true}
 							rules={{
 								minLength: {
@@ -69,7 +69,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 						<Input
 							label="Прізвище"
 							placeholder="Введіть прізвище"
-							error={formState.errors.surname?.message}
+							error={formState.errors.last_name?.message}
 							fullWidth={true}
 							rules={{
 								minLength: {

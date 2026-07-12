@@ -67,13 +67,13 @@ export function ProfileBlock(props: ProfileBlockProps) {
 			<div className={styles.ProfileInfo}>
 				<UserAvatar
 					avatar={
-						selectedUser?.profile.activeAvatar?.image.base64 ??
+						selectedUser?.profile?.avatar ??
 						undefined
 					}
 				/>
 
 				<div className={styles.NameBlock}>
-					<p className={styles.Name}>{selectedUser?.name}</p>
+					<p className={styles.Name}>{selectedUser?.first_name}</p>
 					<p className={styles.Username}>@{selectedUser?.username}</p>
 				</div>
 			</div>

@@ -114,13 +114,7 @@ export function UserAvatarBlock() {
 						onChange={onChangeAvatarClick}
 					/>
 					<img
-						src={
-							newAvatar
-								? newAvatar
-								: user?.profile.avatar
-									? user.profile.avatar
-									: DEFAULT_AVATAR
-						}
+						src={newAvatar ?? user?.profile?.avatar ?? DEFAULT_AVATAR}
 						// src={
 						// 	user?.profile.avatars[0]
 						// 		? user?.profile.avatars[0].image

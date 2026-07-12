@@ -62,8 +62,8 @@ export function AllContactsBlock() {
 									}
 									navigate(`/chat/${response.data.id}`)
 								}}
-								name={friend.name}
-								surname={friend.surname}
+								name={friend.first_name}
+								surname={friend.last_name}
 								// avatar={
 								// 	friend.profile.activeAvatar?.image.base64
 								// }

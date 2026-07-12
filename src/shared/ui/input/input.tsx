@@ -18,7 +18,7 @@ export function Input(props: InputProps) {
 		size = "default",
 		name,
 		rules,
-		// defaultValue,
+		defaultValue,
 		className,
 		disabled,
 		fullWidth = false,
@@ -53,7 +53,7 @@ export function Input(props: InputProps) {
 								className={`${styles.input} ${className ? className : ""} ${disabled ? styles.disabled : ""} ${size === "small" ? styles.smallInput : ""} `}
 								value={field.value}
 								style={style}
-								// defaultValue={defaultValue}
+								defaultValue={defaultValue}
 								onChange={(e) => field.onChange(e)}
 								// onChange={}
 								{...otherProps}

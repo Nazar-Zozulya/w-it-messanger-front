@@ -46,23 +46,23 @@ export function MyImagesBlock() {
 		// user
 		const profile = user.profile
 
-		const remainingAvatars =
-			profile.avatars?.filter((a) => a.imageId !== id) ?? []
+		// const remainingAvatars =
+		// 	profile.avatars?.filter((a) => a.imageId !== id) ?? []
 
-		const isActiveAvatar = profile.activeAvatar?.imageId === id
+		// const isActiveAvatar = profile.avatar?.imageId === id
 
-		const newUser = {
-			...user,
-			profile: {
-				...profile,
-				avatars: remainingAvatars,
-				activeAvatar: isActiveAvatar
-					? remainingAvatars.at(-1)
-					: profile.activeAvatar,
-			},
-		}
+		// const newUser = {
+		// 	...user,
+		// 	profile: {
+		// 		...profile,
+		// 		avatars: remainingAvatars,
+		// 		activeAvatar: isActiveAvatar
+		// 			? remainingAvatars.at(-1)
+		// 			: profile.avatar,
+		// 	},
+		// }
 
-		setUser(newUser)
+		// setUser(newUser)
 	}
 
 	async function switchShown(id: number) {

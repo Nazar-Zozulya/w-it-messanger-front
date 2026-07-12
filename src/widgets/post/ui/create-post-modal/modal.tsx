@@ -33,6 +33,8 @@ export function CreatePostModal() {
 
 	const { createPost } = usePostsManager()
 
+	const { token } = useUserContext()
+
 	// Переменная которая говорит что будет показываться кнопка добавления тега или инпут добавления тега
 	// false = показуется кнопка добавления
 	// true = показуется инпут добавления
@@ -125,12 +127,13 @@ export function CreatePostModal() {
 
 	async function onSubmit(data: createPostForm) {
 		if (!user) return
+		if (!token) return
 		const postAuthor: UserToPost = {
 			username: user.username,
 			id: user.id,
-			name: user.name,
-			surname: user.surname,
-			avatar: user.profile.activeAvatar?.image.base64
+			first_name: user.first_name,
+			last_name: user.last_name,
+			avatar: user.profile?.avatar
 		}
 
 		const newData: createPostData = {
@@ -143,7 +146,9 @@ export function CreatePostModal() {
 
 		console.log("images: " + newData.images)
 
-		const response = await createPost(newData)
+
+
+		const response = await createPost(newData, token)
 
 		if (response.status === "error") setError(response.message ?? "error")
 

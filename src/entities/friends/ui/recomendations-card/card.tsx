@@ -18,14 +18,14 @@ export function RecomendationsCard(props: User) {
 			>
 				<UserAvatar
 					avatar={
-						props.profile?.activeAvatar?.image?.base64 ??
+						props.profile?.avatar ??
 						DEFAULT_AVATAR
 					}
 				/>
 
 				<div className={styles.textDiv}>
 					<p className={styles.name}>
-						{props.name} {props.surname}
+						{props.first_name} {props.last_name}
 					</p>
 					<p className={styles.username}></p>
 				</div>

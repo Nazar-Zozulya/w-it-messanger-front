@@ -155,18 +155,18 @@ export function UserContextProvider(props: userProviderProps) {
 	}
 
 	async function completeProfile(
-		name?: string,
+		first_name?: string,
 		surname?: string,
-		username?: string,
+		last_name?: string,
 	) {
 		const result = await POST<User>({
 			whichService: "userService",
 			endpoint: "api/user/complete-profile",
 			method: "PATCH",
 			body: {
-				name,
+				first_name,
 				surname,
-				username,
+				last_name,
 			},
 			token: token as string,
 		})

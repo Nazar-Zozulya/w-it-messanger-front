@@ -61,7 +61,7 @@ export function UserInfoBlock() {
 				<Input
 					control={control}
 					label="Ім'я"
-					// defaultValue={user?.name}
+					defaultValue={user?.first_name}
 					placeholder="Введіть ваше ім'я"
 					error={formState.errors.first_name?.message}
 					name={"first_name"}
@@ -70,7 +70,7 @@ export function UserInfoBlock() {
 				<Input
 					control={control}
 					label="Прізвище"
-					// defaultValue={user?.surname}
+					defaultValue={user?.last_name}
 					placeholder="Введіть ваше прізвище"
 					error={formState.errors.last_name?.message}
 					name={"last_name"}
@@ -80,9 +80,9 @@ export function UserInfoBlock() {
 					control={control}
 					label="Дата народження"
 					type={"date"}
-					// defaultValue={
-					// 	user?.profile?.dateOfBirth?.toString().split("T")[0]
-					// }
+					defaultValue={
+						user?.profile?.birth_date?.toString().split("T")[0]
+					}
 					error={formState.errors.birth_date?.message}
 					name={"birth_date"}
 					disabled={!isChanging}
@@ -90,7 +90,7 @@ export function UserInfoBlock() {
 				<Input
 					control={control}
 					label="Електронна адреса"
-					// defaultValue={user?.email}
+					defaultValue={user?.email}
 					placeholder="Введіть вашу електронну адресу"
 					error={formState.errors.email?.message}
 					name={"email"}

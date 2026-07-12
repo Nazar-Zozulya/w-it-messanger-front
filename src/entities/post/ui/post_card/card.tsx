@@ -69,9 +69,9 @@ export function PostCard(props: PostCardProps) {
 						}
 						alt=""
 					/>
-					{props.post.author.name && props.post.author.surname ? (
+					{props.post.author.first_name && props.post.author.last_name ? (
 						<p>
-							{props.post.author.name} {props.post.author.surname}
+							{props.post.author.first_name} {props.post.author.last_name}
 						</p>
 					) : (
 						<p>{props.post.author.username}</p>
@@ -183,7 +183,7 @@ export function PostCard(props: PostCardProps) {
 					{props.post.images?.map((image) => {
 						return (
 							<img
-								src={image.compressed_image}
+								src={image.original_image}
 								alt="123"
 								className={styles.image}
 							/>

@@ -34,7 +34,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 	useEffect(() => {
 		// не надо токен для получения
-		getPosts()
+		// getPosts()
 		// connect()
 		// connectGlobal()
 	}, [])
@@ -51,7 +51,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 	useEffect(() => {
 		if (!user) return
 
-		getMyPosts(user.id)
+		// getMyPosts(user.id)
 		getIndividualChats(user.id)
 		// getAllGroups(user.id)
 
