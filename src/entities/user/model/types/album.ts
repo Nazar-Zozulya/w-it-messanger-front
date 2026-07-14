@@ -15,6 +15,6 @@ export interface Album {
 
     profile: Profile
 
-    previewImage: string
+    // previewImage: string
     images: AlbumImage[]
 }

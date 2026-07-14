@@ -24,11 +24,12 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 		try {
 			const response = await GET<Album[]>({
 				whichService: "userService",
-				endpoint: "api/user/album",
+				endpoint: "api/user/albums",
 				token,
 			})
 
 			if (response.status === "success") {
+				console.log("setting albums", response.data);
 				set({ albums: response.data })
 			}
 
@@ -42,7 +43,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 		try {
 			const response = await POST<Album>({
 				whichService: "userService",
-				endpoint: "api/user/album/create",
+				endpoint: "api/user/albums/create",
 				token,
 				body: credentials,
 			})
@@ -59,7 +60,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 		try {
 			const response = await POST<Album>({
 				whichService: "userService",
-				endpoint: "api/user/album/update",
+				endpoint: "api/user/albums/update",
 				method: "PUT",
 				token,
 				body: { ...credentials, id: albumId },
@@ -70,7 +71,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 					albums: get().albums?.map((album) => {
 						if (album.id === albumId) {
 							album.name = response.data.name
-							album.topic = response.data.topic
+							album.theme = response.data.theme
 							album.year = response.data.year
 						}
 						return album
@@ -86,7 +87,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 		try {
 			const response = await POST<Album>({
 				whichService: "userService",
-				endpoint: "api/user/album/delete",
+				endpoint: "api/user/albums/delete",
 				method: "DELETE",
 				token,
 				body: {id: albumId},
@@ -108,7 +109,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 		try {
 			const response = await POST<Album>({
 				whichService: "userService",
-				endpoint: "api/user/album/switch-shown",
+				endpoint: "api/user/albums/switch-shown",
 				method: "PATCH",
 				token,
 				body: {id: albumId},
@@ -118,7 +119,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 				set({
 					albums: get().albums?.map((album) => {
 						if (album.id === albumId) {
-							album.shown = !album.shown
+							album.is_shown = !album.is_shown
 						}
 						return album
 					}),

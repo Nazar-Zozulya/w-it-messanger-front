@@ -30,7 +30,7 @@ interface userContextTypes {
 	) => Promise<Result<User>>
 	getUser: (token: string) => Promise<Result<User>>
 	update: (
-		data: Partial<User> & { avatar: string | null },
+		data: Partial<User & { avatar?: string }>,
 	) => Promise<Result<User>>
 }
 
@@ -196,7 +196,7 @@ export function UserContextProvider(props: userProviderProps) {
 		return result
 	}
 
-	async function update(data: Partial<User> & { avatar: string | null }) {
+	async function update(data: Partial<User & { avatar?: string }>) {
 		const result = await POST<User>({
 			whichService: "userService",
 			endpoint: "api/user/update",

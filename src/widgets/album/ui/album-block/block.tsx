@@ -10,21 +10,26 @@ export function AlbumBlock() {
 
 	const { albums } = useAlbumsManager()
 
+	console.log("albums =", albums);
+	console.log("length =", albums?.length);
 	return (
 		<div className={styles.container}>
 			<MyImagesBlock />
 
-			{(albums?.length ?? 1 > 0) ? (
+			{(albums && albums.length > 0) ? (
 				albums?.map((album) => {
+					console.log("albums =", albums);
+					console.log("length =", albums?.length);
 					return (
 						<AlbumCard
 							id={album.id}
 							name={album.name}
 							year={album.year}
-							createdAt={album.createdAt}
-							topic={album.topic}
-							previewImage={album.previewImage}
-							shown={album.shown}
+							created_at={album.created_at}
+							theme={album.theme}
+							// previewImage={album.previewImage}
+							is_shown={album.is_shown}
+							is_default={album.is_default}
 							images={album.images}
 						/>
 					)

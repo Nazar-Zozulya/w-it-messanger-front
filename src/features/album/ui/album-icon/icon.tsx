@@ -4,8 +4,6 @@ import { Button } from "../../../../shared/ui/button"
 import { ReactComponent as Eye } from "../../../../shared/ui/icons/eye.svg"
 import { ReactComponent as SlashEye } from "../../../../shared/ui/icons/shashEye.svg"
 import { ReactComponent as Trash } from "../../../../shared/ui/icons/trash.svg"
-import { POST } from "../../../../helpers/post"
-import { useUserContext } from "../../../../entities/user"
 
 export function AlbumIcon(props: AlbumIconProps) {
 

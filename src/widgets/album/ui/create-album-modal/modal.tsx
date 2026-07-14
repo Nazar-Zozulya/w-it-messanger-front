@@ -46,7 +46,7 @@ export function CreateAlbumModal() {
 						/>
 						<Input
 							control={control}
-							name="topic"
+							name="theme"
 							label="Оберіть тему"
 							placeholder="Настрій"
 							fullWidth={true}

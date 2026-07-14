@@ -39,9 +39,14 @@ export function UserAvatarBlock() {
 	async function onSubmit(data: UserAvatarChangeForm) {
 		setIsChanging(false)
 
-		const newData = { ...data, avatar: newAvatar }
+		let newData: Partial<typeof data> = {}
+
+		if (newAvatar) newData.avatar = newAvatar
+		if (data.username) newData.username = data.username
 
 		const response = await update(newData)
+
+
 
 		if (response.status === "error") {
 			setError(response.message ?? "unknown error")

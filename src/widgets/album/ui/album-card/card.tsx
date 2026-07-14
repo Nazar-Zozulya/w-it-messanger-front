@@ -14,14 +14,15 @@ import { useModalManagerStore } from "../../../../entities/modal/model/storage/m
 import { useEffect, useState } from "react"
 import { Image } from "../../../../entities/image"
 import { SmallModal } from "../../../../shared/ui/small-modal"
+import { AlbumImage } from "../../../../entities/user/model/types"
 
-export function AlbumCard(props: Omit<Album, "user">) {
+export function AlbumCard(props: Omit<Album, "profile">) {
 	const { switchShownAlbum, deleteAlbum } = useAlbumsManager()
 
 	const [isMoreOptionsModalVisible, setIsMoreOptionsModalVisible] =
 		useState<boolean>(false)
 
-	const [images, setImages] = useState<Image[]>([])
+	const [images, setImages] = useState<AlbumImage[]>([])
 	const [preImages, setPreImages] = useState<string[]>([])
 
 	const { openModal, setData } = useModalManagerStore()
@@ -37,7 +38,7 @@ export function AlbumCard(props: Omit<Album, "user">) {
 	}
 
 	async function albumUpdate() {
-		setData({ albumId: props.id, name: props.name, topic: props.topic, year: props.year })
+		setData({ albumId: props.id, name: props.name, topic: props.theme, year: props.year })
 
 		openModal("updateAlbum")
 	}
@@ -48,7 +49,7 @@ export function AlbumCard(props: Omit<Album, "user">) {
 		const response = await POST<string>({
 			method: "DELETE",
 			whichService: "userService",
-			endpoint: "api/user/image/delete",
+			endpoint: "api/user/albums/image/delete",
 			token,
 			body: { imageId: id },
 		})
@@ -68,7 +69,7 @@ export function AlbumCard(props: Omit<Album, "user">) {
 		const response = await POST<string>({
 			method: "PATCH",
 			whichService: "userService",
-			endpoint: "api/user/image/switch-shown",
+			endpoint: "api/user/albums/image/switch-shown",
 			token,
 			body: { imageId: id },
 		})
@@ -78,7 +79,7 @@ export function AlbumCard(props: Omit<Album, "user">) {
 		setImages(
 			images.map((image) => {
 				if (image.id === id) {
-					image.shown = !image.shown
+					image.is_shown = !image.is_shown
 				}
 				return image
 			}),
@@ -90,9 +91,9 @@ export function AlbumCard(props: Omit<Album, "user">) {
 
 		setPreImages((prev) => [...prev, image])
 
-		const response = await POST<Image>({
+		const response = await POST<AlbumImage>({
 			whichService: "userService",
-			endpoint: "api/user/album/image/add",
+			endpoint: "api/user/albums/image/add",
 			token: token,
 			body: {
 				image: image,
@@ -104,8 +105,8 @@ export function AlbumCard(props: Omit<Album, "user">) {
 			return
 		}
 		setPreImages(
-			preImages.filter((image) => {
-				return image !== image
+			preImages.filter((preImage) => {
+				return preImage !== image
 			}),
 		)
 
@@ -122,7 +123,7 @@ export function AlbumCard(props: Omit<Album, "user">) {
 			button={
 				<div className={styles.headerButtonsDiv}>
 					<Button
-						icon={props.shown ? <Eye /> : <SlashEye />}
+						icon={props.is_shown ? <Eye /> : <SlashEye />}
 						function={albumSwitchShown}
 						fill={false}
 					/>
@@ -135,14 +136,14 @@ export function AlbumCard(props: Omit<Album, "user">) {
 								)
 							}}
 							initiator={
-								<button
-									className={styles.moreOptionsButton}
-									onClick={() => {
-										setIsMoreOptionsModalVisible(
-											!isMoreOptionsModalVisible,
-										)
-									}}
-								>
+								// <button
+								// 	className={styles.moreOptionsButton}
+								// 	onClick={() => {
+								// 		setIsMoreOptionsModalVisible(
+								// 			!isMoreOptionsModalVisible,
+								// 		)
+								// 	}}
+								// >
 									<ThreeDots
 										style={{
 											display: !isMoreOptionsModalVisible
@@ -150,7 +151,7 @@ export function AlbumCard(props: Omit<Album, "user">) {
 												: "none",
 										}}
 									/>
-								</button>
+								// </button> 
 							}
 							modal={
 								<div className={styles.moreOptionsModal}>
@@ -175,8 +176,8 @@ export function AlbumCard(props: Omit<Album, "user">) {
 										}
 										onClick={() => {albumSwitchShown(); setIsMoreOptionsModalVisible(false)}}
 									>
-										{ props.shown ? <Eye /> : <SlashEye /> }
-										<p>{props.shown ? "Цей альбом бачите тільки ви" : "Цей альбом бачать всі"}</p>
+										{ props.is_shown ? <Eye /> : <SlashEye /> }
+										<p>{props.is_shown ? "Цей альбом бачите тільки ви" : "Цей альбом бачать всі"}</p>
 									</button>
 									<button
 										className={
@@ -207,7 +208,7 @@ export function AlbumCard(props: Omit<Album, "user">) {
 		>
 			<div className={styles.container}>
 				<div className={styles.header}>
-					<p className={styles.topic}>{props.topic}</p>
+					<p className={styles.topic}>{props.theme}</p>
 					<p className={styles.year}>{props.year}</p>
 				</div>
 				<div className={styles.line}></div>
@@ -217,9 +218,9 @@ export function AlbumCard(props: Omit<Album, "user">) {
 						{(images ?? []).map((image) => {
 							return (
 								<AlbumIcon
-									image={image.base64}
+									image={image.image}
 									id={image.id}
-									shown={image.shown}
+									shown={image.is_shown}
 									onDelete={deleteImage}
 									switchShown={switchShownImage}
 								/>

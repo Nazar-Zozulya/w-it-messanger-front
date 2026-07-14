@@ -1,5 +1,5 @@
 export interface CreateAlbumCredentials {
     name: string
-    topic: string
+    theme: string
     year: number
 }
