@@ -4,6 +4,6 @@ import { UserToChat } from "../../../user"
 export interface MyMessageEntityProps {
     text: string
     images?: Image[]
-    createdAt: Date
+    created_at: Date
     readers: UserToChat[]
 }

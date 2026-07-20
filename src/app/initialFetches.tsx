@@ -1,11 +1,12 @@
 import { ReactNode, useEffect } from "react"
 import { usePostsManager } from "../entities/post"
-import { useUserContext } from "../entities/user"
+import { useUserContext, useUserStatusStore } from "../entities/user"
 import { useAlbumsManager } from "../entities/album"
 import { useFriendsManager } from "../entities/friends"
 import { useChatSocketStore, useGlobalChatSocketStore } from "../shared/socket"
 import { useChatsManager } from "../entities/chat"
 import { useLocation } from "react-router-dom"
+import { WHICH_SERVICE } from "../constants/which-service"
 
 interface InitialFetchesProps {
 	children: ReactNode
@@ -14,14 +15,18 @@ interface InitialFetchesProps {
 export function InitialFetches(props: InitialFetchesProps) {
 	const { getPosts, getMyPosts } = usePostsManager()
 
-	const { connect } = useChatSocketStore()
+	const { connectSocket, connectSignalR } = useChatSocketStore()
 
 	const {
-		connect: connectGlobal,
+		connectSocket: connectGlobalSocket,
+		connectSignalR: connectGlobalSignalR,
 		enterGlobalChat,
 		leaveGlobalChat,
 		getStatuses,
+		isConnected,
 	} = useGlobalChatSocketStore()
+
+	const { users } = useUserStatusStore()
 
 	const { getAllFriends, getAllRecommendations, getAllRequests } =
 		useFriendsManager()
@@ -46,6 +51,14 @@ export function InitialFetches(props: InitialFetchesProps) {
 		getAllRecommendations(token)
 		getAllFriends(token)
 		getAllRequests(token)
+
+		if (WHICH_SERVICE === "js") {
+			connectSocket()
+			connectGlobalSocket()
+		} else {
+			connectSignalR()
+			connectGlobalSignalR()
+		}
 	}, [token])
 
 	useEffect(() => {
@@ -55,9 +68,9 @@ export function InitialFetches(props: InitialFetchesProps) {
 		getIndividualChats(user.id)
 		// getAllGroups(user.id)
 
-		enterGlobalChat(user.id)
+		// enterGlobalChat(user.id)
 
-		getStatuses(user.id)
+		// getStatuses(user.id)
 
 		const handleLeave = () => {
 			leaveGlobalChat(user.id)
@@ -69,6 +82,18 @@ export function InitialFetches(props: InitialFetchesProps) {
 			window.removeEventListener("beforeunload", handleLeave)
 		}
 	}, [user])
+
+	useEffect(() => {
+		if (!user) return
+		if (!isConnected) return
+
+		enterGlobalChat(user.id)
+		getStatuses(user.id)
+	}, [user, isConnected])
+
+	useEffect(() => {
+		console.log("user statuses:", users)
+	}, [users])
 
 	return <>{props.children}</>
 }

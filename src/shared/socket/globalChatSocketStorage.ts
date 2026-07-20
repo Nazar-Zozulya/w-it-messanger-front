@@ -1,16 +1,20 @@
 import { create } from "zustand"
-import { createSocket } from "./socket"
+import { createConnection, createSocket } from "./socket"
 import { Socket } from "socket.io-client"
 import { Message, useChatsManager } from "../../entities/chat"
 import { useUserStatusStore } from "../../entities/user"
 import { UserStatus } from "../../entities/user/model/types"
+import { HubConnection } from "@microsoft/signalr"
+import { emit } from "../../helpers/emit-socket"
 
 interface SocketStore {
 	socket: Socket | null
+	connection: HubConnection | null
 
 	isConnected: boolean
 
-	connect: () => void
+	connectSocket: () => void
+	connectSignalR: () => void
 	disconnect: () => void
 
 	send: <T>(event: string, data: T) => void
@@ -22,9 +26,10 @@ interface SocketStore {
 
 export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 	socket: null,
+	connection: null,
 	isConnected: false,
 
-	connect: () => {
+	connectSocket: () => {
 		if (get().socket) return
 
 		const socket = createSocket("global")
@@ -63,27 +68,6 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 			})
 		})
 
-		socket.on("global-message-group:new", (message: Message) => {
-			const { setGroups } = useChatsManager.getState()
-
-			console.log("message:new:", message)
-
-			setGroups((prev) => {
-				if (!prev) return []
-
-				return prev.map((group) => {
-					if (Number(group.id) !== Number(message.chatId)) {
-						return group
-					}
-
-					return {
-						...group,
-						messages: [...(group.messages ?? []), message],
-					}
-				})
-			})
-		})
-
 		socket.on("user:all-statuses", (data: UserStatus[]) => {
 			const { setInitialStatuses } = useUserStatusStore.getState()
 			setInitialStatuses(data)
@@ -97,6 +81,68 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 		})
 
 		set({ socket })
+	},
+
+	connectSignalR: async () => {
+		if (get().connection) return
+		
+		const connection = createConnection("global")
+
+		connection.on("user:active", (id: number) => {
+			useUserStatusStore.getState().setUserNewStatus("active", id)
+		})
+
+		connection.on("user:deactive", (id: number) => {
+			useUserStatusStore.getState().setUserNewStatus("deactive", id)
+		})
+
+		connection.on("global-message:new", (message: Message) => {
+			const { setChats } = useChatsManager.getState()
+
+			console.log("message:new:", message)
+
+			setChats((prev) => {
+				if (!prev) return []
+
+				return prev.map((chat) => {
+					if (Number(chat.id) !== Number(message.chatId)) {
+						return chat
+					}
+
+					return {
+						...chat,
+						messages: [...(chat.messages ?? []), message],
+					}
+				})
+			})
+		})
+
+		connection.on("user:all-statuses", (data: UserStatus[]) => {
+			const { setInitialStatuses } = useUserStatusStore.getState()
+			setInitialStatuses(data)
+		})
+
+		connection.on("disconnect", () => {
+			set({
+				socket: null,
+				isConnected: false,
+			})
+		})
+
+		connection.onclose(() => {
+			set({
+				connection: null,
+				isConnected: false,
+			})
+		})
+
+		await connection.start()
+
+		set({
+			connection,
+			isConnected: true,
+		})
+		set({ connection })
 	},
 
 	disconnect: () => {
@@ -113,18 +159,24 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 	send: (event, data) => {
 		const socket = get().socket
 
-		socket?.emit(event, { data: data })
+		emit(get().socket, get().connection, event, data)
+
+		// socket?.emit(event, { data: data })
 	},
 
-	enterGlobalChat: (chatId) => {
-		get().socket?.emit("globalChat:join", chatId)
+	enterGlobalChat: (userId) => {
+		console.log("2312312318238127893128973879127893========================")
+		emit(get().socket, get().connection, "globalChat:join", userId)
+		// get().socket?.emit("globalChat:join", chatId)
 	},
 
-	leaveGlobalChat: (chatId) => {
-		get().socket?.emit("globalChat:leave", chatId)
+	leaveGlobalChat: (userId) => {
+		emit(get().socket, get().connection, "globalChat:leave", userId)
+		// get().socket?.emit("globalChat:leave", chatId)
 	},
 
 	getStatuses: (userId) => {
-		get().socket?.emit("user:get-statuses", userId)
+		emit(get().socket, get().connection, "user:get-statuses", userId)
+		// get().socket?.emit("user:get-statuses", userId)
 	},
 }))

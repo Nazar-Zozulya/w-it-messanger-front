@@ -1,16 +1,24 @@
 import { create } from "zustand"
 import { Socket } from "socket.io-client"
-import { createSocket } from "./socket"
+import { createSocket, createConnection } from "."
 import { Result } from "../../types/result"
-import { newGroupMessageCredentials, newMessageCredentials, seeMessageCredentials } from "./types"
+import {
+	newGroupMessageCredentials,
+	newMessageCredentials,
+	seeMessageCredentials,
+} from "./types"
 import { Message } from "../../entities/chat"
 import { useChatsManager } from "../../entities/chat"
+import { HubConnection } from "@microsoft/signalr"
+import { emit } from "../../helpers/emit-socket"
 
 interface SocketStore {
 	socket: Socket | null
+	connection: HubConnection | null
 	isConnected: boolean
 
-	connect: () => void
+	connectSocket: () => void
+	connectSignalR: () => void
 	disconnect: () => void
 
 	send: <T>(event: string, data: T) => void
@@ -24,15 +32,15 @@ interface SocketStore {
 
 export const useChatSocketStore = create<SocketStore>((set, get) => ({
 	socket: null,
+	connection: null,
 	isConnected: false,
 
-	connect: () => {
+	connectSocket: () => {
 		if (get().socket) return
 
 		const socket = createSocket("chat")
 
 		socket.on("connect", () => {
-			console.log("socket connected:", socket.id)
 			set({ isConnected: true })
 		})
 
@@ -40,7 +48,7 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 		socket.on("message:new", (message: Message) => {
 			const { setChats } = useChatsManager.getState()
 
-			console.log("message:new:", message)
+			console.log(message)
 
 			setChats((prev) => {
 				if (!prev) return []
@@ -60,8 +68,6 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 
 		socket.on("message:saw", (message: Message) => {
 			const { setChats } = useChatsManager.getState()
-
-			console.log("message:new:", message)
 
 			setChats((prev) => {
 				if (!prev) return []
@@ -89,7 +95,6 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 		})
 
 		socket.on("disconnect", () => {
-			console.log("socket disconnected")
 			set({
 				socket: null,
 				isConnected: false,
@@ -99,6 +104,74 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 		set({ socket })
 	},
 
+	connectSignalR: async () => {
+		if (get().connection) return
+
+		const connection = createConnection("chat")
+
+		connection.on("message:new", (message: Message) => {
+			const { setChats } = useChatsManager.getState()
+
+			setChats((prev) => {
+				if (!prev) return []
+
+				return prev.map((chat) => {
+					if (Number(chat.id) !== Number(message.chatId)) {
+						return chat
+					}
+
+					return {
+						...chat,
+						messages: [...(chat.messages ?? []), message],
+					}
+				})
+			})
+		})
+
+		connection.on("message:saw", (message: Message) => {
+			const { setChats } = useChatsManager.getState()
+
+			setChats((prev) => {
+				if (!prev) return []
+
+				return prev.map((chat) => {
+					if (Number(chat.id) !== Number(message.chatId)) {
+						return chat
+					}
+
+					return {
+						...chat,
+						messages: chat.messages?.map((oldMessage) => {
+							if (oldMessage.id !== message.id) {
+								return oldMessage
+							}
+
+							return {
+								...oldMessage,
+								readers: message.readers,
+							}
+						}),
+					}
+				})
+			})
+		})
+
+		connection.onclose(() => {
+			set({
+				connection: null,
+				isConnected: false,
+			})
+		})
+
+		await connection.start()
+
+		set({
+			connection,
+			isConnected: true,
+		})
+		set({ connection })
+	},
+
 	disconnect: () => {
 		const socket = get().socket
 
@@ -106,16 +179,19 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 
 		set({
 			socket: null,
+			connection: null,
 			isConnected: false,
 		})
 	},
 
 	send: (event, data) => {
-		get().socket?.emit(event, data)
+		emit(get().socket, get().connection, event, data)
+		// get().socket?.emit(event, data)
 	},
 
 	sendNewMessage: (data) => {
-		get().socket?.emit("message:send", data)
+		emit(get().socket, get().connection, "message:send", data)
+		// get().socket?.emit("message:send", data)
 	},
 
 	// sendNewGroupMessage: (data) => {
@@ -123,7 +199,8 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 	// },
 
 	seeMessage: (data) => {
-		get().socket?.emit("message:see", data)
+		emit(get().socket, get().connection, "message:see", data)
+		// get().socket?.emit("message:see", data)
 	},
 
 	// seeGroupMessage: (data) => {
@@ -131,10 +208,21 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 	// },
 
 	enterChat: (chatId) => {
-		get().socket?.emit("chat:join", chatId)
+		emit(get().socket, get().connection, "chat:join", chatId)
+		// try {
+		// 	console.log("before invoke")
+
+		// 	const result = await get().connection?.invoke("chat:join", chatId)
+
+		// 	console.log("after invoke", result)
+		// } catch (e) {
+		// 	console.error("invoke error", e)
+		// }
+		// get().socket?.emit("chat:join", chatId)
 	},
 
 	leaveChat: (chatId) => {
-		get().socket?.emit("chat:leave", chatId)
+		emit(get().socket, get().connection, "chat:leave", chatId)
+		// get().socket?.emit("chat:leave", chatId)
 	},
 }))

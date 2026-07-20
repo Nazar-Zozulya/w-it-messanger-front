@@ -56,7 +56,7 @@ export function AnotherUserChatCard(props: AnotherUserChatCardProps) {
 					if (userStatus.id === props.id) {
 						return `${userStatus.status}`
 					} else {
-						return "ff"
+						return ""
 					}
 				})}
 			</p>
@@ -72,7 +72,7 @@ export function AnotherUserChatCard(props: AnotherUserChatCardProps) {
 					</p>
 				</div>
 				<p className={styles.createdAt}>
-					{props.createdAt
+					{props.created_at
 						?.toISOString()
 						.slice(11, 16) /**  "14:05"*/}
 				</p>
@@ -110,7 +110,7 @@ export function AnotherUserGroupCard(props: AnotherUserGroupCardProps) {
 					</p>
 				</div>
 				<p className={styles.createdAt}>
-					{props.createdAt
+					{props.created_at
 						?.toISOString()
 						.slice(11, 16) /**  "14:05"*/}
 				</p>

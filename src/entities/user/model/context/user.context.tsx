@@ -24,8 +24,8 @@ interface userContextTypes {
 	confirmEmail: (email: string, code: string) => Promise<Result<string>>
 	logout: () => void
 	completeProfile: (
-		name?: string,
-		surname?: string,
+		first_name?: string,
+		last_name?: string,
 		username?: string,
 	) => Promise<Result<User>>
 	getUser: (token: string) => Promise<Result<User>>
@@ -53,7 +53,7 @@ const initalValue: userContextTypes = {
 		return { status: "error" } as Error
 	},
 	logout: () => {},
-	completeProfile: async (name, surname, username) => {
+	completeProfile: async (first_name, last_name, username) => {
 		return { status: "error" } as Error
 	},
 	getUser: async (token) => {
@@ -156,8 +156,8 @@ export function UserContextProvider(props: userProviderProps) {
 
 	async function completeProfile(
 		first_name?: string,
-		surname?: string,
 		last_name?: string,
+		username?: string,
 	) {
 		const result = await POST<User>({
 			whichService: "userService",
@@ -165,8 +165,8 @@ export function UserContextProvider(props: userProviderProps) {
 			method: "PATCH",
 			body: {
 				first_name,
-				surname,
 				last_name,
+				username,
 			},
 			token: token as string,
 		})

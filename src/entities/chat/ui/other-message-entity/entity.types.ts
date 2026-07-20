@@ -5,7 +5,7 @@ export interface OtherMessageEntityProps {
     id: number
     text: string
     images?: Image[]
-    createdAt: Date
+    created_at: Date
     readers: UserToChat[]
     user: UserToChat
     mode: "chat" | "group"

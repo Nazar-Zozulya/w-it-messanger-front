@@ -43,6 +43,8 @@ export const useFriendsManager = create<FriendsManagerStoreTypes>((set, get) => 
         })
         if (requests.status === "error") return
 
+        console.log("123123123123123")
+
         set({ recommendations: requests.data })
     },
     getAllFriends: async (token) => {

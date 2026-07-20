@@ -1,0 +1,1 @@
+export const WHICH_SERVICE = process.env.REACT_APP_WHICH_BACKEND ?? "js"

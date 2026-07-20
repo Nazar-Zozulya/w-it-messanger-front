@@ -13,7 +13,7 @@ import { useModalManagerStore } from "../../../../entities/modal/model/storage/m
 
 export function AllContactsBlock() {
 	const { allFriends } = useFriendsManager()
-	const { user } = useUserContext()
+	const { user, token } = useUserContext()
 	const navigate = useNavigate()
 	const { openModal } = useModalManagerStore()
 
@@ -47,9 +47,11 @@ export function AllContactsBlock() {
 							<AnotherUserCard
 								username={friend.username}
 								function={async () => {
+									if (!token) return
 									const response = await POST<Chat>({
 										whichService: "chatService",
 										endpoint: "api/chat/get-chat",
+										token,
 										body: {
 											userId: user?.id,
 											anotherUserId: friend.id,

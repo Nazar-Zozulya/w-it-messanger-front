@@ -10,7 +10,7 @@ export function MyMessageEntity(props: MyMessageEntityProps) {
 				<div className={styles.addicInfo}>
 					<p className={styles.createdAt}>
 						{
-							props.createdAt
+							props.created_at
 								.toISOString()
 								.slice(11, 16) /**  "14:05"*/
 						}

@@ -64,7 +64,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 								},
 							}}
 							control={control}
-							name="name"
+							name="first_name"
 						/>
 						<Input
 							label="Прізвище"
@@ -84,7 +84,7 @@ export function CompleteProfileModal(props: CompleteProfileProps) {
 								},
 							}}
 							control={control}
-							name="surname"
+							name="last_name"
 						/>
 						<Input
 							label="Ім'я користувача"

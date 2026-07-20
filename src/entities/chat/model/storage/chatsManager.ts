@@ -68,6 +68,8 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 			return chat
 		})
 
+		console.log("updatedChats: ", updatedChats)
+
 		set({ chats: updatedChats })
 
 		return getChat
