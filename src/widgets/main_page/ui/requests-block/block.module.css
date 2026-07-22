@@ -6,7 +6,7 @@
     height: 28.2vh;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     gap: 2.5vh;
     padding: 1.7vh 1.2vh;

@@ -18,7 +18,7 @@ interface SocketStore {
 	isConnected: boolean
 
 	connectSocket: () => void
-	connectSignalR: () => void
+	connectSignalR: (token: string) => void
 	disconnect: () => void
 
 	send: <T>(event: string, data: T) => void
@@ -104,10 +104,10 @@ export const useChatSocketStore = create<SocketStore>((set, get) => ({
 		set({ socket })
 	},
 
-	connectSignalR: async () => {
+	connectSignalR: async (token) => {
 		if (get().connection) return
 
-		const connection = createConnection("chat")
+		const connection = createConnection("chat", token)
 
 		connection.on("message:new", (message: Message) => {
 			const { setChats } = useChatsManager.getState()

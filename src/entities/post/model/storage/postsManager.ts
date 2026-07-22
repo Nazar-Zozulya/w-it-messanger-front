@@ -3,22 +3,25 @@ import { GET } from "../../../../helpers/get"
 import { Result } from "../../../../types/result"
 import { createPostData, Post } from "../types"
 import { POST } from "../../../../helpers/post"
-// import { error } from "console"
 
 interface PostsManagerStoreTypes {
 	posts: Post[] | null
 	myPosts: Post[] | null
-	getPosts: (page: number, size: number) => void
-	getMyPosts: (id: number) => void
+	getPosts: (page: number, size: number) => Promise<number>
+	getMyPosts: (id: number, page: number, size: number) => Promise<number>
+	getUserPosts: (id: number, page: number, size: number) => Promise<number>
 	deletePost: (postId: number, userId: number) => Promise<Result<Post>>
-	createPost: (data: createPostData, token: string) => Promise<Result<Post>>
+	createPost: (
+		data: createPostData,
+		token: string
+	) => Promise<Result<Post>>
 }
 
 export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 	posts: null,
 	myPosts: null,
 
-	getPosts: async (page: number, size: number) => {
+	getPosts: async (page, size) => {
 		try {
 			const response = await GET<Post[]>({
 				whichService: "postService",
@@ -26,42 +29,71 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 			})
 
 			if (response.status === "success") {
-				console.log("SUCCESS")
-
 				const oldPosts = get().posts
-				console.log("oldPosts", oldPosts)
-				console.log("response.data", response.data)
 
 				if (!oldPosts) {
-					console.log("SET 1")
 					set({ posts: response.data })
 				} else {
-					console.log("SET 2")
 					set({ posts: [...oldPosts, ...response.data] })
 				}
 
-				console.log("after set", get().posts)
+				return response.data.length
 			}
 
-			console.log(response, "posts response")
+			return 0
 		} catch (e) {
 			console.log("Error fetching posts:", e)
+			return 0
 		}
 	},
-	getMyPosts: async (id) => {
+
+	getMyPosts: async (id, page, size) => {
 		try {
 			const response = await GET<Post[]>({
 				whichService: "postService",
-				endpoint: `api/post/all/${id}`,
+				endpoint: `api/post/all/${id}?page=${page}&size=${size}`,
 			})
 
 			if (response.status === "success") {
-				set({ myPosts: response.data })
+				set((state) => ({
+					myPosts: [...(state.myPosts ?? []), ...response.data],
+				}))
+
+				return response.data.length
 			}
 
-			console.log(response, "my posts response")
+			return 0
 		} catch (e) {
 			console.log("Error fetching my posts:", e)
+			return 0
+		}
+	},
+
+	getUserPosts: async (id, page, size) => {
+		try {
+			const response = await GET<Post[]>({
+				whichService: "postService",
+				endpoint: `api/post/all/${id}?page=${page}&size=${size}`,
+			})
+
+			if (response.status === "success") {
+				// Если потом вынесешь anotherUserPosts в Zustand,
+				// то поменяешь это место.
+				const oldPosts = get().posts
+
+				if (!oldPosts) {
+					set({ posts: response.data })
+				} else {
+					set({ posts: [...oldPosts, ...response.data] })
+				}
+
+				return response.data.length
+			}
+
+			return 0
+		} catch (e) {
+			console.log("Error fetching posts:", e)
+			return 0
 		}
 	},
 
@@ -76,26 +108,32 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 
 			if (response.status === "error") return response
 
-			const newPosts = get().posts?.filter((post) => {
-				return post.id !== postId
+			const newPosts = get().posts?.filter(
+				(post) => post.id !== postId
+			)
+
+			const myNewPosts = get().myPosts?.filter(
+				(post) => post.id !== postId
+			)
+
+			set({
+				posts: newPosts,
+				myPosts: myNewPosts,
 			})
 
-			const myNewPosts = get().myPosts?.filter((post) => {
-				return post.id !== postId
-			})
-
-			set({ posts: newPosts, myPosts: myNewPosts })
 			return response
 		} catch (e) {
-			console.log("Error fetching posts:", e)
-			return { status: "error", message: "problem with deleting post" }
+			console.log("Error deleting post:", e)
+
+			return {
+				status: "error",
+				message: "problem with deleting post",
+			}
 		}
 	},
 
 	createPost: async (data, token) => {
 		try {
-			console.log("new posts data:", data)
-
 			const response = await POST<Post>({
 				whichService: "postService",
 				endpoint: "api/post/create",
@@ -106,27 +144,28 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 			if (response.status === "error") return response
 
 			const posts = get().posts
-
 			const myPosts = get().myPosts
 
 			if (!posts) {
 				set({ posts: [response.data] })
 			} else {
-				const newPosts = [...posts, response.data]
-				set({ posts: newPosts })
+				set({ posts: [...posts, response.data] })
 			}
 
 			if (!myPosts) {
 				set({ myPosts: [response.data] })
 			} else {
-				const myNewPosts = [...myPosts, response.data]
-				set({ myPosts: myNewPosts })
+				set({ myPosts: [...myPosts, response.data] })
 			}
 
 			return response
 		} catch (e) {
-			console.log("Error fetching posts:", e)
-			return { status: "error", message: "error wirh creating post" }
+			console.log("Error creating post:", e)
+
+			return {
+				status: "error",
+				message: "error with creating post",
+			}
 		}
 	},
 }))

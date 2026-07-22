@@ -39,7 +39,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 
 	useEffect(() => {
 		// не надо токен для получения
-		// getPosts()
+		getPosts(1, 10)
 		// connect()
 		// connectGlobal()
 	}, [])
@@ -56,15 +56,15 @@ export function InitialFetches(props: InitialFetchesProps) {
 			connectSocket()
 			connectGlobalSocket()
 		} else {
-			connectSignalR()
-			connectGlobalSignalR()
+			connectSignalR(token)
+			connectGlobalSignalR(token)
 		}
 	}, [token])
 
 	useEffect(() => {
 		if (!user) return
 
-		// getMyPosts(user.id)
+		getMyPosts(user.id, 1, 10)
 		getIndividualChats(user.id)
 		// getAllGroups(user.id)
 

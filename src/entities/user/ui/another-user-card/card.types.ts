@@ -5,6 +5,7 @@ export interface AnotherUserCardProps {
 	name?: string | null
 	surname?: string | null
 	username: string
+	id: number
 	function?: () => void
 }
 

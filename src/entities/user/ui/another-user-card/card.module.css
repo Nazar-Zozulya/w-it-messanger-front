@@ -17,10 +17,34 @@
 
 /* padding: 1.7vh 1.1vw; */
 
+.avatarBlock {
+	width: 4.8vh;
+	height: 4.8vh;
+	position: relative;
+}
+
 .avatar {
 	width: 4.8vh;
 	height: 4.8vh;
 	border-radius: 12345px;
+}
+
+.avatarStatus {
+	width: 12px;
+	height: 12px;
+	border: 2.25px solid #fff;
+	border-radius: 100px;
+	position: absolute;
+	bottom: 5%;
+	right: 5%;
+}
+
+.online {
+	background: #22C55E;
+}
+
+.ofline {
+	background: #CDCED2;
 }
 
 .text {

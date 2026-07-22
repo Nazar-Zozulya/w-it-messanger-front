@@ -45,7 +45,11 @@ export function AllContactsBlock() {
 					{allFriends?.map((friend) => {
 						return (
 							<AnotherUserCard
+								id={friend.id}								
 								username={friend.username}
+								name={friend.first_name}
+								surname={friend.last_name}
+
 								function={async () => {
 									if (!token) return
 									const response = await POST<Chat>({
@@ -64,8 +68,6 @@ export function AllContactsBlock() {
 									}
 									navigate(`/chat/${response.data.id}`)
 								}}
-								name={friend.first_name}
-								surname={friend.last_name}
 								// avatar={
 								// 	friend.profile.activeAvatar?.image.base64
 								// }

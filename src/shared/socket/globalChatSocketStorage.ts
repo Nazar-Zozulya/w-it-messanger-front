@@ -14,7 +14,7 @@ interface SocketStore {
 	isConnected: boolean
 
 	connectSocket: () => void
-	connectSignalR: () => void
+	connectSignalR: (token: string) => void
 	disconnect: () => void
 
 	send: <T>(event: string, data: T) => void
@@ -83,10 +83,10 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 		set({ socket })
 	},
 
-	connectSignalR: async () => {
+	connectSignalR: async (token) => {
 		if (get().connection) return
 		
-		const connection = createConnection("global")
+		const connection = createConnection("global", token)
 
 		connection.on("user:active", (id: number) => {
 			useUserStatusStore.getState().setUserNewStatus("active", id)

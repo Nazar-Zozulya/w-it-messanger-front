@@ -26,15 +26,17 @@ export function RequestsBlock(props: RequestsBlockProps) {
 							<RequestsCard
 								id={user.id}
 								username={user.username}
-								name={user.name}
-								surname={user.surname}
+								first_name={user.first_name}
+								last_name={user.last_name}
 								email={user.email}
 								password={user.password}
 								profile={user.profile}
 								profileId={user.profileId}
 								images={user.images}
-								albums={user.albums}
-								createdAt={user.createdAt}
+								is_active={user.is_active}
+								is_staff={user.is_staff}
+								is_superuser={user.is_superuser}
+								date_joined={user.date_joined}
 							/>
 						)
 					})}

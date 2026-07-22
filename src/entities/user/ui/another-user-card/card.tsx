@@ -9,13 +9,19 @@ import {
 } from "./card.types"
 
 export function AnotherUserCard(props: AnotherUserCardProps) {
+	const { user } = useUserContext()
+
+	const { users } = useUserStatusStore()
 	return (
 		<button className={styles.container} onClick={props.function}>
-			<img
-				src={props.avatar ? props.avatar : DEFAULT_AVATAR}
-				className={styles.avatar}
-				alt=""
-			/>
+			<div className={styles.avatarBlock}>
+				<img
+					src={props.avatar ? props.avatar : DEFAULT_AVATAR}
+					className={styles.avatar}
+					alt=""
+				/>
+				<div className={`${styles.avatarStatus} ${users?.find((u) => {return u.id == props.id})?.status === "active" ? styles.online : styles.ofline}`}></div>
+			</div>
 			<div className={styles.text}>
 				<p className={styles.name}>
 					{props.name && props.surname
@@ -44,13 +50,16 @@ export function AnotherUserChatCard(props: AnotherUserChatCardProps) {
 						: styles.newMessage
 			}`}
 			onClick={props.function}
-		>
-			<img
-				src={props.avatar ? props.avatar : DEFAULT_AVATAR}
-				className={styles.avatar}
-				alt=""
-			/>
-			<p>
+		>	
+			<div className={styles.avatarBlock}>
+				<img
+					src={props.avatar ? props.avatar : DEFAULT_AVATAR}
+					className={styles.avatar}
+					alt=""
+				/>
+				<div className={`${styles.avatarStatus} ${users?.find((u) => {return u.id == props.id})?.status === "active" ? styles.online : styles.ofline}`}></div>
+			</div>
+			{/* <p>
 				{users?.map((userStatus) => {
 					console.log("userStatus:", userStatus)
 					if (userStatus.id === props.id) {
@@ -59,7 +68,7 @@ export function AnotherUserChatCard(props: AnotherUserChatCardProps) {
 						return ""
 					}
 				})}
-			</p>
+			</p> */}
 			<div className={styles.chatText}>
 				<div className={styles.textLeftPart}>
 					<p className={styles.name}>

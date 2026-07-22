@@ -10,11 +10,11 @@ export const createSocket = (namespace?: string) => {
 	return socket
 }
 
-export function createConnection(hub: string) {
+export function createConnection(hub: string, token: string) {
 	console.log(`${SOCKET_URL}/${hub}`)
 	return new HubConnectionBuilder()
 		.withUrl(`${SOCKET_URL}/${hub}`, {
-			accessTokenFactory: () => localStorage.getItem("token") ?? "",
+			accessTokenFactory: () => token ?? "",
 		})
 		.withAutomaticReconnect()
 		.build()

@@ -10,7 +10,7 @@ import { POST } from "../../../../helpers/post"
 import { useNavigate } from "react-router-dom"
 
 export function ChatNotificationsBlock() {
-	const { chats, groups } = useChatsManager()
+	const { chats } = useChatsManager()
 	const { user } = useUserContext()
 
 	const navigate = useNavigate()
@@ -23,9 +23,9 @@ export function ChatNotificationsBlock() {
 						<ChatIcon style={{ color: "#81818D" }} />
 						<p className={styles.title}>Повідомлення</p>
 					</div>
-					<button className={styles.seeAllButton}>
+					{/* <button className={styles.seeAllButton}>
 						Дивитись всі
-					</button>
+					</button> */}
 				</div>
 				<div className={styles.list}>
 					{chats?.map((chat) => {
@@ -36,21 +36,21 @@ export function ChatNotificationsBlock() {
 						return (
 							<AnotherUserChatCard
 								username={anotherUser?.username ?? ""}
-								name={anotherUser?.name}
-								surname={anotherUser?.surname}
+								name={anotherUser?.first_name}
+								surname={anotherUser?.last_name}
 								avatar={anotherUser?.avatar}
 								lastMessage={
 									chat.messages[chat.messages.length - 1] ??
 									[]
 								}
 								id={anotherUser?.id as number}
-								createdAt={
+								created_at={
 									chat.messages.length === 0
 										? undefined
 										: new Date(
 												chat.messages[
 													chat.messages.length - 1
-												].createdAt as string,
+												].created_at as string,
 											)
 								}
 								// avatar={}
@@ -83,12 +83,12 @@ export function ChatNotificationsBlock() {
 						<ChatIcon style={{ color: "#81818D" }} />
 						<p className={styles.title}>Групові чати</p>
 					</div>
-					<button className={styles.seeAllButton}>
+					{/* <button className={styles.seeAllButton}>
 						Дивитись всі
-					</button>
+					</button> */}
 				</div>
 				<div className={styles.list}>
-					{groups?.map((group) => {
+					{/* {groups?.map((group) => {
 						// const anotherUser = chat.users.find(
 						// 	(chatUser) => chatUser.id !== user?.id,
 						// )
@@ -104,7 +104,7 @@ export function ChatNotificationsBlock() {
 								}
 								avatar={group.avatar?.base64}
 								id={group.id}
-								createdAt={
+								created_at={
 									group.messages.length === 0
 										? undefined
 										: new Date(
@@ -134,7 +134,7 @@ export function ChatNotificationsBlock() {
 								}}
 							/>
 						)
-					})}
+					})} */}
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ChatsBlock, RequestBlock } from "../../widgets/main_page"
-import { CreatePostBlock, CreatePostModal, PostsList } from "../../widgets/post"
+import { CreatePostBlock, PostsList } from "../../widgets/post"
 import { ProfileBlock } from "../../widgets/user"
 import { useCookies } from "react-cookie"
 import { useModalManagerStore } from "../../entities/modal/model/storage/modalManager"
@@ -14,9 +14,23 @@ import { UserAlbumsBlock } from "../../widgets/album"
 export function MainPage(props: MainPageProps) {
 	const { openModal } = useModalManagerStore()
 	const [anotherUser, setAnotherUser] = useState<User | null>(null)
-	const { user } = useUserContext()
+
+	const { user, token } = useUserContext()
+
 	const navigate = useNavigate()
 	const { id } = useParams()
+
+	const contentRef = useRef<HTMLDivElement>(null)
+
+	const [cookies, , removeCookie] = useCookies(["complete-profile"])
+
+	useEffect(() => {
+		contentRef.current?.scrollTo({
+			top: 0,
+			behavior: "smooth",
+		})
+	}, [props.mode, id])
+
 	useEffect(() => {
 		if (!id) {
 			setAnotherUser(null)
@@ -24,55 +38,68 @@ export function MainPage(props: MainPageProps) {
 		}
 
 		if (props.mode !== "anotherUser") return
-		;(async () => {
-			if (+id === user?.id)  return navigate("/my-posts")
 
-			const anotherUser = await GET<User>({
+		;(async () => {
+			if (+id === user?.id) {
+				navigate("/my-posts")
+				return
+			}
+
+			const response = await GET<User>({
 				whichService: "userService",
 				endpoint: `api/user/get/${id}`,
 			})
 
-			if (anotherUser.status === "error") return
+			if (response.status === "error") return
 
-			setAnotherUser(anotherUser.data)
+			setAnotherUser(response.data)
 		})()
-	}, [id, props.mode])
-
-	const { token } = useUserContext()
-
-	const [cookies, setCookie, removeCookie] = useCookies(["complete-profile"])
+	}, [id, props.mode, user])
 
 	useEffect(() => {
 		if (!token) {
 			removeCookie("complete-profile")
+			return
 		}
 
-		if (cookies["complete-profile"] === "yes" && token) {
+		if (cookies["complete-profile"] === "yes") {
 			openModal("completeProfile")
-			// удаления не надо ведь ето куки бует жить 10 секунд
-			// removeCookie("complete-profile")
 		}
-	}, [cookies])
+	}, [cookies, token])
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.leftBlock}>
-				{props.mode !== "anotherUser" && <ProfileBlock mode={props.mode} />}
-				{props.mode === "anotherUser" && anotherUser && (
-					<ProfileBlock mode={props.mode} anotherUser={anotherUser} />
+				{props.mode !== "anotherUser" && (
+					<ProfileBlock mode={props.mode} />
 				)}
+
+				{props.mode === "anotherUser" && anotherUser && (
+					<ProfileBlock
+						mode={props.mode}
+						anotherUser={anotherUser}
+					/>
+				)}
+
 				{props.mode === "main" && (
 					<>
 						<RequestBlock />
 						<ChatsBlock />
 					</>
 				)}
+
 				{props.mode === "anotherUser" && (
-					<UserAlbumsBlock albums={anotherUser?.profile.albums || []} />
+					<UserAlbumsBlock
+						albums={anotherUser?.profile.albums || []}
+					/>
 				)}
 			</div>
-			<div className={styles.content}>
-				<CreatePostBlock />
+
+			<div
+				ref={contentRef}
+				className={styles.content}
+			>
+				{props.mode !== "anotherUser" && <CreatePostBlock />}
 
 				<PostsList mode={props.mode} />
 
