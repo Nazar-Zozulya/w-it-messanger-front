@@ -13,7 +13,11 @@ interface ChatsManagerStoreTypes {
 	// ) => void
 	getChat: (userId: number, anotherUserId: number) => Promise<Result<Chat>>
 	// getMessagesFromChat: (chatId: number) => void
-	getIndividualChats: (userId: number) => void
+	getIndividualChats: (
+		userId: number,
+		page: number,
+		size: number,
+	) => Promise<number>
 
 	createGroup: (
 		users: User[],
@@ -21,6 +25,13 @@ interface ChatsManagerStoreTypes {
 		adminId: number,
 		avatar?: string,
 	) => Promise<Result<Chat>>
+
+	getMessagesFromChat: (
+		chatId: number,
+		page: number,
+		size: number,
+		replace: boolean,
+	) => Promise<number>
 	// getGroup: (groupId: number) => Promise<Result<Chat>>
 	// getAllGroups: (userId: number) => void
 }
@@ -74,15 +85,16 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 
 		return getChat
 	},
-	getIndividualChats: async (userId) => {
+	getIndividualChats: async (userId, page, size) => {
 		const getChats = await GET<Chat[]>({
 			whichService: "chatService",
-			endpoint: `api/chat/chats/${userId}`,
+			endpoint: `api/chat/chats/${userId}?page=${page}&size=${size}`,
 		})
 
-		if (getChats.status === "error") return
+		if (getChats.status === "error") return 0
 
-		set({ chats: getChats.data })
+		set({ chats: [...(get().chats ?? []), ...getChats.data] })
+		return getChats.data.length
 	},
 	createGroup: async (users, name, adminId, avatar) => {
 		const newGroup = await POST<Chat>({
@@ -103,6 +115,42 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 		set({ chats: [...(allGroups ?? []), newGroup.data] })
 
 		return newGroup
+	},
+
+	getMessagesFromChat: async (chatId, page, size, replace = false) => {
+		console.log("messages")
+		console.log(get().chats)
+		const messages = await GET<Message[]>({
+			whichService: "chatService",
+			endpoint: `api/chat/messages/${chatId}?page=${page}&size=${size}`,
+		})
+
+		if (messages.status === "error") return 0
+
+		console.log("before set", get().chats)
+
+		set((state) => ({
+			chats: state.chats?.map((chat) =>
+				chat.id === chatId
+					? {
+							...chat,
+							messages: replace
+								? messages.data
+								: [
+										...messages.data.filter(
+											(m) =>
+												!(chat.messages ?? []).some(
+													(x) => x.id === m.id,
+												),
+										),
+										...(chat.messages ?? []),
+									],
+						}
+					: chat,
+			),
+		}))
+
+		return messages.data.length
 	},
 	// getGroup: async (groupId) => {
 	// 	const group = await GET<Chat>({

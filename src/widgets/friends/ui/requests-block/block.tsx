@@ -1,43 +1,110 @@
 import { RequestsCard, useFriendsManager } from "../../../../entities/friends"
 import { Album, Profile, useUserContext } from "../../../../entities/user"
 import { UniversalBlockCard } from "../../../../shared/ui/universal-block-card"
-import { Image } from '../../../../entities/image'
+import { Image } from "../../../../entities/image"
 import styles from "./block.module.css"
 import { RequestsBlockProps } from "./block.types"
+import { Fragment, useEffect, useRef } from "react"
+
+const PAGE_SIZE = 6
+const PRELOAD_OFFSET = PAGE_SIZE - 1
 
 export function RequestsBlock(props: RequestsBlockProps) {
-	const { requests } = useFriendsManager()
+	const { requests, getAllRequests } = useFriendsManager()
 
+	const { token } = useUserContext()
+
+	const page = useRef(1)
+
+	const observer = useRef<IntersectionObserver | null>(null)
+	const targetRef = useRef<HTMLDivElement>(null)
+
+	const loading = useRef(false)
+	const hasMore = useRef(true)
+
+	useEffect(() => {
+		const element = targetRef.current
+
+		if (!element) return
+
+		observer.current?.disconnect()
+
+		observer.current = new IntersectionObserver(async ([entry]) => {
+			if (!entry.isIntersecting) return
+			if (loading.current) return
+			if (!hasMore.current) return
+
+			loading.current = true
+
+			try {
+				let loadedCount = 0
+
+				page.current++
+
+				console.log("page =", page.current)
+				if (!token) return
+
+				loadedCount = await getAllRequests(
+					token,
+					page.current,
+					PAGE_SIZE,
+				)
+
+				if (loadedCount < PAGE_SIZE) {
+					hasMore.current = false
+					observer.current?.disconnect()
+				}
+			} finally {
+				loading.current = false
+			}
+		})
+
+		observer.current.observe(element)
+
+		return () => observer.current?.disconnect()
+	}, [token])
 
 	return (
 		<div className={styles.container}>
 			<UniversalBlockCard
 				title="Запити"
-                className={styles.block}
+				className={styles.block}
 				button={
-					<button className={styles.headerButton} onClick={props.goToMain}>
+					<button
+						className={styles.headerButton}
+						onClick={props.goToMain}
+					>
 						Повернутись до головної
 					</button>
 				}
 			>
 				<div className={styles.list}>
-					{requests?.map((user) => {
+					{requests?.map((user, index) => {
 						return (
-							<RequestsCard
-								id={user.id}
-								username={user.username}
-								first_name={user.first_name}
-								last_name={user.last_name}
-								email={user.email}
-								password={user.password}
-								profile={user.profile}
-								profileId={user.profileId}
-								images={user.images}
-								is_active={user.is_active}
-								is_staff={user.is_staff}
-								is_superuser={user.is_superuser}
-								date_joined={user.date_joined}
-							/>
+							<Fragment key={user.id}>
+								{index === requests?.length - PRELOAD_OFFSET && (
+									<div
+										ref={targetRef}
+										style={{ height: 1 }}
+									/>
+								)}
+
+								<RequestsCard
+									id={user.id}
+									username={user.username}
+									first_name={user.first_name}
+									last_name={user.last_name}
+									email={user.email}
+									password={user.password}
+									profile={user.profile}
+									profileId={user.profileId}
+									images={user.images}
+									is_active={user.is_active}
+									is_staff={user.is_staff}
+									is_superuser={user.is_superuser}
+									date_joined={user.date_joined}
+								/>
+							</Fragment>
 						)
 					})}
 				</div>

@@ -6,30 +6,74 @@ import { Post } from "../../../../entities/post/model/types"
 import { useParams } from "react-router-dom"
 import { GET } from "../../../../helpers/get"
 import { useUserContext } from "../../../../entities/user"
+import { CreatePostBlock } from "../create-post-block"
 
 const PAGE_SIZE = 10
-const PRELOAD_OFFSET = 9
+const PRELOAD_OFFSET = PAGE_SIZE - 1
 
 export function PostsList(props: PostsListProps) {
 	const { posts, myPosts, getPosts, getMyPosts, getUserPosts } =
 		usePostsManager()
 
+	const { user } = useUserContext()
+	const { id } = useParams()
+
 	const [anotherUserPosts, setAnotherUserPosts] = useState<Post[] | null>(
 		null,
 	)
 
-	const { user } = useUserContext()
-	const { id } = useParams()
-
-	const [page, setPage] = useState(1)
-	const [myPage, setMyPage] = useState(1)
-	const [anotherUserPage, setAnotherUserPage] = useState(1)
+	const page = useRef(1)
+	const myPage = useRef(1)
+	const anotherUserPage = useRef(1)
 
 	const observer = useRef<IntersectionObserver | null>(null)
+	const targetRef = useRef<HTMLDivElement>(null)
+
 	const loading = useRef(false)
 	const hasMore = useRef(true)
 
-	const observe = (element: HTMLDivElement | null) => {
+	const currentPosts =
+		props.mode === "main"
+			? posts
+			: props.mode === "myPosts"
+				? myPosts
+				: anotherUserPosts
+
+	useEffect(() => {
+		if (props.mode !== "anotherUser") return
+		
+		async function load() {
+			if (!id) return
+			const response = await getUserPosts(
+				+id,
+				anotherUserPage.current,
+				PAGE_SIZE,
+			)
+
+			if (response.status === "error") return
+
+			setAnotherUserPosts(response.data)
+
+			if (response.data.length < PAGE_SIZE) {
+				hasMore.current = false
+			}
+		}
+
+		load()
+	}, [id, props.mode])
+
+	useEffect(() => {
+		page.current = 1
+		myPage.current = 1
+		anotherUserPage.current = 1
+
+		loading.current = false
+		hasMore.current = true
+	}, [props.mode, id])
+
+	useEffect(() => {
+		const element = targetRef.current
+
 		if (!element) return
 
 		observer.current?.disconnect()
@@ -46,35 +90,52 @@ export function PostsList(props: PostsListProps) {
 
 				switch (props.mode) {
 					case "main": {
-						const nextPage = page + 1
-						loadedCount = await getPosts(nextPage, PAGE_SIZE)
-						setPage(nextPage)
+						page.current++
+
+						console.log("page =", page.current)
+
+						loadedCount = await getPosts(
+							page.current,
+							PAGE_SIZE,
+						)
+
 						break
 					}
 
 					case "myPosts": {
 						if (!user) break
 
-						const nextPage = myPage + 1
+						myPage.current++
+
 						loadedCount = await getMyPosts(
 							user.id,
-							nextPage,
+							myPage.current,
 							PAGE_SIZE,
 						)
-						setMyPage(nextPage)
+
 						break
 					}
 
 					case "anotherUser": {
 						if (!id) break
 
-						const nextPage = anotherUserPage + 1
-						loadedCount = await getUserPosts(
+						anotherUserPage.current++
+
+						const response = await getUserPosts(
 							+id,
-							nextPage,
+							anotherUserPage.current,
 							PAGE_SIZE,
 						)
-						setAnotherUserPage(nextPage)
+
+						if (response.status === "error") break
+
+						loadedCount = response.data.length
+
+						setAnotherUserPosts(prev => [
+							...(prev ?? []),
+							...response.data,
+						])
+
 						break
 					}
 				}
@@ -89,70 +150,36 @@ export function PostsList(props: PostsListProps) {
 		})
 
 		observer.current.observe(element)
-	}
 
-	useEffect(() => {
-		return () => {
-			observer.current?.disconnect()
-		}
-	}, [])
-
-	useEffect(() => {
-		loading.current = false
-		hasMore.current = true
-
-		observer.current?.disconnect()
-
-		setPage(1)
-		setMyPage(1)
-		setAnotherUserPage(1)
-	}, [props.mode, id])
-
-	useEffect(() => {
-		if (props.mode !== "anotherUser") return
-
-		async function fetchPosts() {
-			const response = await GET<Post[]>({
-				whichService: "postService",
-				endpoint: `api/post/all/${id}`,
-			})
-
-			if (response.status === "error") return
-
-			setAnotherUserPosts(response.data)
-
-			if (response.data.length < PAGE_SIZE) {
-				hasMore.current = false
-			}
-		}
-
-		fetchPosts()
-	}, [id, props.mode])
-
-	const currentPosts =
-		props.mode === "main"
-			? posts
-			: props.mode === "myPosts"
-				? myPosts
-				: anotherUserPosts
+		return () => observer.current?.disconnect()
+	}, [
+		props.mode,
+		id,
+		user,
+		getPosts,
+		getMyPosts,
+		getUserPosts,
+		currentPosts?.length,
+	])
 
 	return (
 		<div className={styles.list}>
+			{props.mode !== "anotherUser" && <CreatePostBlock />}
+			{/* <div className={styles.postsList}></div> */}
 			{currentPosts?.map((post, index) => (
 				<Fragment key={post.id}>
 					{index === currentPosts.length - PRELOAD_OFFSET && (
-						<div
-							ref={observe}
-							style={{ height: 1 }}
-						/>
+						<div ref={targetRef} style={{ height: 1 }} />
 					)}
 
 					<PostCard
 						post={post}
+						key={post.id}
 						isGoToProfile={props.mode === "main"}
 					/>
 				</Fragment>
 			))}
+			<div className={styles.bottomSpace}></div>
 		</div>
 	)
 }

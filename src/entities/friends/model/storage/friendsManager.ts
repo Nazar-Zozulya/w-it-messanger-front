@@ -11,9 +11,9 @@ interface FriendsManagerStoreTypes {
     requests: User[] | null
     recommendations: User[] | null
     allFriends: User[] | null
-    getAllRequests: (token: string) => void
-    getAllRecommendations: (token: string) => void
-    getAllFriends: (token: string) => void
+    getAllRequests: (token: string, page: number, size: number) => Promise<number>
+    getAllRecommendations: (token: string, page: number, size: number) => Promise<number>
+    getAllFriends: (token: string, page: number, size: number) => Promise<number>
     sendRequest: (anotherUserId: number, token: string) => Promise<Result<string>>
     acceptRequest: (anotherUserId: number, token: string) => Promise<Result<string>>
     deleteRelationship: (anotherUserId: number, token: string) => Promise<Result<string>>
@@ -25,37 +25,43 @@ export const useFriendsManager = create<FriendsManagerStoreTypes>((set, get) => 
     requests: null,
     recommendations: null,
     allFriends: null,
-    getAllRequests: async (token) => {
+    getAllRequests: async (token, page: number, size: number) => {
         const requests = await GET<User[]>({
             whichService: "userService",
-            endpoint: "api/user/requests",
+            endpoint: `api/user/requests?page=${page}&size=${size}`,
             token
         })
-        if (requests.status === "error") return
+        if (requests.status === "error") return 0
 
-        set({ requests: requests.data })
+        set({ requests: [...(get().requests ?? []), ...requests.data] })
+
+        return requests.data.length
     },
-    getAllRecommendations: async (token) => {
-        const requests = await GET<User[]>({
+    getAllRecommendations: async (token, page: number, size: number) => {
+        const recommendations = await GET<User[]>({
             whichService: "userService",
-            endpoint: "api/user/recommendations",
+            endpoint: `api/user/recommendations?page=${page}&size=${size}`,
             token
         })
-        if (requests.status === "error") return
+        if (recommendations.status === "error") return 0
 
         console.log("123123123123123")
 
-        set({ recommendations: requests.data })
+        set({ recommendations: [...(get().recommendations ?? []), ...recommendations.data] })
+
+        return recommendations.data.length
     },
-    getAllFriends: async (token) => {
-        const requests = await GET<User[]>({
+    getAllFriends: async (token, page: number, size: number) => {
+        const friends = await GET<User[]>({
             whichService: "userService",
-            endpoint: "api/user/friends",
+            endpoint: `api/user/friends?page=${page}&size=${size}`,
             token
         })
-        if (requests.status === "error") return
+        if (friends.status === "error") return 0
 
-        set({ allFriends: requests.data })
+        set({ allFriends: [...(get().allFriends ?? []), ...friends.data] })
+
+        return friends.data.length
     },
     sendRequest: async (anotherUserId, token) => {
         const sendRequest = await POST<string>({

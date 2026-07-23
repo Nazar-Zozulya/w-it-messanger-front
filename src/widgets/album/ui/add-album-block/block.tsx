@@ -4,12 +4,12 @@ import styles from "./block.module.css"
 import { ReactComponent as Plus } from "../../../../shared/ui/icons/plus.svg"
 import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 
-export function AddAlbumBlock() {
+export function AddAlbumBlock(props:{mode: "no-albums" | "has-albums"}) {
 	const { openModal } = useModalManagerStore()
 
 	return (
 		<UniversalBlockCard
-			title="Немає ще жодного альбому"
+			title={props.mode === "no-albums" ? "Немає ще жодного альбому" : ""}
 			button={
 				<Button
 					text="Створити альбом"

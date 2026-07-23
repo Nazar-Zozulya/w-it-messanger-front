@@ -8,12 +8,66 @@ import {
 import { Chat, useChatsManager } from "../../../../entities/chat"
 import { POST } from "../../../../helpers/post"
 import { useNavigate } from "react-router-dom"
+import { Fragment, useEffect, useRef } from "react"
+
+const PAGE_SIZE = 7
+const PRELOAD_OFFSET = PAGE_SIZE - 1
 
 export function ChatNotificationsBlock() {
-	const { chats } = useChatsManager()
+	const { chats, getIndividualChats } = useChatsManager()
 	const { user } = useUserContext()
 
+	const page = useRef(1)
+
+	const observer = useRef<IntersectionObserver | null>(null)
+	const targetRef = useRef<HTMLDivElement>(null)
+
+	const loading = useRef(false)
+	const hasMore = useRef(true)
+
 	const navigate = useNavigate()
+
+	useEffect(() => {
+		const element = targetRef.current
+
+		if (!element) return
+
+		observer.current?.disconnect()
+
+		observer.current = new IntersectionObserver(async ([entry]) => {
+			if (!entry.isIntersecting) return
+			if (loading.current) return
+			if (!hasMore.current) return
+
+			loading.current = true
+
+			try {
+				let loadedCount = 0
+
+				page.current++
+
+				console.log("page =", page.current)
+				if (!user) return
+
+				loadedCount = await getIndividualChats(
+					user?.id,
+					page.current,
+					PAGE_SIZE,
+				)
+
+				if (loadedCount < PAGE_SIZE) {
+					hasMore.current = false
+					observer.current?.disconnect()
+				}
+			} finally {
+				loading.current = false
+			}
+		})
+
+		observer.current.observe(element)
+
+		return () => observer.current?.disconnect()
+	}, [user])
 
 	return (
 		<div className={styles.container}>
@@ -28,51 +82,62 @@ export function ChatNotificationsBlock() {
 					</button> */}
 				</div>
 				<div className={styles.list}>
-					{chats?.map((chat) => {
+					{chats?.map((chat, index) => {
+						if (chat.is_group === true) return
 						const anotherUser = chat.users.find(
 							(chatUser) => chatUser.id !== user?.id,
 						)
 
 						return (
-							<AnotherUserChatCard
-								username={anotherUser?.username ?? ""}
-								name={anotherUser?.first_name}
-								surname={anotherUser?.last_name}
-								avatar={anotherUser?.avatar}
-								lastMessage={
-									chat.messages[chat.messages.length - 1] ??
-									[]
-								}
-								id={anotherUser?.id as number}
-								created_at={
-									chat.messages.length === 0
-										? undefined
-										: new Date(
-												chat.messages[
-													chat.messages.length - 1
-												].created_at as string,
-											)
-								}
-								// avatar={}
-								function={async () => {
-									const response = await POST<Chat>({
-										whichService: "chatService",
-										endpoint: "api/chat/get-chat",
-										body: {
-											userId: user?.id,
-											anotherUserId: anotherUser?.id,
-										},
-									})
+							<Fragment key={chat.id}>
+								{index === chats?.length - PRELOAD_OFFSET && (
+									<div
+										ref={targetRef}
+										style={{ height: 1 }}
+									/>
+								)}
 
-									if (response.status === "error") {
-										console.log(
-											"chat found or create problems",
-										)
-										return
+								<AnotherUserChatCard
+									username={anotherUser?.username ?? ""}
+									name={anotherUser?.first_name}
+									surname={anotherUser?.last_name}
+									avatar={anotherUser?.avatar}
+									lastMessage={
+										chat.messages[
+											chat.messages.length - 1
+										] ?? []
 									}
-									navigate(`/chat/${response.data.id}`)
-								}}
-							/>
+									id={anotherUser?.id as number}
+									created_at={
+										chat.messages.length === 0
+											? undefined
+											: new Date(
+													chat.messages[
+														chat.messages.length - 1
+													].created_at as string,
+												)
+									}
+									// avatar={}
+									function={async () => {
+										const response = await POST<Chat>({
+											whichService: "chatService",
+											endpoint: "api/chat/get-chat",
+											body: {
+												userId: user?.id,
+												anotherUserId: anotherUser?.id,
+											},
+										})
+
+										if (response.status === "error") {
+											console.log(
+												"chat found or create problems",
+											)
+											return
+										}
+										navigate(`/chat/${response.data.id}`)
+									}}
+								/>
+							</Fragment>
 						)
 					})}
 				</div>

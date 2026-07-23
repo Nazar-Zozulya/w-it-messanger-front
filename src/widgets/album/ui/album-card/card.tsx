@@ -136,14 +136,14 @@ export function AlbumCard(props: Omit<Album, "profile">) {
 								)
 							}}
 							initiator={
-								// <button
-								// 	className={styles.moreOptionsButton}
-								// 	onClick={() => {
-								// 		setIsMoreOptionsModalVisible(
-								// 			!isMoreOptionsModalVisible,
-								// 		)
-								// 	}}
-								// >
+								<button
+									className={styles.moreOptionsButton}
+									onClick={() => {
+										setIsMoreOptionsModalVisible(
+											!isMoreOptionsModalVisible,
+										)
+									}}
+								>
 									<ThreeDots
 										style={{
 											display: !isMoreOptionsModalVisible
@@ -151,7 +151,7 @@ export function AlbumCard(props: Omit<Album, "profile">) {
 												: "none",
 										}}
 									/>
-								// </button> 
+								</button> 
 							}
 							modal={
 								<div className={styles.moreOptionsModal}>

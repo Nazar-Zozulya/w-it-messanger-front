@@ -7,9 +7,13 @@ import { POST } from "../../../../helpers/post"
 interface PostsManagerStoreTypes {
 	posts: Post[] | null
 	myPosts: Post[] | null
+	// ети функции возвращают количество постов которые они получили и хешируют их в сторедже ето надо для того чтоб не кидать лишние запросы если запрос дал меньше постов чем указано в сайзе
 	getPosts: (page: number, size: number) => Promise<number>
 	getMyPosts: (id: number, page: number, size: number) => Promise<number>
-	getUserPosts: (id: number, page: number, size: number) => Promise<number>
+
+	// ета функция не кеширует посты в сторедже поетому она возвращает посты 
+	getUserPosts: (id: number, page: number, size: number) => Promise<Result<Post[]>>
+	
 	deletePost: (postId: number, userId: number) => Promise<Result<Post>>
 	createPost: (
 		data: createPostData,
@@ -79,21 +83,21 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 			if (response.status === "success") {
 				// Если потом вынесешь anotherUserPosts в Zustand,
 				// то поменяешь это место.
-				const oldPosts = get().posts
+				// const oldPosts = get().posts
 
-				if (!oldPosts) {
-					set({ posts: response.data })
-				} else {
-					set({ posts: [...oldPosts, ...response.data] })
-				}
+				// if (!oldPosts) {
+				// 	set({ posts: response.data })
+				// } else {
+				// 	set({ posts: [...oldPosts, ...response.data] })
+				// }
 
-				return response.data.length
+				return response
 			}
 
-			return 0
+			return response
 		} catch (e) {
 			console.log("Error fetching posts:", e)
-			return 0
+			return {status: "error", message: "error fetching posts" }
 		}
 	},
 

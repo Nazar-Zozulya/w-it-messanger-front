@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { data, Link, useParams } from "react-router-dom"
 
@@ -27,15 +27,15 @@ import {
 
 import { useUserContext } from "../../../../entities/user"
 
-export function ChatBlock(props: ChatBlockProps) {
-	const { sendNewMessage, enterChat, leaveChat, send } =
-		useChatSocketStore()
+const PAGE_SIZE = 30
+const PRELOAD_OFFSET = 15
 
+export function ChatBlock(props: ChatBlockProps) {
+	const { sendNewMessage, enterChat, leaveChat, send } = useChatSocketStore()
 	const { send: globalSend } = useGlobalChatSocketStore()
 
-	const { getChat, setChats } = useChatsManager()
+	const { getMessagesFromChat } = useChatsManager()
 	const chats = useChatsManager((s) => s.chats)
-	// const groups = useChatsManager((s) => s.groups)
 
 	const { user } = useUserContext()
 	const { id } = useParams()
@@ -46,110 +46,217 @@ export function ChatBlock(props: ChatBlockProps) {
 
 	const anotherUser = chat?.users?.find((u) => u.id !== user?.id) ?? null
 
-	const messagesRef = useRef<HTMLDivElement>(null)
-
 	const { handleSubmit, control, reset } = useForm<SendMessageForm>({
 		defaultValues: {
 			text: "",
 		},
 	})
 
+	const messagesRef = useRef<HTMLDivElement>(null)
+	const targetRef = useRef<HTMLDivElement>(null)
+	const observer = useRef<IntersectionObserver | null>(null)
+
+	const page = useRef(1)
+	const loading = useRef(false)
+	const hasMore = useRef(true)
+	const firstLoad = useRef(true)
+
+	// ======================
+	// Первая загрузка сообщений
+	// ======================
+
+	// useEffect(() => {
+	// 	if (!chatId) return
+
+	// 	page.current = 1
+	// 	hasMore.current = true
+	// 	firstLoad.current = true
+
+	// 	console.log(useChatsManager.getState().chats)
+	// 	loadFirstMessages()
+	// }, [chatId])
+
+	// ======================
+	// Вход / выход из комнаты
+	// ======================
+
+	// useEffect(() => {
+	// 	if (!chatId || !user || !anotherUser) return
+
+	// 	enterChat(chatId)
+
+	// 	return () => {
+	// 		leaveChat(chatId)
+	// 	}
+	// }, [chatId, user?.id, anotherUser?.id])
+
 	useEffect(() => {
-		async function fetchChat() {
-			console.log(anotherUser)
-			console.log(chatId)
-			console.log(chat)
-			console.log(chats)
-			if (!chatId || !user || !anotherUser) return
+		if (!chatId || !user || !anotherUser) return
 
-			const response = await getChat(user.id, anotherUser.id)
+		let cancelled = false
 
-			console.log(`another user name ${anotherUser.first_name} ${anotherUser.last_name}`)
+		const init = async () => {
+			page.current = 1
+			hasMore.current = true
+			firstLoad.current = true
 
-			if (response.status === "error") return
+			loading.current = true
 
-			if (props.mode === "chat") {
-				setChats((prev) => {
-					if (!prev) return [response.data]
+			try {
+				await enterChat(chatId)
 
-					const exists = prev.some((c) => c.id === response.data.id)
+				if (cancelled) return
 
-					if (exists) {
-						return prev.map((c) =>
-							c.id === response.data.id ? response.data : c,
-						)
-					}
+				const loaded = await getMessagesFromChat(
+					chatId,
+					1,
+					PAGE_SIZE,
+					true,
+				)
 
-					return [...prev, response.data]
+				if (loaded < PAGE_SIZE) {
+					hasMore.current = false
+				}
+
+				// Ждем пока React отрисует сообщения
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						if (!messagesRef.current) return
+
+						messagesRef.current.scrollTop =
+							messagesRef.current.scrollHeight
+
+						firstLoad.current = false
+					})
 				})
+			} finally {
+				loading.current = false
 			}
-
-			// if (props.mode === "group") {
-			// 	setGroups((prev) => {
-			// 		if (!prev) return [response.data]
-
-			// 		const exists = prev.some((c) => c.id === response.data.id)
-
-			// 		if (exists) {
-			// 			return prev.map((c) =>
-			// 				c.id === response.data.id ? response.data : c,
-			// 			)
-			// 		}
-
-			// 		return [...prev, response.data]
-			// 	})
-			// }
-
-			enterChat(response.data.id)
 		}
 
-		fetchChat()
+		init()
 
 		return () => {
-			if (!chatId) return
+			cancelled = true
 			leaveChat(chatId)
-			console.log("!23123")
 		}
-	}, [chatId, user])
+	}, [chatId, user?.id, anotherUser?.id])
+
+	// ======================
+	// Скролл вниз после первой загрузки
+	// ======================
+
+	// useEffect(() => {
+	// 	if (!chat?.messages?.length) return
+	// 	if (!firstLoad.current) return
+
+	// 	requestAnimationFrame(() => {
+	// 		requestAnimationFrame(() => {
+	// 			if (!messagesRef.current) return
+
+	// 			messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+
+	// 			firstLoad.current = false
+	// 		})
+	// 	})
+	// }, [chat?.messages?.length])
+
+	// ======================
+	// Создание IntersectionObserver
+	// ======================
 
 	useEffect(() => {
-		console.log("chats:"+chats)
-	}, [chats])
+		if (!targetRef.current) return
 
-	useEffect(() => {
+		observer.current?.disconnect()
+
+		observer.current = new IntersectionObserver(loadMore, {
+			root: messagesRef.current,
+			threshold: 0,
+		})
+
+		observer.current.observe(targetRef.current)
+
+		return () => observer.current?.disconnect()
+	}, [chat?.messages?.length])
+
+	// ======================
+	// Загрузка первой страницы
+	// ======================
+
+	async function loadFirstMessages() {
+		if (!chatId) return
+
+		loading.current = true
+
+		try {
+			const loaded = await getMessagesFromChat(chatId, 1, PAGE_SIZE, true)
+
+			if (loaded < PAGE_SIZE) {
+				hasMore.current = false
+			}
+		} finally {
+			loading.current = false
+		}
+	}
+
+	// ======================
+	// Загрузка следующих страниц
+	// ======================
+
+	async function loadMore([entry]: IntersectionObserverEntry[]) {
+		if (!entry.isIntersecting) return
+		if (loading.current) return
+		if (!hasMore.current) return
+		if (!chatId) return
+
+		loading.current = true
+
+		try {
+			page.current++
+
+			const loaded = await getMessagesFromChat(
+				chatId,
+				page.current,
+				PAGE_SIZE,
+				false,
+			)
+
+			if (loaded < PAGE_SIZE) {
+				hasMore.current = false
+				observer.current?.disconnect()
+			}
+		} finally {
+			loading.current = false
+		}
+	}
+
+	// ======================
+	// Прокрутка вниз
+	// ======================
+
+	function scrollToBottom() {
 		if (!messagesRef.current) return
 
 		messagesRef.current.scrollTop = messagesRef.current.scrollHeight
-	}, [chat?.messages])
+	}
+
+	// ======================
+	// Отправка сообщения
+	// ======================
 
 	function sendMessage(data: SendMessageForm) {
-		if (props.mode === "chat") {
-			if (!chatId || !user || !anotherUser || !chat) return
-			
-			console.log("3123123")
-			sendNewMessage({
-				chatId: chat.id,
-				receiverId: anotherUser.id,
-				senderId: user.id,
-				text: data.text,
-			})
-		}
-		// console.log("123213")
-		// if (props.mode === "group") {
-		// 	console.log(chat)
-		// 	if (!user || !chat) return
+		if (!chatId) return
+		if (!user) return
+		if (!anotherUser) return
+		if (!chat) return
 
-		// 	sendNewGroupMessage({
-		// 		chatId: chat.id,
-		// 		senderId: user.id,
-		// 		text: data.text,
-		// 		receiversIds: chat.users
-		// 			.filter((chatUser) => {
-		// 				return chatUser.id !== user.id
-		// 			})
-		// 			.map((chatUser) => chatUser.id),
-		// 	})
-		// }
+		sendNewMessage({
+			chatId: chat.id,
+			receiverId: anotherUser.id,
+			senderId: user.id,
+			text: data.text,
+		})
 
 		reset()
 	}
@@ -200,39 +307,47 @@ export function ChatBlock(props: ChatBlockProps) {
 					</div>
 
 					<div className={styles.messagesList} ref={messagesRef}>
-						{chat?.messages?.map((message) => {
-							console.log("message:", message.readers)
-							if (message.senderId === user?.id) {
-								return (
-									<MyMessageEntity
-										key={message.id}
-										text={message.text}
-										created_at={
-											new Date(
-												message.created_at as string,
-											)
-										}
-										readers={message.readers ?? []}
-									/>
-								)
-							}
-
+						{chat?.messages?.map((message, index) => {
+							console.log(chat?.messages)
+							console.log(chat?.messages?.length)
 							return (
-								<OtherMessageEntity
-									key={message.id}
-									id={message.id}
-									text={message.text}
-									created_at={
-										new Date(message.created_at as string)
-									}
-									readers={message.readers ?? []}
-									user={message.sender}
-									mode={
-										props.mode === "chat" 
-											? props.mode
-											: "chat"
-									}
-								/>
+								<Fragment key={message.id}>
+									{index === PRELOAD_OFFSET && (
+										<div
+											ref={targetRef}
+											style={{ height: 1 }}
+										/>
+									)}
+
+									{message.senderId === user?.id ? (
+										<MyMessageEntity
+											text={message.text}
+											created_at={
+												new Date(
+													message.created_at as string,
+												)
+											}
+											readers={message.readers ?? []}
+										/>
+									) : (
+										<OtherMessageEntity
+											id={message.id}
+											text={message.text}
+											created_at={
+												new Date(
+													message.created_at as string,
+												)
+											}
+											readers={message.readers ?? []}
+											user={message.sender}
+											mode={
+												props.mode === "chat"
+													? props.mode
+													: "chat"
+											}
+										/>
+									)}
+								</Fragment>
 							)
 						})}
 					</div>

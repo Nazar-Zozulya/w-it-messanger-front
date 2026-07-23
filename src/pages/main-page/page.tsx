@@ -99,11 +99,8 @@ export function MainPage(props: MainPageProps) {
 				ref={contentRef}
 				className={styles.content}
 			>
-				{props.mode !== "anotherUser" && <CreatePostBlock />}
 
 				<PostsList mode={props.mode} />
-
-				<div className={styles.bottomSpace}></div>
 			</div>
 		</div>
 	)

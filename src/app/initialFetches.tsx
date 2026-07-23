@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { usePostsManager } from "../entities/post"
 import { useUserContext, useUserStatusStore } from "../entities/user"
 import { useAlbumsManager } from "../entities/album"
@@ -16,6 +16,12 @@ export function InitialFetches(props: InitialFetchesProps) {
 	const { getPosts, getMyPosts } = usePostsManager()
 
 	const { connectSocket, connectSignalR } = useChatSocketStore()
+
+	const location = useLocation()
+
+	// const [isFriendsLoaded, setIsFriendsLoaded] = useState<boolean>(false)
+
+	// const [isAlbumsLoaded, setIsAlbumsLoaded] = useState<boolean>(false)
 
 	const {
 		connectSocket: connectGlobalSocket,
@@ -47,10 +53,28 @@ export function InitialFetches(props: InitialFetchesProps) {
 	useEffect(() => {
 		if (!token) return
 
-		getAlbums(token)
-		getAllRecommendations(token)
-		getAllFriends(token)
-		getAllRequests(token)
+		// setTimeout(() => {
+		getAlbums(token, 1, 4)
+			// setTimeout(() => {
+		getAllRecommendations(token, 1, 6)
+				// setTimeout(() => {
+		getAllFriends(token, 1, 6)
+					// setTimeout(() => {
+		getAllRequests(token, 1, 6)
+		//  			}, 1000)
+		// 		}, 1000)
+		// 	}, 1000)
+		// }, 1000)
+
+		// setTimeout(() => {
+		// 	getAllRecommendations(token)
+		// }, 1000)
+		// setTimeout(() => {
+		// 	getAllFriends(token)
+		// }, 2000)
+		// setTimeout(() => {
+		// 	getAllRequests(token)
+		// }, 3000)
 
 		if (WHICH_SERVICE === "js") {
 			connectSocket()
@@ -65,7 +89,7 @@ export function InitialFetches(props: InitialFetchesProps) {
 		if (!user) return
 
 		getMyPosts(user.id, 1, 10)
-		getIndividualChats(user.id)
+		getIndividualChats(user.id, 1, 7)
 		// getAllGroups(user.id)
 
 		// enterGlobalChat(user.id)
@@ -91,9 +115,33 @@ export function InitialFetches(props: InitialFetchesProps) {
 		getStatuses(user.id)
 	}, [user, isConnected])
 
-	useEffect(() => {
-		console.log("user statuses:", users)
-	}, [users])
+	// useEffect(() => {
+	// 	console.log("window location changed:", location.pathname)
+
+	// 	if (!token) return
+	// 	switch (location.pathname) {
+	// 		case "/friends":
+	// 			if (isFriendsLoaded === false) {
+	// 				setIsFriendsLoaded(true)
+
+	// 				getAllRecommendations(token)
+	// 				getAllFriends(token)
+	// 				getAllRequests(token)
+	// 				break
+	// 			} else {
+	// 				break
+	// 			}
+	// 		case "/settings":
+	// 			if (isAlbumsLoaded === false) {
+	// 				setIsAlbumsLoaded(true)
+
+	// 				getAlbums(token)
+	// 				break
+	// 			} else {
+	// 				break
+	// 			}
+	// 	}
+	// }, [location.pathname])
 
 	return <>{props.children}</>
 }

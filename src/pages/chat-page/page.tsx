@@ -1,6 +1,6 @@
 import { AllContactsBlock, ChatBlock, ChatNotificationsBlock } from '../../widgets/chat'
-import { ChatPageProps } from './page,types'
 import styles from './page.module.css'
+import { ChatPageProps } from './page.types'
 
 
 export function ChatPage(props: ChatPageProps) {

@@ -6,7 +6,7 @@ import { POST } from "../../../../helpers/post"
 
 interface AlbumsManagerStoreTypes {
 	albums: Album[] | null
-	getAlbums: (token: string) => void
+	getAlbums: (token: string, page: number, size: number) => Promise<number>
 	createAlbum: (credentials: CreateAlbumCredentials, token: string) => void
 	updateAlbum: (
 		albumId: number,
@@ -20,22 +20,25 @@ interface AlbumsManagerStoreTypes {
 export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 	albums: null,
 
-	getAlbums: async (token) => {
+	getAlbums: async (token, page, size) => {
 		try {
 			const response = await GET<Album[]>({
 				whichService: "userService",
-				endpoint: "api/user/albums",
+				endpoint: `api/user/albums?page=${page}&size=${size}`,
 				token,
 			})
 
 			if (response.status === "success") {
-				console.log("setting albums", response.data);
-				set({ albums: response.data })
+				console.log("setting albums", response.data)
+				set({ albums: [...(get().albums ?? []), ...response.data] })
+				return response.data.length
 			}
 
 			console.log(response, "albums response")
+			return 0
 		} catch (err) {
 			console.log("Error fetching albums:", err)
+			return 0
 		}
 	},
 
@@ -90,7 +93,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 				endpoint: "api/user/albums/delete",
 				method: "DELETE",
 				token,
-				body: {id: albumId},
+				body: { id: albumId },
 			})
 
 			if (response.status === "success") {
@@ -112,7 +115,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 				endpoint: "api/user/albums/switch-shown",
 				method: "PATCH",
 				token,
-				body: {id: albumId},
+				body: { id: albumId },
 			})
 
 			if (response.status === "success") {
@@ -128,6 +131,5 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 		} catch (err) {
 			console.log("Error deleting album", err)
 		}
-        
 	},
 }))
