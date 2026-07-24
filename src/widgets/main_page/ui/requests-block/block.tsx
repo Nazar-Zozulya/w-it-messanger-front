@@ -1,5 +1,5 @@
 import styles from "./block.module.css"
-import { ReactComponent as People } from '../../../../shared/ui/icons/people.svg'
+import { ReactComponent as People } from "../../../../shared/ui/icons/people.svg"
 import { useFriendsManager } from "../../../../entities/friends"
 import { AnotherUserCard } from "../../../../entities/user"
 import { useNavigate } from "react-router-dom"
@@ -24,44 +24,46 @@ import { useNavigate } from "react-router-dom"
 // ]
 
 export function RequestBlock() {
-    const { requests } = useFriendsManager()
-    const navigate = useNavigate()
+	const { requests } = useFriendsManager()
+	const navigate = useNavigate()
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.header}>
 				<div className={styles.title}>
-                    {/* TODO Поменять people.svg чтоб stroke, color, fill на  него работали */}
-                    <People width={20} stroke="#81818D" color="#81818D" />
-                    <p>Запити</p>
-                </div>
+					{/* TODO Поменять people.svg чтоб stroke, color, fill на  него работали */}
+					<People width={20} stroke="#81818D" color="#81818D" />
+					<p>Запити</p>
+				</div>
 
-                <button className={styles.seeAll}>Дивитись всі</button>
+				<button className={styles.seeAll}>Дивитись всі</button>
 			</div>
-            <div className={styles.requestsList}>
-                { requests?.map((request) => {
-                    return (
-                        <AnotherUserCard
-                            username={request?.username ?? ""}
-                            name={request?.first_name}
-                            surname={request?.last_name}
-                            avatar={request?.profile?.avatar}
-                            id={request.id}
-                            // avatar={}
-                            function={async () => {
-                                navigate(`/${request.id}`)
-                            }}
-                        />
-                        // <div className={styles.request}>
-                        //     <img src={request.profile.avatar} alt="" className={styles.avatar} />
-                        //     <div className={styles.textInfo}>
-                        //         <p className={styles.name}>{request.first_name}</p>
-                        //         {/* <p className={styles.subscribers}>{request.} підписників</p> */}
-                        //     </div>
-                        // </div>
-                    )
-                }) }
-            </div>
+			<div className={styles.requestsList}>
+				{requests && requests.length > 0
+					? requests?.map((request) => {
+							return (
+								<AnotherUserCard
+									username={request?.username ?? ""}
+									name={request?.first_name}
+									surname={request?.last_name}
+									avatar={request?.profile?.avatar}
+									id={request.id}
+									// avatar={}
+									function={async () => {
+										navigate(`/${request.id}`)
+									}}
+								/>
+								// <div className={styles.request}>
+								//     <img src={request.profile.avatar} alt="" className={styles.avatar} />
+								//     <div className={styles.textInfo}>
+								//         <p className={styles.name}>{request.first_name}</p>
+								//         {/* <p className={styles.subscribers}>{request.} підписників</p> */}
+								//     </div>
+								// </div>
+							)
+						})
+					: <p className={styles.noRequests}>Поки що у вас немає запросів.</p>}
+			</div>
 		</div>
 	)
 }

@@ -60,16 +60,14 @@ export function AlbumBlock() {
 		return () => observer.current?.disconnect()
 	}, [user])
 
-	console.log("albums =", albums)
-	console.log("length =", albums?.length)
 	return (
 		<div className={styles.container}>
 			<MyImagesBlock />
 
 			<AddAlbumBlock
-				mode={albums && albums.length > 0 ? "has-albums" : "no-albums"}
+				mode={albums?.filter(a => a.isMyPhotoAlbum !== true) && albums?.filter(a => a.isMyPhotoAlbum !== true).length > 0 ? "has-albums" : "no-albums"}
 			/>
-			{albums?.map((album, index) => {
+			{albums?.filter(a => a.isMyPhotoAlbum !== true)?.map((album, index) => {
 				console.log("albums =", albums)
 				console.log("length =", albums?.length)
 				return (
@@ -79,6 +77,8 @@ export function AlbumBlock() {
 						)}
 						<AlbumCard
 							id={album.id}
+							profileId={album.profileId}
+							isMyPhotoAlbum={album.isMyPhotoAlbum}
 							name={album.name}
 							year={album.year}
 							created_at={album.created_at}

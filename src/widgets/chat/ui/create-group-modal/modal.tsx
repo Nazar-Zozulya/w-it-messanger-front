@@ -48,7 +48,7 @@ export function CreateGroupModal() {
 
 		const grouped = allFriends.reduce<{ letter: string; users: User[] }[]>(
 			(acc, friend) => {
-				const letter = friend.name?.[0].toLowerCase() ?? ""
+				const letter = friend.first_name?.[0].toLowerCase() ?? ""
 
 				const group = acc.find((g) => g.letter === letter)
 
@@ -211,8 +211,8 @@ export function CreateGroupModal() {
 																styles.name
 															}
 														>
-															{friend.name
-																? `${friend.name} ${friend.surname}`
+															{friend.first_name
+																? `${friend.first_name} ${friend.last_name}`
 																: friend.username}
 														</p>
 													</div>
@@ -338,8 +338,8 @@ export function CreateGroupModal() {
 														alt=""
 													/>
 													<p className={styles.name}>
-														{friend.name
-															? `${friend.name} ${friend.surname ?? ""}`
+														{friend.first_name
+															? `${friend.first_name} ${friend.last_name ?? ""}`
 															: friend.username}
 													</p>
 												</div>

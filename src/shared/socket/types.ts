@@ -1,6 +1,6 @@
 export interface newMessageCredentials {
     chatId: number
-	receiverId: number
+	receiversId: number[]
 	senderId: number
 	text: string
 }

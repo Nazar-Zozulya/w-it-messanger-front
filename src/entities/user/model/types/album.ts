@@ -14,6 +14,9 @@ export interface Album {
     is_default: string
 
     profile: Profile
+    profileId: number
+
+    isMyPhotoAlbum: boolean
 
     // previewImage: string
     images: AlbumImage[]

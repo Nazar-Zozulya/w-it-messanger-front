@@ -218,9 +218,12 @@ export function AlbumCard(props: Omit<Album, "profile">) {
 						{(images ?? []).map((image) => {
 							return (
 								<AlbumIcon
-									image={image.image}
 									id={image.id}
-									shown={image.is_shown}
+									image={image.image}
+									created_at={image.created_at}
+									is_shown={image.is_shown}
+									album={image.album}
+									albumId={image.albumId}
 									onDelete={deleteImage}
 									switchShown={switchShownImage}
 								/>

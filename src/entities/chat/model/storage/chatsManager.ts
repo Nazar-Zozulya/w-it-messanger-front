@@ -12,6 +12,7 @@ interface ChatsManagerStoreTypes {
 	// 	value: Chat[] | ((prev: Chat[] | null) => Chat[] | null),
 	// ) => void
 	getChat: (userId: number, anotherUserId: number) => Promise<Result<Chat>>
+	getChatById: (chatId: number) => Promise<Result<Chat>>
 	// getMessagesFromChat: (chatId: number) => void
 	getIndividualChats: (
 		userId: number,
@@ -25,6 +26,12 @@ interface ChatsManagerStoreTypes {
 		adminId: number,
 		avatar?: string,
 	) => Promise<Result<Chat>>
+
+	getGroups: (
+		userId: number,
+		page: number,
+		size: number,
+	) => Promise<number>
 
 	getMessagesFromChat: (
 		chatId: number,
@@ -85,6 +92,39 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 
 		return getChat
 	},
+
+	getChatById: async (chatId) => {
+		const getChat = await GET<Chat>({
+			whichService: "chatService",
+			endpoint: `api/chat/get-chat/${chatId}`,
+		})
+
+		if (getChat.status === "error") return getChat
+
+		const allChats = get().chats
+
+		const someChat = allChats?.some((chat) => chat.id === getChat.data.id)
+
+		if (!someChat) {
+			const updatedChats = [...(allChats ?? []), getChat.data]
+
+			set({ chats: updatedChats })
+		}
+
+		const updatedChats = allChats?.map((chat) => {
+			if (chat.id === getChat.data.id) {
+				return getChat.data
+			}
+			return chat
+		})
+
+		console.log("updatedChats: ", updatedChats)
+
+		set({ chats: updatedChats })
+
+		return getChat
+	},
+
 	getIndividualChats: async (userId, page, size) => {
 		const getChats = await GET<Chat[]>({
 			whichService: "chatService",
@@ -117,9 +157,27 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 		return newGroup
 	},
 
+	getGroups: async (userId, page, size) => {
+		const getGroups = await GET<Chat[]>({
+			whichService: "chatService",
+			endpoint: `api/chat/groups/${userId}?page=${page}&size=${size}`,
+		})
+
+		if (getGroups.status === "error") return 0
+
+		set({ chats: [...(get().chats ?? []), ...getGroups.data] })
+		return getGroups.data.length
+	},
+
 	getMessagesFromChat: async (chatId, page, size, replace = false) => {
 		console.log("messages")
 		console.log(get().chats)
+		const allChats = get().chats
+
+		const currentChatMessages = allChats?.find(c => c.id === chatId)?.messages
+
+		if (currentChatMessages && currentChatMessages.length > 1) return 0
+
 		const messages = await GET<Message[]>({
 			whichService: "chatService",
 			endpoint: `api/chat/messages/${chatId}?page=${page}&size=${size}`,

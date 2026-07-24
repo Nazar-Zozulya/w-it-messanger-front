@@ -3,7 +3,7 @@
     background: #fff;
     border-radius: 10px;
     width: 24.4vw;
-    height: 28.2vh;
+    max-height: 28.2vh;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -83,4 +83,11 @@
     font-family: "GT Walsheim Pro";
     font-weight: 400;
     font-size: clamp(8px, 1vw, 14px);
+}
+
+.noRequests {
+    color: #81818D;
+    font-family: "GT Walsheim Pro";
+    text-align: center;
+    font-size: clamp(14px, 1.25vw, 18px);
 }

@@ -20,6 +20,7 @@ import { ReactComponent as Send } from "../../../../shared/ui/icons/send.svg"
 import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
 
 import {
+	Chat,
 	MyMessageEntity,
 	OtherMessageEntity,
 	useChatsManager,
@@ -34,17 +35,22 @@ export function ChatBlock(props: ChatBlockProps) {
 	const { sendNewMessage, enterChat, leaveChat, send } = useChatSocketStore()
 	const { send: globalSend } = useGlobalChatSocketStore()
 
-	const { getMessagesFromChat } = useChatsManager()
+	const { getMessagesFromChat, getChatById } = useChatsManager()
 	const chats = useChatsManager((s) => s.chats)
 
 	const { user } = useUserContext()
 	const { id } = useParams()
 
-	const chatId = id ? Number(id) : null
+	// let chatId = id ? Number(id) : null
 
-	const chat = chats?.find((c) => c.id === chatId)
+	// let chat = chats?.find((c) => c.id === chatId)
+	// const chats = useChatsManager((s) => s.chats)
 
-	const anotherUser = chat?.users?.find((u) => u.id !== user?.id) ?? null
+	const chat = chats?.find((c) => c.id === Number(id))
+
+	// const anotherUser = !chat?.is_group
+	// 	? (chat?.users?.find((u) => u.id !== user?.id) ?? null)
+	// 	: null
 
 	const { handleSubmit, control, reset } = useForm<SendMessageForm>({
 		defaultValues: {
@@ -91,7 +97,7 @@ export function ChatBlock(props: ChatBlockProps) {
 	// }, [chatId, user?.id, anotherUser?.id])
 
 	useEffect(() => {
-		if (!chatId || !user || !anotherUser) return
+		if (!chat?.id || !user) return
 
 		let cancelled = false
 
@@ -103,12 +109,12 @@ export function ChatBlock(props: ChatBlockProps) {
 			loading.current = true
 
 			try {
-				await enterChat(chatId)
+				await enterChat(chat?.id ?? 0)
 
 				if (cancelled) return
 
 				const loaded = await getMessagesFromChat(
-					chatId,
+					chat?.id ?? 0,
 					1,
 					PAGE_SIZE,
 					true,
@@ -138,9 +144,33 @@ export function ChatBlock(props: ChatBlockProps) {
 
 		return () => {
 			cancelled = true
-			leaveChat(chatId)
+			leaveChat(chat?.id ?? 0)
 		}
-	}, [chatId, user?.id, anotherUser?.id])
+	}, [chat?.id, user?.id])
+
+	useEffect(() => {
+		async function fetchChat() {
+			if (!id) return
+			if (chat) return
+
+			const response = await getChatById(+id)
+
+			// if (response.status === "success") {
+			// 	chat = response.data
+			// }
+		}
+
+		fetchChat()
+	}, [id])
+
+	// useEffect(()=>{
+	// 	console.log("another user:", anotherUser)
+	// },[anotherUser])
+
+	useEffect(() => {
+		console.log("current chat:", chat)
+		console.log("chatId:", chat?.id)
+	}, [chat, chat?.id])
 
 	// ======================
 	// Скролл вниз после первой загрузки
@@ -185,12 +215,17 @@ export function ChatBlock(props: ChatBlockProps) {
 	// ======================
 
 	async function loadFirstMessages() {
-		if (!chatId) return
+		if (!chat?.id) return
 
 		loading.current = true
 
 		try {
-			const loaded = await getMessagesFromChat(chatId, 1, PAGE_SIZE, true)
+			const loaded = await getMessagesFromChat(
+				chat?.id,
+				1,
+				PAGE_SIZE,
+				true,
+			)
 
 			if (loaded < PAGE_SIZE) {
 				hasMore.current = false
@@ -208,7 +243,7 @@ export function ChatBlock(props: ChatBlockProps) {
 		if (!entry.isIntersecting) return
 		if (loading.current) return
 		if (!hasMore.current) return
-		if (!chatId) return
+		if (!chat?.id) return
 
 		loading.current = true
 
@@ -216,7 +251,7 @@ export function ChatBlock(props: ChatBlockProps) {
 			page.current++
 
 			const loaded = await getMessagesFromChat(
-				chatId,
+				chat?.id,
 				page.current,
 				PAGE_SIZE,
 				false,
@@ -246,14 +281,19 @@ export function ChatBlock(props: ChatBlockProps) {
 	// ======================
 
 	function sendMessage(data: SendMessageForm) {
-		if (!chatId) return
+		if (!chat?.id) return
 		if (!user) return
-		if (!anotherUser) return
+		// if (!anotherUser) return
 		if (!chat) return
+
+		console.log("chat.avatar_url: ", chat.avatar_url)
+		console.log(chat)
+		console.log(chat?.messages)
+		console.log(chat?.messages?.length)
 
 		sendNewMessage({
 			chatId: chat.id,
-			receiverId: anotherUser.id,
+			receiversId: chat?.users.map((u) => u.id),
 			senderId: user.id,
 			text: data.text,
 		})
@@ -282,22 +322,34 @@ export function ChatBlock(props: ChatBlockProps) {
 								<div className={styles.headerChatWithDiv}>
 									<img
 										src={
-											props.mode === "chat"
-												? anotherUser?.avatar ||
-													DEFAULT_AVATAR
-												: chat?.avatar?.base64 ||
-													DEFAULT_AVATAR
+											props.mode === "chat" &&
+											!chat?.is_group
+												? (chat?.users.find(
+														(u) =>
+															u.id !== user?.id,
+													)?.avatar ?? DEFAULT_AVATAR)
+												: (chat?.avatar_url ??
+													DEFAULT_AVATAR)
 										}
 										className={styles.avatar}
 										alt=""
 									/>
 
 									<p className={styles.chatName}>
-										{props.mode === "chat"
-											? anotherUser?.first_name
-												? `${anotherUser.first_name} ${anotherUser.last_name}`
-												: anotherUser?.username
-											: (chat?.name ?? "Назва групи")}
+										{props.mode === "chat" &&
+										!chat?.is_group
+											? chat?.users.find(
+													(u) => u.id !== user?.id,
+												)?.first_name
+												? `${chat?.users.find((u) => u.id !== user?.id)?.first_name} ${chat?.users.find((u) => u.id !== user?.id)?.last_name}`
+												: chat?.users.find(
+														(u) =>
+															u.id !== user?.id,
+													)?.username
+											: (chat?.name ??
+												chat?.users.map(
+													(u) => `${u?.first_name}, `,
+												))}
 									</p>
 								</div>
 							</div>
@@ -308,8 +360,6 @@ export function ChatBlock(props: ChatBlockProps) {
 
 					<div className={styles.messagesList} ref={messagesRef}>
 						{chat?.messages?.map((message, index) => {
-							console.log(chat?.messages)
-							console.log(chat?.messages?.length)
 							return (
 								<Fragment key={message.id}>
 									{index === PRELOAD_OFFSET && (

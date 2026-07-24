@@ -27,8 +27,8 @@ import { useNavigate } from "react-router-dom"
 
 export function ChatsBlock() {
 	const { chats } = useChatsManager()
-    const { user } = useUserContext()
-    const navigate = useNavigate()
+	const { user } = useUserContext()
+	const navigate = useNavigate()
 
 	return (
 		<div className={styles.container}>
@@ -42,50 +42,61 @@ export function ChatsBlock() {
 				<button className={styles.seeAll}>Дивитись всі</button>
 			</div>
 			<div className={styles.requestsList}>
-				{chats?.map((chat) => {
-					const anotherUser = chat.users.find(
-						(chatUser) => chatUser.id !== user?.id,
-					)
+				{chats?.filter((c) => c.is_group === false) &&
+				chats.filter((c) => c.is_group === false).length > 0 ? (
+					chats
+						?.filter((c) => c.is_group === false)
+						.map((chat) => {
+							const anotherUser = chat.users.find(
+								(chatUser) => chatUser.id !== user?.id,
+							)
 
-					return (
-						<AnotherUserChatCard
-							username={anotherUser?.username ?? ""}
-							name={anotherUser?.first_name}
-							surname={anotherUser?.last_name}
-							avatar={anotherUser?.avatar}
-							lastMessage={
-								chat.messages[chat.messages.length - 1] ?? []
-							}
-							id={anotherUser?.id as number}
-							created_at={
-								chat.messages.length === 0
-									? undefined
-									: new Date(
-											chat.messages[
-												chat.messages.length - 1
-											].created_at as string,
-										)
-							}
-							// avatar={}
-							function={async () => {
-								const response = await POST<Chat>({
-									whichService: "chatService",
-									endpoint: "api/chat/get-chat",
-									body: {
-										userId: user?.id,
-										anotherUserId: anotherUser?.id,
-									},
-								})
+							return (
+								<AnotherUserChatCard
+									username={anotherUser?.username ?? ""}
+									name={anotherUser?.first_name}
+									surname={anotherUser?.last_name}
+									avatar={anotherUser?.avatar}
+									lastMessage={
+										chat.messages[
+											chat.messages.length - 1
+										] ?? []
+									}
+									id={anotherUser?.id as number}
+									created_at={
+										chat.messages.length === 0
+											? undefined
+											: new Date(
+													chat.messages[
+														chat.messages.length - 1
+													].created_at as string,
+												)
+									}
+									// avatar={}
+									function={async () => {
+										const response = await POST<Chat>({
+											whichService: "chatService",
+											endpoint: "api/chat/get-chat",
+											body: {
+												userId: user?.id,
+												anotherUserId: anotherUser?.id,
+											},
+										})
 
-								if (response.status === "error") {
-									console.log("chat found or create problems")
-									return
-								}
-								navigate(`/chat/${response.data.id}`)
-							}}
-						/>
-					)
-				})}
+										if (response.status === "error") {
+											console.log(
+												"chat found or create problems",
+											)
+											return
+										}
+										navigate(`/chat/${response.data.id}`)
+									}}
+								/>
+							)
+						})
+				) : (
+					<p className={styles.noChats}>Поки що у вас немає чатів.</p>
+				)}
 			</div>
 		</div>
 	)

@@ -16,6 +16,8 @@ export function MyImagesBlock() {
 	const [newImage, setNewImage] = useState<string | null>(null)
 	const { user, token, setUser } = useUserContext()
 
+	const myAlbum = user?.profile?.albums?.find((a) => a.isMyPhotoAlbum)
+
 	useEffect(() => {
 		if (!user) return
 
@@ -32,7 +34,7 @@ export function MyImagesBlock() {
 		const response = await POST<string>({
 			method: "DELETE",
 			whichService: "userService",
-			endpoint: "api/user/image/delete",
+			endpoint: "api/user/albums/image/delete",
 			token,
 			body: { imageId: id },
 		})
@@ -71,7 +73,7 @@ export function MyImagesBlock() {
 		const response = await POST<string>({
 			method: "PATCH",
 			whichService: "userService",
-			endpoint: "api/user/image/switch-shown",
+			endpoint: "api/user/albums/image/switch-shown",
 			token,
 			body: { imageId: id },
 		})
@@ -99,10 +101,11 @@ export function MyImagesBlock() {
 
 		const response = await POST<Image>({
 			whichService: "userService",
-			endpoint: "api/user/image/add",
+			endpoint: "api/user/albums/image/add",
 			token: token,
 			body: {
 				image: image,
+				albumId: myAlbum?.id
 			},
 		})
 
@@ -170,14 +173,17 @@ export function MyImagesBlock() {
 					<div className={styles.loadingBlock}>
 						<p>loading...</p>
 					</div>
-				) : images.length > 0 ? (
+				) : myAlbum && myAlbum.images?.length > 0 ? (
 					<div className={styles.imagesList}>
-						{images.map((image) => {
+						{myAlbum.images.map((image) => {
 							return (
 								<AlbumIcon
-									image={image.base64}
 									id={image.id}
-									shown={image.shown}
+									image={image.image}
+									created_at={image.created_at}
+									is_shown={image.is_shown}
+									album={image.album}
+									albumId={image.albumId}
 									onDelete={deleteImage}
 									switchShown={switchShown}
 								/>

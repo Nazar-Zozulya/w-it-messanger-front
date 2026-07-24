@@ -6,8 +6,8 @@ export interface Chat {
     id: number
     name?: string
     is_group: boolean
-    avatar?: Image
-    avatarId?: number
+    avatar_url?: string
+    avatar_publicId?: number
     users: UserToChat[]
     admin: UserToChat
     adminId: number

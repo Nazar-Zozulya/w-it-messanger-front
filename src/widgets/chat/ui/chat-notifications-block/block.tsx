@@ -14,60 +14,106 @@ const PAGE_SIZE = 7
 const PRELOAD_OFFSET = PAGE_SIZE - 1
 
 export function ChatNotificationsBlock() {
-	const { chats, getIndividualChats } = useChatsManager()
+	const { chats, getIndividualChats, getGroups } = useChatsManager()
 	const { user } = useUserContext()
 
-	const page = useRef(1)
+	const chatsPage = useRef(1)
+	const groupsPage = useRef(1)
 
-	const observer = useRef<IntersectionObserver | null>(null)
-	const targetRef = useRef<HTMLDivElement>(null)
+	const chatsObserver = useRef<IntersectionObserver | null>(null)
+	const groupsObserver = useRef<IntersectionObserver | null>(null)
 
-	const loading = useRef(false)
-	const hasMore = useRef(true)
+	const chatsTargetRef = useRef<HTMLDivElement>(null)
+	const groupsTargetRef = useRef<HTMLDivElement>(null)
+
+	const chatsLoading = useRef(false)
+	const groupsLoading = useRef(false)
+
+	const chatsHasMore = useRef(true)
+	const groupsHasMore = useRef(true)
+
+	const individualChats = chats?.filter((chat) => !chat.is_group) ?? []
+	const groups = chats?.filter((chat) => chat.is_group) ?? []
 
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		const element = targetRef.current
+		const element = chatsTargetRef.current
 
 		if (!element) return
 
-		observer.current?.disconnect()
+		chatsObserver.current?.disconnect()
 
-		observer.current = new IntersectionObserver(async ([entry]) => {
+		chatsObserver.current = new IntersectionObserver(async ([entry]) => {
 			if (!entry.isIntersecting) return
-			if (loading.current) return
-			if (!hasMore.current) return
+			if (chatsLoading.current) return
+			if (!chatsHasMore.current) return
+			if (!user) return
 
-			loading.current = true
+			chatsLoading.current = true
 
 			try {
-				let loadedCount = 0
+				chatsPage.current++
 
-				page.current++
-
-				console.log("page =", page.current)
-				if (!user) return
-
-				loadedCount = await getIndividualChats(
-					user?.id,
-					page.current,
+				const loadedCount = await getIndividualChats(
+					user.id,
+					chatsPage.current,
 					PAGE_SIZE,
 				)
 
 				if (loadedCount < PAGE_SIZE) {
-					hasMore.current = false
-					observer.current?.disconnect()
+					chatsHasMore.current = false
+					chatsObserver.current?.disconnect()
 				}
 			} finally {
-				loading.current = false
+				chatsLoading.current = false
 			}
 		})
 
-		observer.current.observe(element)
+		chatsObserver.current.observe(element)
 
-		return () => observer.current?.disconnect()
-	}, [user])
+		return () => chatsObserver.current?.disconnect()
+	}, [user, individualChats.length])
+
+	useEffect(() => {
+		const element = groupsTargetRef.current
+		console.log("groups effect")
+		console.log(groupsTargetRef.current)
+
+		if (!element) return
+
+		groupsObserver.current?.disconnect()
+
+		groupsObserver.current = new IntersectionObserver(async ([entry]) => {
+			if (!entry.isIntersecting) return
+			if (groupsLoading.current) return
+			if (!groupsHasMore.current) return
+			if (!user) return
+
+			groupsLoading.current = true
+
+			try {
+				groupsPage.current++
+
+				const loadedCount = await getGroups(
+					user.id,
+					groupsPage.current,
+					PAGE_SIZE,
+				)
+
+				if (loadedCount < PAGE_SIZE) {
+					groupsHasMore.current = false
+					groupsObserver.current?.disconnect()
+				}
+			} finally {
+				groupsLoading.current = false
+			}
+		})
+
+		groupsObserver.current.observe(element)
+
+		return () => groupsObserver.current?.disconnect()
+	}, [user, groups.length])
 
 	return (
 		<div className={styles.container}>
@@ -82,7 +128,7 @@ export function ChatNotificationsBlock() {
 					</button> */}
 				</div>
 				<div className={styles.list}>
-					{chats?.map((chat, index) => {
+					{individualChats?.map((chat, index) => {
 						if (chat.is_group === true) return
 						const anotherUser = chat.users.find(
 							(chatUser) => chatUser.id !== user?.id,
@@ -90,9 +136,11 @@ export function ChatNotificationsBlock() {
 
 						return (
 							<Fragment key={chat.id}>
-								{index === chats?.length - PRELOAD_OFFSET && (
+								{index ===
+									individualChats?.length -
+										PRELOAD_OFFSET && (
 									<div
-										ref={targetRef}
+										ref={chatsTargetRef}
 										style={{ height: 1 }}
 									/>
 								)}
@@ -153,6 +201,65 @@ export function ChatNotificationsBlock() {
 					</button> */}
 				</div>
 				<div className={styles.list}>
+					{groups?.map((group, index) => {
+						if (group.is_group === false) return
+						const anotherUser = group.users.find(
+							(groupUser) => groupUser.id !== user?.id,
+						)
+
+						return (
+							<Fragment key={group.id}>
+								{index === groups?.length - PRELOAD_OFFSET && (
+									<div
+										ref={groupsTargetRef}
+										style={{ height: 1 }}
+									/>
+								)}
+
+								<AnotherUserGroupCard
+									name={group.name ?? "Нова група"}
+									// name={anotherUser?.name}
+									// surname={anotherUser?.surname}
+									lastMessage={
+										group.messages[
+											group.messages.length - 1
+										] ?? []
+									}
+									avatar={group.avatar_url}
+									id={group.id}
+									created_at={
+										group.messages.length === 0
+											? undefined
+											: new Date(
+													group.messages[
+														group.messages.length -
+															1
+													].created_at as string,
+												)
+									}
+									// avatar={}
+									function={async () => {
+										// const response = await POST<Chat>({
+										// 	whichService: "chatService",
+										// 	endpoint: "api/chat/get-chat",
+										// 	body: {
+										// 		userId: user?.id,
+										// 		anotherUserId: anotherUser?.id,
+										// 	},
+										// })
+
+										// if (response.status === "error") {
+										// 	console.log(
+										// 		"chat found or create problems",
+										// 	)
+										// 	return
+										// }
+										navigate(`/group/${group.id}`)
+									}}
+								/>
+							</Fragment>
+						)
+					})}
 					{/* {groups?.map((group) => {
 						// const anotherUser = chat.users.find(
 						// 	(chatUser) => chatUser.id !== user?.id,

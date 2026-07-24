@@ -1,4 +1,4 @@
-import { User, Album } from "."
+import { User, Album, AlbumImage } from "."
 
 export interface Profile {
 	id: number
@@ -10,7 +10,8 @@ export interface Profile {
 
 	birth_date?: Date | string
 
-	avatar: string
+	avatar?: AlbumImage
+	avatarId?: number
 
     pseudonym: string
 
