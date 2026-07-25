@@ -6,9 +6,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
 }
 
 .loadingImage {
@@ -24,19 +24,26 @@
 
 .imageButtons {
 	position: absolute;
-    right: 5%;
-    bottom: 5%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 5%;
+	right: 5%;
+	bottom: 5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 5%;
 }
 
 .imageButton {
-    background: #fff !important;
+	background: #fff !important;
 }
 
 .loading {
 	filter: brightness(70%);
+}
+
+@media (pointer: coarse) {
+	.container {
+		width: 19.7vh;
+		height: 19.7vh;
+	}
 }

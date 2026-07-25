@@ -103,3 +103,10 @@
     flex-direction: row;
     gap: 1.1vw;
 }
+
+
+@media (pointer: coarse) {
+    .container {
+        width: 100%;
+    }
+}

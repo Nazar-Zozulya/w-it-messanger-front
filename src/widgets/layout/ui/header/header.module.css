@@ -9,9 +9,14 @@
     padding: 0 5.6vw;
 }
 
-.navigation {
-    display: flex;
+.navigationForPC {
+    display: none;
     align-items: center;
+    gap: 1.7vw;
+}
+
+.navigationForPhone {
+    display: none;
     align-items: center;
     gap: 1.7vw;
 }
@@ -24,4 +29,18 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
+}
+
+
+@media (pointer: fine){
+    .navigationForPC {
+        display: flex;
+    }
+}
+
+
+@media (pointer: coarse){
+    .navigationForPhone {
+        display: flex;
+    }
 }

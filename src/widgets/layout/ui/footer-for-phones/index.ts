@@ -1,0 +1,1 @@
+export { FooterForPhones } from "./footer"

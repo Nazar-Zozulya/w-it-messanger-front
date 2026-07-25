@@ -8,9 +8,10 @@ import { AddNewIcon, AlbumIcon } from "../../../../features/album"
 import { fileToBase64 } from "../../../../helpers/fileToBase64"
 import { useUserContext } from "../../../../entities/user"
 import { POST } from "../../../../helpers/post"
+import { AlbumImage } from "../../../../entities/user/model/types"
 
 export function MyImagesBlock() {
-	const [images, setImages] = useState<Image[]>([])
+	const [images, setImages] = useState<AlbumImage[]>([])
 	const [preImages, setPreImages] = useState<string[]>([])
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [newImage, setNewImage] = useState<string | null>(null)
@@ -21,17 +22,15 @@ export function MyImagesBlock() {
 	useEffect(() => {
 		if (!user) return
 
-		if (!user.images) return
-
-		setImages(user.images)
-	}, [user?.images])
+		setImages(user.profile.albums.find(a => a.isMyPhotoAlbum == true)?.images ?? [])
+	}, [user?.profile?.albums?.find(a => a.isMyPhotoAlbum == true)?.images])
 
 	const inputRef = useRef<HTMLInputElement>(null)
 
 	async function deleteImage(id: number) {
 		if (!token || !user) return
 
-		const response = await POST<string>({
+		const response = await POST<AlbumImage>({
 			method: "DELETE",
 			whichService: "userService",
 			endpoint: "api/user/albums/image/delete",
@@ -70,7 +69,7 @@ export function MyImagesBlock() {
 	async function switchShown(id: number) {
 		if (!token) return
 
-		const response = await POST<string>({
+		const response = await POST<AlbumImage>({
 			method: "PATCH",
 			whichService: "userService",
 			endpoint: "api/user/albums/image/switch-shown",
@@ -79,9 +78,11 @@ export function MyImagesBlock() {
 		})
 
 		if (response.status === "success") {
+			console.log(images)
 			const switchedImage = images.map((image) => {
+				console.log(5555555555555555)
 				if (image.id === id) {
-					image.shown = !image.shown
+					image.is_shown = !image.is_shown
 				}
 				return image
 			})
@@ -99,7 +100,7 @@ export function MyImagesBlock() {
 
 		setPreImages((prev) => [...prev, image])
 
-		const response = await POST<Image>({
+		const response = await POST<AlbumImage>({
 			whichService: "userService",
 			endpoint: "api/user/albums/image/add",
 			token: token,
@@ -173,12 +174,13 @@ export function MyImagesBlock() {
 					<div className={styles.loadingBlock}>
 						<p>loading...</p>
 					</div>
-				) : myAlbum && myAlbum.images?.length > 0 ? (
+				) : images && images.length > 0 ? (
 					<div className={styles.imagesList}>
-						{myAlbum.images.map((image) => {
+						{images.map((image) => {
 							return (
 								<AlbumIcon
 									id={image.id}
+									isYourIcon={true}
 									image={image.image}
 									created_at={image.created_at}
 									is_shown={image.is_shown}

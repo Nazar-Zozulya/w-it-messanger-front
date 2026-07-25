@@ -75,10 +75,7 @@ export function MainPage(props: MainPageProps) {
 				)}
 
 				{props.mode === "anotherUser" && anotherUser && (
-					<ProfileBlock
-						mode={props.mode}
-						anotherUser={anotherUser}
-					/>
+					<ProfileBlock mode={props.mode} anotherUser={anotherUser} />
 				)}
 
 				{props.mode === "main" && (
@@ -88,19 +85,16 @@ export function MainPage(props: MainPageProps) {
 					</>
 				)}
 
-				{props.mode === "anotherUser" && (
+				{props.mode === "anotherUser" && anotherUser && (
 					<UserAlbumsBlock
-						albums={anotherUser?.profile.albums || []}
+						userId={anotherUser.id}
+						// albums={anotherUser?.profile.albums || []}
 					/>
 				)}
 			</div>
 
-			<div
-				ref={contentRef}
-				className={styles.content}
-			>
-
-				<PostsList mode={props.mode} />
+			<div ref={contentRef} className={styles.content}>
+				<PostsList mode={props.mode} anotherUser={anotherUser} />
 			</div>
 		</div>
 	)

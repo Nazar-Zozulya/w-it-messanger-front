@@ -1,4 +1,6 @@
 export { AuthPage } from './auth-page'
 export { MainPage } from './main-page'
+export { ChatPage } from './chat-page'
 export { SettingsPage } from './settings-page'
 export { FriendsPage } from './friends-page'
+export { UserAlbumsPage } from './user-albums-page'

@@ -133,7 +133,7 @@ export function CreatePostModal() {
 			id: user.id,
 			first_name: user.first_name,
 			last_name: user.last_name,
-			avatar: user.profile?.avatar
+			avatar: user.profile?.avatar?.image
 		}
 
 		const newData: createPostData = {
@@ -185,6 +185,7 @@ export function CreatePostModal() {
 							},
 						}}
 						control={control}
+						fullWidth={window.matchMedia("(pointer: coarse)").matches ? true : false}
 						name="title"
 					/>
 
@@ -247,7 +248,7 @@ export function CreatePostModal() {
 						rows={8}
 					/>
 					<div className={styles.linksList}>
-						<p className={styles.linksTitle}>Посилання</p>
+						{/* <p className={styles.linksTitle}>Посилання</p> */}
 						{/* {!links ? (
 							<div className={styles.linkItem}>
 								<Input

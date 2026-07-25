@@ -32,3 +32,19 @@
     border-bottom: 2px solid #543C52;
     padding-bottom: 0.8vh;
 }
+
+@media (pointer: coarse) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: flex-start; */
+        padding-top: 1vh;
+        gap: 2vh;
+    }
+    .navigation {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 0 2vw;
+        width: 100%;
+    }
+}

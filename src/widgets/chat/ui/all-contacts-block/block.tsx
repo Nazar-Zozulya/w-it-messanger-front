@@ -19,13 +19,17 @@ export function AllContactsBlock() {
 
 	return (
 		<div className={styles.container}>
-			<Button
-				fill={true}
-				text="Створити груповий чат"
-				icon={<Plus />}
-				className={styles.createGroupButton}
-				function={() => {openModal("createGroup")}}
-			/>
+			{window.matchMedia("(pointer: fine)").matches && (
+				<Button
+					fill={true}
+					text="Створити груповий чат"
+					icon={<Plus />}
+					className={styles.createGroupButton}
+					function={() => {
+						openModal("createGroup")
+					}}
+				/>
+			)}
 			<div className={styles.allContacts}>
 				<div className={styles.titleDiv}>
 					<People style={{ color: "#81818D" }} />
@@ -45,11 +49,10 @@ export function AllContactsBlock() {
 					{allFriends?.map((friend) => {
 						return (
 							<AnotherUserCard
-								id={friend.id}								
+								id={friend.id}
 								username={friend.username}
 								name={friend.first_name}
 								surname={friend.last_name}
-
 								function={async () => {
 									if (!token) return
 									const response = await POST<Chat>({
@@ -63,7 +66,9 @@ export function AllContactsBlock() {
 									})
 
 									if (response.status === "error") {
-										console.log("chat found or create problems")
+										console.log(
+											"chat found or create problems",
+										)
 										return
 									}
 									navigate(`/chat/${response.data.id}`)

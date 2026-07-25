@@ -265,3 +265,9 @@
 	text-align: end;
 	color: #ff4c4c;
 }
+
+@media (pointer: coarse) {
+	.container {
+		width: 100%;
+	}
+}

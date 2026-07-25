@@ -7,6 +7,7 @@ export interface AlbumIconProps {
 	is_shown: boolean
 	album: Album
 	albumId: number
+	isYourIcon: boolean
 	onDelete: (id: number) => void
 	switchShown: (id: number) => void
 }

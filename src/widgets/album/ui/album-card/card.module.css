@@ -126,3 +126,9 @@
 	font-size: clamp(12px, 1.2vw, 16px);
 	color: #070A1C;
 }
+
+@media (pointer: coarse) {
+    .imagesList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -5,8 +5,9 @@ import { PostsListProps } from "./list.types"
 import { Post } from "../../../../entities/post/model/types"
 import { useParams } from "react-router-dom"
 import { GET } from "../../../../helpers/get"
-import { useUserContext } from "../../../../entities/user"
+import { User, useUserContext } from "../../../../entities/user"
 import { CreatePostBlock } from "../create-post-block"
+import { ProfileBlock } from "../../../user"
 
 const PAGE_SIZE = 10
 const PRELOAD_OFFSET = PAGE_SIZE - 1
@@ -21,6 +22,8 @@ export function PostsList(props: PostsListProps) {
 	const [anotherUserPosts, setAnotherUserPosts] = useState<Post[] | null>(
 		null,
 	)
+
+	const { getUser } = useUserContext()
 
 	const page = useRef(1)
 	const myPage = useRef(1)
@@ -41,7 +44,7 @@ export function PostsList(props: PostsListProps) {
 
 	useEffect(() => {
 		if (props.mode !== "anotherUser") return
-		
+
 		async function load() {
 			if (!id) return
 			const response = await getUserPosts(
@@ -94,10 +97,7 @@ export function PostsList(props: PostsListProps) {
 
 						console.log("page =", page.current)
 
-						loadedCount = await getPosts(
-							page.current,
-							PAGE_SIZE,
-						)
+						loadedCount = await getPosts(page.current, PAGE_SIZE)
 
 						break
 					}
@@ -131,7 +131,7 @@ export function PostsList(props: PostsListProps) {
 
 						loadedCount = response.data.length
 
-						setAnotherUserPosts(prev => [
+						setAnotherUserPosts((prev) => [
 							...(prev ?? []),
 							...response.data,
 						])
@@ -165,6 +165,14 @@ export function PostsList(props: PostsListProps) {
 	return (
 		<div className={styles.list}>
 			{props.mode !== "anotherUser" && <CreatePostBlock />}
+			{props.mode === "anotherUser" &&
+				window.matchMedia("(pointer: coarse)").matches &&
+				props.anotherUser && (
+					<ProfileBlock
+						mode="anotherUser"
+						anotherUser={props.anotherUser}
+					/>
+				)}
 			{/* <div className={styles.postsList}></div> */}
 			{currentPosts?.map((post, index) => (
 				<Fragment key={post.id}>

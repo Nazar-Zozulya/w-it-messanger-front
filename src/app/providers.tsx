@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { AuthPage, FriendsPage, MainPage, SettingsPage } from "../pages"
+import { AuthPage, FriendsPage, MainPage, SettingsPage, UserAlbumsPage } from "../pages"
 import { Layout } from "../widgets/layout"
 import { ChatPage } from "../pages/chat-page"
 
@@ -17,6 +17,7 @@ export function AppProviders() {
 				<Route path="/chats" element={<ChatPage mode="no-chat" />} />
 				<Route path="/chat/:id" element={<ChatPage mode="chat" />} />
 				<Route path="/group/:id" element={<ChatPage mode="chat" />} />
+				<Route path="/albums/:id" element={<UserAlbumsPage />} />
 			</Route>
 		</Routes>
 	)

@@ -16,7 +16,7 @@ export function AnotherUserCard(props: AnotherUserCardProps) {
 		<button className={styles.container} onClick={props.function}>
 			<div className={styles.avatarBlock}>
 				<img
-					src={props.avatar ? props.avatar : DEFAULT_AVATAR}
+					src={props.avatar ? props.avatar.image : DEFAULT_AVATAR}
 					className={styles.avatar}
 					alt=""
 				/>

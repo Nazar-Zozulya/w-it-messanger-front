@@ -45,3 +45,9 @@
 	align-items: center;
 	flex-wrap: wrap;
 }
+
+@media (pointer: coarse) {
+	.block {
+		height: 100%;
+	}
+}

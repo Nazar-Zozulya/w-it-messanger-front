@@ -18,7 +18,7 @@ export function RecomendationsCard(props: User) {
 			>
 				<UserAvatar
 					avatar={
-						props.profile?.avatar ??
+						props.profile?.avatar?.image ??
 						DEFAULT_AVATAR
 					}
 				/>

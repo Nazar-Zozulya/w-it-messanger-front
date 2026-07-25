@@ -1,0 +1,1 @@
+export type WhichSelectedForFooter = "main" | "my posts" | "friends" | "chats" | null

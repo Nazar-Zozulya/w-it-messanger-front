@@ -19,3 +19,9 @@
     height: 35vh;
     flex-shrink: 0;
 }
+
+@media (pointer: coarse) {
+    .container {
+        width: 100%;
+    }
+}

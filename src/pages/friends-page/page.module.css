@@ -1,35 +1,55 @@
 .container {
-    display: flex;
-    justify-content: space-between;
-    /* padding: 2% 10%; */
-    align-items: flex-start;
-    flex-direction: row;
-    width: 100%;
+	display: flex;
+	justify-content: space-between;
+	/* padding: 2% 10%; */
+	align-items: flex-start;
+	flex-direction: row;
+	width: 100%;
+	overflow-y: auto;
+    height: 89.8vh;
+
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	justify-content: flex-start !important;
 }
 
+.container::-webkit-scrollbar {
+	display: none;
+}
 .navigation {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1vh;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;
+	gap: 1vh;
 }
-
 
 .selectButton {
-    border: none;
-    background: none;
-    font-size: clamp(12px, 1.2vw, 16px);
-    font-family: "GT Walsheim Pro";
-    font-weight: 600;
-    color: #81818D;
-    cursor: pointer;
+	border: none;
+	background: none;
+	font-size: clamp(12px, 1.2vw, 16px);
+	font-family: "GT Walsheim Pro";
+	font-weight: 600;
+	color: #81818d;
+	cursor: pointer;
 }
 
 .selected {
-    color: #070A1C !important;
-    font-weight: 800 !important;
+	color: #070a1c !important;
+	font-weight: 800 !important;
 
-    border-bottom: 2px solid #543C52;
-    padding-bottom: 0.8vh;
+	border-bottom: 2px solid #543c52;
+	padding-bottom: 0.8vh;
+}
+
+@media (pointer: coarse) {
+	.container {
+		flex-direction: column;
+	}
+	.navigation {
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+		padding: 1vh 5vw;
+	}
 }

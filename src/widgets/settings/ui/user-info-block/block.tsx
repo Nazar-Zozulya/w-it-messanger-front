@@ -46,7 +46,7 @@ export function UserInfoBlock() {
 			title="Особиста інформація"
 			button={
 				<Button
-					text={isChanging ? "Зберегти" : "Редагувати Інформацію"}
+					text={window.matchMedia("(pointer: coarse)").matches ? undefined : isChanging ? "Зберегти" : "Редагувати Інформацію"}
 					function={() => {
 						isChanging
 							? handleSubmit(onSubmit)()

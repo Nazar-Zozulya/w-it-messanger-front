@@ -41,16 +41,7 @@ export function ChatBlock(props: ChatBlockProps) {
 	const { user } = useUserContext()
 	const { id } = useParams()
 
-	// let chatId = id ? Number(id) : null
-
-	// let chat = chats?.find((c) => c.id === chatId)
-	// const chats = useChatsManager((s) => s.chats)
-
 	const chat = chats?.find((c) => c.id === Number(id))
-
-	// const anotherUser = !chat?.is_group
-	// 	? (chat?.users?.find((u) => u.id !== user?.id) ?? null)
-	// 	: null
 
 	const { handleSubmit, control, reset } = useForm<SendMessageForm>({
 		defaultValues: {
@@ -66,35 +57,6 @@ export function ChatBlock(props: ChatBlockProps) {
 	const loading = useRef(false)
 	const hasMore = useRef(true)
 	const firstLoad = useRef(true)
-
-	// ======================
-	// Первая загрузка сообщений
-	// ======================
-
-	// useEffect(() => {
-	// 	if (!chatId) return
-
-	// 	page.current = 1
-	// 	hasMore.current = true
-	// 	firstLoad.current = true
-
-	// 	console.log(useChatsManager.getState().chats)
-	// 	loadFirstMessages()
-	// }, [chatId])
-
-	// ======================
-	// Вход / выход из комнаты
-	// ======================
-
-	// useEffect(() => {
-	// 	if (!chatId || !user || !anotherUser) return
-
-	// 	enterChat(chatId)
-
-	// 	return () => {
-	// 		leaveChat(chatId)
-	// 	}
-	// }, [chatId, user?.id, anotherUser?.id])
 
 	useEffect(() => {
 		if (!chat?.id || !user) return
@@ -154,46 +116,15 @@ export function ChatBlock(props: ChatBlockProps) {
 			if (chat) return
 
 			const response = await getChatById(+id)
-
-			// if (response.status === "success") {
-			// 	chat = response.data
-			// }
 		}
 
 		fetchChat()
 	}, [id])
 
-	// useEffect(()=>{
-	// 	console.log("another user:", anotherUser)
-	// },[anotherUser])
-
 	useEffect(() => {
 		console.log("current chat:", chat)
 		console.log("chatId:", chat?.id)
 	}, [chat, chat?.id])
-
-	// ======================
-	// Скролл вниз после первой загрузки
-	// ======================
-
-	// useEffect(() => {
-	// 	if (!chat?.messages?.length) return
-	// 	if (!firstLoad.current) return
-
-	// 	requestAnimationFrame(() => {
-	// 		requestAnimationFrame(() => {
-	// 			if (!messagesRef.current) return
-
-	// 			messagesRef.current.scrollTop = messagesRef.current.scrollHeight
-
-	// 			firstLoad.current = false
-	// 		})
-	// 	})
-	// }, [chat?.messages?.length])
-
-	// ======================
-	// Создание IntersectionObserver
-	// ======================
 
 	useEffect(() => {
 		if (!targetRef.current) return
@@ -209,10 +140,6 @@ export function ChatBlock(props: ChatBlockProps) {
 
 		return () => observer.current?.disconnect()
 	}, [chat?.messages?.length])
-
-	// ======================
-	// Загрузка первой страницы
-	// ======================
 
 	async function loadFirstMessages() {
 		if (!chat?.id) return
@@ -234,10 +161,6 @@ export function ChatBlock(props: ChatBlockProps) {
 			loading.current = false
 		}
 	}
-
-	// ======================
-	// Загрузка следующих страниц
-	// ======================
 
 	async function loadMore([entry]: IntersectionObserverEntry[]) {
 		if (!entry.isIntersecting) return
@@ -266,19 +189,11 @@ export function ChatBlock(props: ChatBlockProps) {
 		}
 	}
 
-	// ======================
-	// Прокрутка вниз
-	// ======================
-
 	function scrollToBottom() {
 		if (!messagesRef.current) return
 
 		messagesRef.current.scrollTop = messagesRef.current.scrollHeight
 	}
-
-	// ======================
-	// Отправка сообщения
-	// ======================
 
 	function sendMessage(data: SendMessageForm) {
 		if (!chat?.id) return
@@ -414,14 +329,16 @@ export function ChatBlock(props: ChatBlockProps) {
 						/>
 
 						<div className={styles.sendInputButton}>
-							<Button
-								fill={false}
-								type="button"
-								icon={<Smile width={20} height={20} />}
-								function={() => {
-									send("rooms", {})
-								}}
-							/>
+							{window.matchMedia("(pointer: fine)").matches && (
+								<Button
+									fill={false}
+									type="button"
+									icon={<Smile width={20} height={20} />}
+									function={() => {
+										send("rooms", {})
+									}}
+								/>
+							)}
 							<Button
 								fill={false}
 								type="button"

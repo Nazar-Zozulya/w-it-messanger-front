@@ -18,14 +18,14 @@ export function FriendsCard(props: User) {
 			>
 				<UserAvatar
 					avatar={
-						props.profile?.avatar ??
+						props.profile?.avatar?.image ??
 						DEFAULT_AVATAR
 					}
 				/>
 
 				<div className={styles.textDiv}>
 					<p className={styles.name}>
-						{props.first_name} {props.last_name}
+						{`${props.first_name} ${props.last_name}`}
 					</p>
 					<p className={styles.username}></p>
 				</div>

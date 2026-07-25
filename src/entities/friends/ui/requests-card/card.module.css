@@ -53,3 +53,9 @@
     align-items: center;
     gap: 1.1vw;
 }
+
+@media (pointer: coarse) {
+    .container {
+        width:  100%
+    }
+}

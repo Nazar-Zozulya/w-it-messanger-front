@@ -16,7 +16,9 @@ import { Image } from "../../../../entities/image"
 import { SmallModal } from "../../../../shared/ui/small-modal"
 import { AlbumImage } from "../../../../entities/user/model/types"
 
-export function AlbumCard(props: Omit<Album, "profile">) {
+export function AlbumCard(
+	props: Omit<Album, "profile"> & { isYourAlbum: boolean },
+) {
 	const { switchShownAlbum, deleteAlbum } = useAlbumsManager()
 
 	const [isMoreOptionsModalVisible, setIsMoreOptionsModalVisible] =
@@ -38,7 +40,12 @@ export function AlbumCard(props: Omit<Album, "profile">) {
 	}
 
 	async function albumUpdate() {
-		setData({ albumId: props.id, name: props.name, topic: props.theme, year: props.year })
+		setData({
+			albumId: props.id,
+			name: props.name,
+			topic: props.theme,
+			year: props.year,
+		})
 
 		openModal("updateAlbum")
 	}
@@ -122,86 +129,103 @@ export function AlbumCard(props: Omit<Album, "profile">) {
 			title={props.name}
 			button={
 				<div className={styles.headerButtonsDiv}>
-					<Button
-						icon={props.is_shown ? <Eye /> : <SlashEye />}
-						function={albumSwitchShown}
-						fill={false}
-					/>
+					{props.isYourAlbum ? (
+						<Button
+							icon={props.is_shown ? <Eye /> : <SlashEye />}
+							function={albumSwitchShown}
+							fill={false}
+						/>
+					) : undefined}
 					<button className={styles.threeDotsButton}>
-						<SmallModal
-							isVisible={isMoreOptionsModalVisible}
-							onClose={() => {
-								setIsMoreOptionsModalVisible(
-									!isMoreOptionsModalVisible,
-								)
-							}}
-							initiator={
-								<button
-									className={styles.moreOptionsButton}
-									onClick={() => {
-										setIsMoreOptionsModalVisible(
-											!isMoreOptionsModalVisible,
-										)
-									}}
-								>
-									<ThreeDots
-										style={{
-											display: !isMoreOptionsModalVisible
-												? "flex"
-												: "none",
-										}}
-									/>
-								</button> 
-							}
-							modal={
-								<div className={styles.moreOptionsModal}>
+						{props.isYourAlbum ? (
+							<SmallModal
+								isVisible={isMoreOptionsModalVisible}
+								onClose={() => {
+									setIsMoreOptionsModalVisible(
+										!isMoreOptionsModalVisible,
+									)
+								}}
+								initiator={
 									<button
 										className={styles.moreOptionsButton}
-										style={{
-											width: "100%",
-											display: "flex",
-											justifyContent: "flex-end",
-										}}
 										onClick={() => {
 											setIsMoreOptionsModalVisible(
 												!isMoreOptionsModalVisible,
 											)
 										}}
 									>
-										<ThreeDots />
+										<ThreeDots
+											style={{
+												display:
+													!isMoreOptionsModalVisible
+														? "flex"
+														: "none",
+											}}
+										/>
 									</button>
-									<button
-										className={
-											styles.moreOptionsModalButton
-										}
-										onClick={() => {albumSwitchShown(); setIsMoreOptionsModalVisible(false)}}
-									>
-										{ props.is_shown ? <Eye /> : <SlashEye /> }
-										<p>{props.is_shown ? "Цей альбом бачите тільки ви" : "Цей альбом бачать всі"}</p>
-									</button>
-									<button
-										className={
-											styles.moreOptionsModalButton
-										}
-										onClick={albumUpdate}
-									>
-										<Edit />
-										<p>Редагувати альбом</p>
-									</button>
-									<div className={styles.line}></div>
-									<button
-										className={
-											styles.moreOptionsModalButton
-										}
-
-										onClick={albumDelete}
-									>
-										<Trash />
-										<p>Видалити альбом</p>
-									</button>
-								</div>
-							}
-						/>
+								}
+								modal={
+									<div className={styles.moreOptionsModal}>
+										<button
+											className={styles.moreOptionsButton}
+											style={{
+												width: "100%",
+												display: "flex",
+												justifyContent: "flex-end",
+											}}
+											onClick={() => {
+												setIsMoreOptionsModalVisible(
+													!isMoreOptionsModalVisible,
+												)
+											}}
+										>
+											<ThreeDots />
+										</button>
+										<button
+											className={
+												styles.moreOptionsModalButton
+											}
+											onClick={() => {
+												albumSwitchShown()
+												setIsMoreOptionsModalVisible(
+													false,
+												)
+											}}
+										>
+											{props.is_shown ? (
+												<Eye />
+											) : (
+												<SlashEye />
+											)}
+											<p>
+												{props.is_shown
+													? "Цей альбом бачите тільки ви"
+													: "Цей альбом бачать всі"}
+											</p>
+										</button>
+										<button
+											className={
+												styles.moreOptionsModalButton
+											}
+											onClick={albumUpdate}
+										>
+											<Edit />
+											<p>Редагувати альбом</p>
+										</button>
+										<div className={styles.line}></div>
+										<button
+											className={
+												styles.moreOptionsModalButton
+											}
+											onClick={albumDelete}
+										>
+											<Trash />
+											<p>Видалити альбом</p>
+										</button>
+									</div>
+								}
+							/>
+						) : undefined}
 					</button>
 				</div>
 			}
@@ -219,6 +243,7 @@ export function AlbumCard(props: Omit<Album, "profile">) {
 							return (
 								<AlbumIcon
 									id={image.id}
+									isYourIcon={props.isYourAlbum}
 									image={image.image}
 									created_at={image.created_at}
 									is_shown={image.is_shown}
@@ -229,10 +254,14 @@ export function AlbumCard(props: Omit<Album, "profile">) {
 								/>
 							)
 						})}
-						{preImages.map((image) => {
-							return <AlbumIcon.Loading image={image} />
-						})}
-						<AddNewIcon addImage={addNewImage} />
+						{props.isYourAlbum ? (
+							<>
+								{preImages.map((image) => {
+									return <AlbumIcon.Loading image={image} />
+								})}
+								<AddNewIcon addImage={addNewImage} />
+							</>
+						) : undefined}
 					</div>
 				</div>
 			</div>

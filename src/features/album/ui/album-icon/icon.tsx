@@ -21,7 +21,7 @@ export function AlbumIcon(props: AlbumIconProps) {
 			<div className={`${styles.imageButtons}`}>
 				<Button
 					fill={false}
-					icon={props.shown ? <Eye style={{color: "#543C52"}} /> : <SlashEye style={{color: "#543C52"}} />}
+					icon={props.is_shown ? <Eye style={{color: "#543C52"}} /> : <SlashEye style={{color: "#543C52"}} />}
 					className={styles.imageButton}
 					function={() => {
 						toggleShown()

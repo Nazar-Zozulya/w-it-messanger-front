@@ -1,0 +1,1 @@
+export { UserAlbumsPage } from './page'

@@ -1,1 +1,1 @@
-export { AlbumBlock } from './block'
+export { AlbumBlock, AnotherUserAlbumBlock } from './block'

@@ -22,6 +22,7 @@
 	padding: 1.7vh 1.1vw;
 	border: 1px solid #cdced2;
 	border-radius: 10px;
+	background-color: #FAF8FF;
 }
 
 .titleDiv {
@@ -92,4 +93,14 @@
 
 .contactsList::-webkit-scrollbar {
 	display: none;
+}
+
+@media (pointer: coarse) {
+	.allContacts {
+		width: 100%;
+		height: 76vh;
+	}
+	.container {
+		width: 100%;
+	}
 }

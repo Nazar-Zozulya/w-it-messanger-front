@@ -3,10 +3,12 @@ import { Album } from "../../../user"
 import { CreateAlbumCredentials } from "../types/album"
 import { GET } from "../../../../helpers/get"
 import { POST } from "../../../../helpers/post"
+import { Result } from "../../../../types/result"
 
 interface AlbumsManagerStoreTypes {
 	albums: Album[] | null
 	getAlbums: (token: string, page: number, size: number) => Promise<number>
+	getAlbumsByUserId: (userId: number, page: number, size: number) => Promise<Result<Album[]>>
 	createAlbum: (credentials: CreateAlbumCredentials, token: string) => void
 	updateAlbum: (
 		albumId: number,
@@ -39,6 +41,19 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 		} catch (err) {
 			console.log("Error fetching albums:", err)
 			return 0
+		}
+	},
+
+	getAlbumsByUserId: async (userId, page, size) => {
+		try {
+			const response = await GET<Album[]>({
+				whichService: "userService",
+				endpoint: `api/user/albums/${userId}?page=${page}&size=${size}`,
+			})
+			return response
+		} catch (err) {
+			console.log("Error fetching albums:", err)
+			return {status: "error", message: "Error fetching albums"}
 		}
 	},
 

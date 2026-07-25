@@ -1,28 +1,8 @@
 .container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-}
-
-.content {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 0.5vw;
-}
-
-.bottomSpace {
-    height: 6vh;
-    flex-shrink: 0;
-}
-
-.phoneHeader {
+    position: fixed;
+    bottom: 0;
     padding-bottom: 1.7vh;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
     width: 100vw;
@@ -50,10 +30,6 @@
 
 @media (pointer: coarse) {
     .container {
-        flex-direction: column;
-        margin-top: -1vh;
-    }
-    .phoneHeader {
         display: flex;
     }
 }

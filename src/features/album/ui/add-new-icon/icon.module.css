@@ -16,3 +16,10 @@
 .hiddenInput {
     display: none;
 }
+
+@media (pointer: coarse) {
+	.container {
+		width: 19.7vh;
+		height: 19.7vh;
+	}
+}

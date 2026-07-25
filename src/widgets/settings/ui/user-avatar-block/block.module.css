@@ -48,3 +48,7 @@
     
     color: #FF4C4C;
 }
+
+@media (pointer: coarse) {
+    .avatarAndUsernameBlock {}
+}

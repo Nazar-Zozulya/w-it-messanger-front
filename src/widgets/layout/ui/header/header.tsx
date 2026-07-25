@@ -8,10 +8,12 @@ import { ReactComponent as People } from "../../../../shared/ui/icons/people.svg
 import { ReactComponent as Chat } from "../../../../shared/ui/icons/chat.svg"
 import { ReactComponent as Settings } from "../../../../shared/ui/icons/settings.svg"
 import { ReactComponent as Logout } from "../../../../shared/ui/icons/logout.svg"
+import { ReactComponent as Plus } from "../../../../shared/ui/icons/plus.svg"
 import { WhichSelected } from "./header.types"
 import { useEffect, useState } from "react"
 import { useUserContext } from "../../../../entities/user"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 
 export function Header() {
 	const [whichSelected, setWhichSelected] = useState<WhichSelected>("main")
@@ -22,10 +24,12 @@ export function Header() {
 
 	const { logout } = useUserContext()
 
-	useEffect(()=>{
-		switch (location.pathname){
+	const { openModal } = useModalManagerStore()
+
+	useEffect(() => {
+		switch (location.pathname) {
 			case "/":
-				setWhichSelected('main')
+				setWhichSelected("main")
 				break
 			case "/my-posts":
 				setWhichSelected("my posts")
@@ -40,56 +44,141 @@ export function Header() {
 				setWhichSelected("friends")
 				break
 		}
-	},[location])
+	}, [location])
 
 	return (
 		<div className={styles.container}>
-			<button className={styles.logoButton} onClick={()=> {navigation('/'); setWhichSelected('main')}}>
-				<Logo style={{height: "1.9vh"}	} />
+			<button
+				className={styles.logoButton}
+				onClick={() => {
+					navigation("/")
+					setWhichSelected("main")
+				}}
+			>
+				<Logo style={{ height: "1.9vh" }} />
 			</button>
 
-			<div className={styles.navigation}>
+			<div className={styles.navigationForPC}>
 				<NavigationButton
-					icon={<House style={{height: "1.8vh", width: "1.8vh"}} />}
+					icon={<House style={{ height: "1.8vh", width: "1.8vh" }} />}
 					text="Головна"
 					redirect="/"
-					onClick={()=>{setWhichSelected('main')}}
+					onClick={() => {
+						setWhichSelected("main")
+					}}
 					isSelected={whichSelected == "main"}
 				/>
 				<NavigationButton
-					icon={<Gallery style={{height: "1.8vh", width: "1.8vh"}} />}
+					icon={
+						<Gallery style={{ height: "1.8vh", width: "1.8vh" }} />
+					}
 					text="Мої публікації"
 					redirect="/my-posts"
-					onClick={()=>{setWhichSelected('my posts')}}
+					onClick={() => {
+						setWhichSelected("my posts")
+					}}
 					isSelected={whichSelected == "my posts"}
 				/>
 				<NavigationButton
-					icon={<People style={{height: "1.8vh", width: "1.8vh"}} />}
+					icon={
+						<People style={{ height: "1.8vh", width: "1.8vh" }} />
+					}
 					text="Друзі"
 					redirect="/friends"
-					onClick={()=>{setWhichSelected('friends')}}
+					onClick={() => {
+						setWhichSelected("friends")
+					}}
 					isSelected={whichSelected == "friends"}
 				/>
 				<NavigationButton
-					icon={<Chat style={{height: "1.8vh", width: "1.8vh"}} />}
+					icon={<Chat style={{ height: "1.8vh", width: "1.8vh" }} />}
 					text="Чати"
 					redirect="/chats"
-					onClick={()=>{setWhichSelected('chats')}}
+					onClick={() => {
+						setWhichSelected("chats")
+					}}
 					isSelected={whichSelected == "chats"}
 				/>
 				<NavigationButton
-					icon={<Settings style={{height: "1.8vh", width: "1.8vh"}} />}
+					icon={
+						<Settings style={{ height: "1.8vh", width: "1.8vh" }} />
+					}
 					text="Налаштування"
 					redirect="/settings"
-					onClick={()=>{setWhichSelected('settings')}}
+					onClick={() => {
+						setWhichSelected("settings")
+					}}
 					isSelected={whichSelected == "settings"}
 				/>
 
 				<Button
 					fill={false}
-					function={() => {logout(); navigation('/auth')}}
-					icon={<Logout style={{height: "1.8vh", width: "1.8vh"}} />}
+					function={() => {
+						logout()
+						navigation("/auth")
+					}}
+					icon={
+						<Logout style={{ height: "1.8vh", width: "1.8vh" }} />
+					}
 					text="Вихід"
+				/>
+			</div>
+			<div className={styles.navigationForPhone}>
+				{whichSelected === "main" && (
+					<Button
+						fill={false}
+						icon={
+							<Plus style={{ height: "1.8vh", width: "1.8vh" }} />
+						}
+						function={() => {
+							openModal("createPost")
+						}}
+					/>
+				)}
+				{whichSelected === "my posts" && (
+					<Button
+						fill={false}
+						icon={
+							<Plus style={{ height: "1.8vh", width: "1.8vh" }} />
+						}
+						function={() => {
+							openModal("createPost")
+						}}
+					/>
+				)}
+				{whichSelected === "chats" && (
+					<Button
+						fill={false}
+						icon={
+							<Plus style={{ height: "1.8vh", width: "1.8vh" }} />
+						}
+						function={() => {
+							openModal("createGroup")
+						}}
+					/>
+				)}
+				{whichSelected !== "chats" && (
+					<Button
+						fill={false}
+						icon={
+							<Settings
+								style={{ height: "1.8vh", width: "1.8vh" }}
+							/>
+						}
+						function={() => {
+							navigation("/settings")
+						}}
+					/>
+				)}
+				<Button
+					fill={false}
+					function={() => {
+						logout()
+						navigation("/auth")
+					}}
+					icon={
+						<Logout style={{ height: "1.8vh", width: "1.8vh" }} />
+					}
 				/>
 			</div>
 		</div>

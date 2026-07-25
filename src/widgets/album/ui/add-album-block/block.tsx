@@ -12,7 +12,7 @@ export function AddAlbumBlock(props:{mode: "no-albums" | "has-albums"}) {
 			title={props.mode === "no-albums" ? "Немає ще жодного альбому" : ""}
 			button={
 				<Button
-					text="Створити альбом"
+					text={window.matchMedia("(pointer: coarse)").matches ? undefined : "Створити альбом"}
 					fill={false}
 					icon={<Plus />}
 					function={() => openModal("createAlbum")}

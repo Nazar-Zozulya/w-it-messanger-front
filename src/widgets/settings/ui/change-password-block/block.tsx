@@ -49,7 +49,13 @@ export function ChangePasswordBlock() {
 			title="Пароль"
 			button={
 				<Button
-					text={isChanging ? "Змінити пароль" : "Редагувати пароль"}
+					text={
+						window.matchMedia("(pointer: coarse)").matches
+							? undefined
+							: isChanging
+								? "Змінити пароль"
+								: "Редагувати пароль"
+					}
 					function={() => {
 						isChanging
 							? handleSubmit(onSubmit)()

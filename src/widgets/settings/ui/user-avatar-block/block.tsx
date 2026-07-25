@@ -16,7 +16,7 @@ import { POST } from "../../../../helpers/post"
 
 export function UserAvatarBlock() {
 	const [username, setUsername] = useState<string>("")
-	const { handleSubmit, formState, control } = useForm<UserAvatarChangeForm>({
+	const { handleSubmit, formState, control, reset } = useForm<UserAvatarChangeForm>({
 		defaultValues: {
 			username: username,
 		},
@@ -44,6 +44,8 @@ export function UserAvatarBlock() {
 		if (newAvatar) newData.avatar = newAvatar
 		if (data.username) newData.username = data.username
 
+		if (!newData.avatar && !newData.username) return
+
 		const response = await update(newData)
 
 
@@ -59,6 +61,8 @@ export function UserAvatarBlock() {
 		}
 
 		setError(null)
+
+		reset()
 
 		console.log(response)
 	}
@@ -90,7 +94,7 @@ export function UserAvatarBlock() {
 			title="Картка профілю"
 			button={
 				<Button
-					text={isChanging ? "Зберегти" : "Редагувати Інформацію"}
+					text={window.matchMedia("(pointer: coarse)").matches ? undefined : isChanging ? "Зберегти" : "Редагувати Інформацію"}
 					function={() => {
 						isChanging
 							? handleSubmit(onSubmit)()
@@ -143,8 +147,9 @@ export function UserAvatarBlock() {
 						placeholder="Введіть ваш логін"
 						style={{ textAlign: "center" }}
 						error={formState.errors.username?.message}
+						fullWidth={window.matchMedia("(max-width: 500px)").matches ? true : false}
 						name={"username"}
-						size="small"
+						size={window.matchMedia("(pointer: coarse)").matches ? "default" :  "small"}
 					/>
 				) : (
 					<>

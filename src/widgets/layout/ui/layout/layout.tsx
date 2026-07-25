@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom"
 import { Header } from "../header"
 import styles from "./layout.module.css"
+import { FooterForPhones } from "../footer-for-phones"
 
 export function Layout() {
 	return (
@@ -9,6 +10,7 @@ export function Layout() {
 			<div className={styles.content}>
 				<Outlet />
 			</div>
+			<FooterForPhones />
 		</div>
 	)
 }

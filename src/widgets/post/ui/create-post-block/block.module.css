@@ -42,3 +42,9 @@
     align-items: center;
     gap: 0.7vw;
 }
+
+@media (pointer: coarse) {
+    .container {
+        display: none;
+    }
+}

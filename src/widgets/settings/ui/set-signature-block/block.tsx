@@ -21,7 +21,7 @@ export function SetSignatureBlock() {
 				title="Варіанти підпису"
 				button={
 					<Button
-						text={isChanging ? "" : "Редагувати Інформацію"}
+						text={window.matchMedia("(pointer: coarse)").matches ? undefined : isChanging ? "" : "Редагувати Інформацію"}
 						function={() => {
 							// isChanging
 							// 	? handleSubmit(onSubmit)()
@@ -39,7 +39,7 @@ export function SetSignatureBlock() {
 							<input type="checkbox" disabled={isChanging ? false : true} />
 							<p>Ім’я та прізвище</p>
 						</div>
-						<p className={styles.name}>{user?.name || 'Не вказано'}</p>
+						<p className={styles.name}>{user?.first_name || 'Не вказано'}</p>
 					</div>
 					<div className={styles.setVisibseSignature}>
 						<div className={`${styles.changedPart} ${isChanging ? styles.changing : ''}`}>

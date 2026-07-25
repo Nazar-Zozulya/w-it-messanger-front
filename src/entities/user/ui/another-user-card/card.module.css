@@ -101,3 +101,9 @@
 .newMessage {
 	background: #E9E5EE !important;
 }
+
+@media (pointer: coarse) {
+	.container {
+		width: 100%;
+	}
+}

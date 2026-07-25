@@ -1,79 +1,86 @@
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    /* padding: -50px; */
-    /* width: 33.8vw; */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	/* padding: -50px; */
+	/* width: 33.8vw; */
 }
 
 .content {
-    /* width: 500px; */
-    width: 33.9vw;
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 4.2vh 2.8vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    z-index: 1;
-    gap: 3.1vh;
+	/* width: 500px; */
+	width: 33.9vw;
+	background-color: #fff;
+	border-radius: 20px;
+	padding: 4.2vh 2.8vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	z-index: 1;
+	gap: 3.1vh;
 }
 
 .bgImage {
-    height: 55vh;
-    margin-left: -5.6vw;
-    z-index: 0;
+	height: 55vh;
+	margin-left: -5.6vw;
+	z-index: 0;
 }
 
 .logOrRegBlock {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 1.4vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	gap: 1.4vw;
 }
 
 .logOrRegButton {
-    border: none;
-    background: none;
-    cursor: pointer;
+	border: none;
+	background: none;
+	cursor: pointer;
 }
 
 .logOrRegText {
-    font-family: "GT Walsheim Pro";
-    font-size: clamp(28px, 2.4vw, 34px);
-    font-weight: 500;
-    color: #81818D;
+	font-family: "GT Walsheim Pro";
+	font-size: clamp(28px, 2.4vw, 34px);
+	font-weight: 500;
+	color: #81818d;
 }
 
 .logOrRegActiveText {
-    text-decoration: underline;
-    font-family: "GT Walsheim Pro";
-    font-size: clamp(28px, 2.4vw, 34px);
-    font-weight: 700;
-    color: #070A1C;
+	text-decoration: underline;
+	font-family: "GT Walsheim Pro";
+	font-size: clamp(28px, 2.4vw, 34px);
+	font-weight: 700;
+	color: #070a1c;
 }
 
-@media screen and (max-width: 1150px) {
-    .bgImage {
-        display: none;
-    }
+@media (max-width: 1350px) {
+	.content {
+		width: 40vw;
+	}
+}
 
-    .content {
-        width: 50vw;
-    }
+
+@media screen and (max-width: 1250px) {
+	.bgImage {
+		display: none;
+	}
+
+	.content {
+		width: 50vw;
+	}
 }
 
 @media screen and (max-width: 700px) {
-    .content {
-        width: 80vw;
-    }
+	.content {
+		width: 80vw;
+	}
 }
 
 @media screen and (max-width: 500px) {
-    .content {
-        width: 93vw;
-    }
+	.content {
+		width: 93vw;
+	}
 }

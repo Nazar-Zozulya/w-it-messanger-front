@@ -62,7 +62,6 @@ export function PostCard(props: PostCardProps) {
 							// 					?.activeAvatarId,
 							// 		)?.image
 							// 	: DEFAULT_AVATAR
-
 							props.post.author.avatar
 								? props.post.author.avatar
 								: DEFAULT_AVATAR
@@ -156,6 +155,7 @@ export function PostCard(props: PostCardProps) {
 					)}
 				</button>
 			</div>
+			<div className={styles.line}></div>
 			<div className={styles.content}>
 				<p className={styles.title}>{props.post.title}</p>
 				<p className={styles.description}>{props.post.content}</p>

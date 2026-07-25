@@ -1,35 +1,42 @@
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 64vw;
-    padding: 1.7vh 1.1vw;
-    gap: 1.7vh;
-    border: solid 1px #CDCED2;
-    background: #fff;
-    border-radius: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	width: 64vw;
+	padding: 1.7vh 1.1vw;
+	gap: 1.7vh;
+	border: solid 1px #cdced2;
+	background: #fff;
+	border-radius: 15px;
 }
 
 .header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
 }
 
 .content {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
 }
 
 .title {
-    color: #070A1C;
-    font-family: "GT Walsheim Pro";
-    font-size: clamp(12px, 1.2vw, 16px);
-    font-weight: 500;
+	color: #070a1c;
+	font-family: "GT Walsheim Pro";
+	font-size: clamp(12px, 1.2vw, 16px);
+	font-weight: 500;
+}
+
+@media (pointer: coarse) {
+	.container {
+		width: 100vw;
+        padding: 1.7vh 3.7vw;
+	}
 }

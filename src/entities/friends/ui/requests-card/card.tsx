@@ -16,7 +16,7 @@ export function RequestsCard(props: User) {
 			>
 				<UserAvatar
 					avatar={
-						props.profile?.avatar ??
+						props.profile?.avatar?.image ??
 						DEFAULT_AVATAR
 					}
 				/>

@@ -1,7 +1,8 @@
 import { Message } from "../../../chat"
+import { AlbumImage } from "../../model/types"
 
 export interface AnotherUserCardProps {
-	avatar?: string
+	avatar?: AlbumImage
 	name?: string | null
 	surname?: string | null
 	username: string

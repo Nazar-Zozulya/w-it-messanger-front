@@ -16,6 +16,7 @@
 	height: 43.1vh;
 	border: 1px solid #cdced2;
 	border-radius: 10px;
+	background-color: #FAF8FF;
 	width: 100%;
 	gap: 2.5vh;
 	padding: 1.7vh 0;
@@ -76,4 +77,15 @@
 
 .list::-webkit-scrollbar {
 	display: none;
+}
+
+@media (pointer: coarse) {
+	.container {
+		width: 100%;
+		height: 76vh;
+	}
+	.chatsBlock {
+		justify-content: flex-start;
+		height: 76vh;
+	}
 }
