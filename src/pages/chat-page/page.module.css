@@ -22,7 +22,7 @@
 
 .phoneHeader {
     padding-bottom: 1.7vh;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
     width: 100vw;
