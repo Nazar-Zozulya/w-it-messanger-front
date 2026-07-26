@@ -33,7 +33,7 @@
 	font-family: "GT Walsheim Pro";
 	font-style: normal;
 	font-weight: 500;
-	font-size: calc(14px, 1.4vw, 20px);
+	font-size: clamp(14px, 1.4vw, 20px);
 	color: #81818e;
 }
 
