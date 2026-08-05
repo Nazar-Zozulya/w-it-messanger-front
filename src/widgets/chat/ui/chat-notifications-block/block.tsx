@@ -117,6 +117,13 @@ export function ChatNotificationsBlock(props: {
 		return () => groupsObserver.current?.disconnect()
 	}, [user, groups.length])
 
+	console.log(
+		chats?.map((c) => ({
+			id: c.id,
+			last: c.messages.at(-1)?.text,
+		})),
+	)
+
 	return (
 		<div className={styles.container}>
 			{props.mode !== "groups" && (
@@ -153,11 +160,7 @@ export function ChatNotificationsBlock(props: {
 										name={anotherUser?.first_name}
 										surname={anotherUser?.last_name}
 										avatar={anotherUser?.avatar}
-										lastMessage={
-											chat.messages[
-												chat.messages.length - 1
-											] ?? []
-										}
+										lastMessage={chat.messages.at(-1)}
 										id={anotherUser?.id as number}
 										created_at={
 											chat.messages.length === 0

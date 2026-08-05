@@ -36,6 +36,8 @@ export function ChatBlock(props: ChatBlockProps) {
 	const { send: globalSend } = useGlobalChatSocketStore()
 
 	const { getMessagesFromChat, getChatById } = useChatsManager()
+
+	const { chats: ffff } = useChatsManager()
 	const chats = useChatsManager((s) => s.chats)
 
 	const { user } = useUserContext()
@@ -52,6 +54,9 @@ export function ChatBlock(props: ChatBlockProps) {
 	const messagesRef = useRef<HTMLDivElement>(null)
 	const targetRef = useRef<HTMLDivElement>(null)
 	const observer = useRef<IntersectionObserver | null>(null)
+
+	const scrollRef = useRef<HTMLDivElement>(null)
+	const scrollObserver = useRef<IntersectionObserver | null>(null)
 
 	const page = useRef(1)
 	const loading = useRef(false)
@@ -128,17 +133,48 @@ export function ChatBlock(props: ChatBlockProps) {
 
 	useEffect(() => {
 		if (!targetRef.current) return
+		if (!scrollRef.current) return
 
 		observer.current?.disconnect()
+
+		scrollObserver.current?.disconnect()
+
+		console.log(messagesRef.current)
+		console.log(messagesRef.current?.getBoundingClientRect())
 
 		observer.current = new IntersectionObserver(loadMore, {
 			root: messagesRef.current,
 			threshold: 0,
 		})
 
-		observer.current.observe(targetRef.current)
+		scrollObserver.current = new IntersectionObserver(
+			(entries, observer) => {
+				const entry = entries[0]
 
-		return () => observer.current?.disconnect()
+				if (entry.isIntersecting) {
+					messagesRef.current!.scrollTop =
+						messagesRef.current!.scrollHeight
+				}
+
+				observer.disconnect() // сразу удалить после первой проверки
+			},
+			{
+				root: messagesRef.current,
+				threshold: 0,
+			},
+		)
+
+		scrollObserver.current.observe(scrollRef.current)
+
+		console.log(targetRef.current)
+
+		observer.current.observe(targetRef.current)
+		scrollObserver.current.observe(scrollRef.current)
+
+		return () => {
+			observer.current?.disconnect()
+			scrollObserver.current?.disconnect()
+		}
 	}, [chat?.messages?.length])
 
 	async function loadFirstMessages() {
@@ -162,10 +198,18 @@ export function ChatBlock(props: ChatBlockProps) {
 		}
 	}
 
+	useEffect(() => {
+		if (!chat) return
+		console.log("user avatar: ", ffff)
+	}, [chat])
+
 	async function loadMore([entry]: IntersectionObserverEntry[]) {
 		if (!entry.isIntersecting) return
+
 		if (loading.current) return
+
 		if (!hasMore.current) return
+
 		if (!chat?.id) return
 
 		loading.current = true
@@ -174,7 +218,7 @@ export function ChatBlock(props: ChatBlockProps) {
 			page.current++
 
 			const loaded = await getMessagesFromChat(
-				chat?.id,
+				chat.id,
 				page.current,
 				PAGE_SIZE,
 				false,
@@ -184,15 +228,21 @@ export function ChatBlock(props: ChatBlockProps) {
 				hasMore.current = false
 				observer.current?.disconnect()
 			}
+		} catch (e) {
+			console.error(e)
 		} finally {
 			loading.current = false
 		}
 	}
 
-	function scrollToBottom() {
+	function scrollToBottom(entries: IntersectionObserverEntry[]) {
+		const entry = entries[0]
+		if (!entry.isIntersecting) return
 		if (!messagesRef.current) return
 
 		messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+
+		scrollObserver.current?.disconnect()
 	}
 
 	function sendMessage(data: SendMessageForm) {
@@ -280,10 +330,24 @@ export function ChatBlock(props: ChatBlockProps) {
 									{index === PRELOAD_OFFSET && (
 										<div
 											ref={targetRef}
-											style={{ height: 1 }}
+											style={{
+												height: 1,
+												width: "100%",
+												marginTop: "-1.04vh",
+											}}
 										/>
 									)}
 
+									{index === chat?.messages?.length - 13 && (
+										<div
+											ref={scrollRef}
+											style={{
+												height: 1,
+												width: "100%",
+												marginTop: "-1.04vh",
+											}}
+										/>
+									)}
 									{message.senderId === user?.id ? (
 										<MyMessageEntity
 											text={message.text}

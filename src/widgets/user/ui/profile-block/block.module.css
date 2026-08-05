@@ -104,6 +104,22 @@
     gap: 1.1vw;
 }
 
+.authLink {
+	border: none;
+	background: none;
+	cursor: pointer;
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 500;
+	font-size: clamp(8px, 1vw, 14px);
+	color: #2563eb;
+}
+
+.authLink:hover {
+	color: #1d4ed8;
+	font-size: clamp(12px, 1.2vw, 16px);
+}
+
 
 @media (pointer: coarse) {
     .container {

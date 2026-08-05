@@ -78,7 +78,7 @@ export function MainPage(props: MainPageProps) {
 					<ProfileBlock mode={props.mode} anotherUser={anotherUser} />
 				)}
 
-				{props.mode === "main" && (
+				{props.mode === "main" && user && (
 					<>
 						<RequestBlock />
 						<ChatsBlock />

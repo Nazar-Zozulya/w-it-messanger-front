@@ -7,6 +7,7 @@ import { Result } from "../../../../types/result"
 
 interface AlbumsManagerStoreTypes {
 	albums: Album[] | null
+	preAlbums: CreateAlbumCredentials[] | null
 	getAlbums: (token: string, page: number, size: number) => Promise<number>
 	getAlbumsByUserId: (userId: number, page: number, size: number) => Promise<Result<Album[]>>
 	createAlbum: (credentials: CreateAlbumCredentials, token: string) => void
@@ -17,10 +18,12 @@ interface AlbumsManagerStoreTypes {
 	) => void
 	deleteAlbum: (albumId: number, token: string) => void
 	switchShownAlbum: (albumId: number, token: string) => void
+	clearAllAlbums: () => void
 }
 
 export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 	albums: null,
+	preAlbums: null,
 
 	getAlbums: async (token, page, size) => {
 		try {
@@ -59,6 +62,7 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 
 	createAlbum: async (credentials, token) => {
 		try {
+			set({ preAlbums: [...(get().preAlbums ?? []), credentials] })
 			const response = await POST<Album>({
 				whichService: "userService",
 				endpoint: "api/user/albums/create",
@@ -67,8 +71,10 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 			})
 
 			if (response.status === "success") {
+				set({ preAlbums: get().preAlbums?.filter((album) => album !== credentials) })
 				set({ albums: [...(get().albums ?? []), response.data] })
 			}
+			set({ preAlbums: get().preAlbums?.filter((album) => album !== credentials) })
 		} catch (err) {
 			console.log("Error creating album", err)
 		}
@@ -147,4 +153,8 @@ export const useAlbumsManager = create<AlbumsManagerStoreTypes>((set, get) => ({
 			console.log("Error deleting album", err)
 		}
 	},
+
+	clearAllAlbums: () => {
+		set({albums: null})
+	}
 }))

@@ -9,7 +9,6 @@
 	border-radius: 10px;
 	background: #fff;
 	gap: 1.7vh;
-	/* max-height: 56.16vh; */
 	max-height: 50vh;
 }
 
@@ -126,4 +125,16 @@
 	font-family: "GT Walsheim Pro";
 	text-align: center;
 	font-size: clamp(14px, 1.25vw, 18px);
+}
+
+@media (pointer: coarse) {
+	.container {
+		width: 100%;
+		max-height: none !important;
+		height: auto !important;
+	}
+
+	.content {
+		overflow-y: hidden !important;
+	}
 }

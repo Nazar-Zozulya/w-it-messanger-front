@@ -6,7 +6,7 @@
 	flex-direction: row;
 	width: 100%;
 	overflow-y: auto;
-    height: 89.8vh;
+    max-height: 89.2vh;
 
 	scrollbar-width: none;
 	-ms-overflow-style: none;
@@ -42,7 +42,7 @@
 	padding-bottom: 0.8vh;
 }
 
-@media (pointer: coarse) {
+@media (max-width: 1023px) {
 	.container {
 		flex-direction: column;
 	}

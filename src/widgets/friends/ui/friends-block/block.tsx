@@ -79,14 +79,14 @@ export function FriendsBlock(props: FriendsBlockProps) {
 				}
 			>
 				<div className={styles.list}>
-					{allFriends?.map((user, index) => {
+					{allFriends && allFriends.length > 0 ? allFriends?.slice(0, PAGE_SIZE).map((user, index) => {
 						return (
 							<Fragment key={user.id}>
 								{index ===
 									allFriends?.length - PRELOAD_OFFSET && (
 									<div
 										ref={targetRef}
-										style={{ height: 1 }}
+										style={{ height: 1, position: "absolute" }}
 									/>
 								)}
 
@@ -107,7 +107,7 @@ export function FriendsBlock(props: FriendsBlockProps) {
 								/>
 							</Fragment>
 						)
-					})}
+					}) : <p className={styles.noItems}>Поки що немає друзів</p>}
 				</div>
 			</UniversalBlockCard>
 		</div>

@@ -6,13 +6,14 @@ import { ReactComponent as Chat } from "../../../../shared/ui/icons/chat.svg"
 import { useEffect, useState } from "react"
 import { WhichSelectedForFooter } from "./footer.types"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useUserContext } from "../../../../entities/user"
 
 export function FooterForPhones() {
 	const [whichSelected, setWhichSelected] =
 		useState<WhichSelectedForFooter>("main")
 
 	const navigate = useNavigate()
-
+ 
 	const location = useLocation()
 
 	useEffect(() => {

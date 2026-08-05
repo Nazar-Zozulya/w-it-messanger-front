@@ -7,23 +7,28 @@ import { POST } from "../../../../helpers/post"
 interface PostsManagerStoreTypes {
 	posts: Post[] | null
 	myPosts: Post[] | null
+	preNewPosts: createPostData[] | null
 	// ети функции возвращают количество постов которые они получили и хешируют их в сторедже ето надо для того чтоб не кидать лишние запросы если запрос дал меньше постов чем указано в сайзе
 	getPosts: (page: number, size: number) => Promise<number>
 	getMyPosts: (id: number, page: number, size: number) => Promise<number>
 
-	// ета функция не кеширует посты в сторедже поетому она возвращает посты 
-	getUserPosts: (id: number, page: number, size: number) => Promise<Result<Post[]>>
-	
+	// ета функция не кеширует посты в сторедже поетому она возвращает посты
+	getUserPosts: (
+		id: number,
+		page: number,
+		size: number,
+	) => Promise<Result<Post[]>>
+
 	deletePost: (postId: number, userId: number) => Promise<Result<Post>>
-	createPost: (
-		data: createPostData,
-		token: string
-	) => Promise<Result<Post>>
+	createPost: (data: createPostData, token: string) => Promise<Result<Post>>
+
+	clearAllPosts: () => void
 }
 
 export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 	posts: null,
 	myPosts: null,
+	preNewPosts: null,
 
 	getPosts: async (page, size) => {
 		try {
@@ -97,7 +102,7 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 			return response
 		} catch (e) {
 			console.log("Error fetching posts:", e)
-			return {status: "error", message: "error fetching posts" }
+			return { status: "error", message: "error fetching posts" }
 		}
 	},
 
@@ -112,12 +117,10 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 
 			if (response.status === "error") return response
 
-			const newPosts = get().posts?.filter(
-				(post) => post.id !== postId
-			)
+			const newPosts = get().posts?.filter((post) => post.id !== postId)
 
 			const myNewPosts = get().myPosts?.filter(
-				(post) => post.id !== postId
+				(post) => post.id !== postId,
 			)
 
 			set({
@@ -138,6 +141,8 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 
 	createPost: async (data, token) => {
 		try {
+			set({ preNewPosts: [...(get().preNewPosts ?? []), data] })
+
 			const response = await POST<Post>({
 				whichService: "postService",
 				endpoint: "api/post/create",
@@ -145,7 +150,18 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 				token,
 			})
 
-			if (response.status === "error") return response
+			if (response.status === "error") {
+				set((state) => ({
+					preNewPosts: state.preNewPosts?.filter(
+						(post) => post !== data,
+					),
+				}))
+				return response
+			}
+
+			set((state) => ({
+				preNewPosts: state.preNewPosts?.filter((post) => post !== data),
+			}))
 
 			const posts = get().posts
 			const myPosts = get().myPosts
@@ -153,13 +169,13 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 			if (!posts) {
 				set({ posts: [response.data] })
 			} else {
-				set({ posts: [...posts, response.data] })
+				set({ posts: [response.data, ...posts] })
 			}
 
 			if (!myPosts) {
 				set({ myPosts: [response.data] })
 			} else {
-				set({ myPosts: [...myPosts, response.data] })
+				set({ myPosts: [response.data, ...myPosts] })
 			}
 
 			return response
@@ -171,5 +187,9 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 				message: "error with creating post",
 			}
 		}
+	},
+
+	clearAllPosts: () => {
+		set({ posts: null, myPosts: null })
 	},
 }))

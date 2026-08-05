@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+		<link rel="stylesheet" href="./index.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="theme-color" content="#000000" />
 		<title>React App</title>
@@ -21,6 +22,70 @@
 				width: 100vw;
 				min-height: 100vh;
 				overflow: hidden;
+			}
+
+			:root {
+				--card-size: 14.8vw;
+			}
+
+			@media (max-width: 1535px) {
+				:root {
+					--card-size: 13.7vw;
+				}
+			}
+
+			@media (max-width: 1460px) {
+				:root {
+					--card-size: 13.2vw;
+				}
+			}
+
+			@media (max-width: 1390px) {
+				:root {
+					--card-size: 12.7vw;
+				}
+			}
+
+
+
+			@media (max-width: 1248px) {
+				:root {
+					--card-size: 20.3vw;
+				}
+			}
+
+			@media (max-width: 1144px) {
+				:root {
+					--card-size: 19.7vw	;
+				}
+			}
+
+			@media (max-width: 1090px) {
+				:root {
+					--card-size: 19vw;
+				}
+			}
+
+			@media (max-width: 1023px) {
+				:root {
+					--card-size: 28vw;
+				}
+			}
+			@media (max-width: 980px) {
+				:root {
+					--card-size: 27vw;
+				}
+			}
+
+			@media (max-width: 840px) {
+				:root {
+					--card-size: 26vw;
+				}
+			}
+			@media (max-width: 767px) {
+				:root {
+					--card-size: 45.8vw;
+				}
 			}
 		</style>
 	</body>

@@ -2,22 +2,29 @@ import { Fragment, useEffect, useRef, useState } from "react"
 import { PostCard, usePostsManager } from "../../../../entities/post"
 import styles from "./list.module.css"
 import { PostsListProps } from "./list.types"
-import { Post } from "../../../../entities/post/model/types"
-import { useParams } from "react-router-dom"
+import { createPostData, Post } from "../../../../entities/post/model/types"
+import { useNavigate, useParams } from "react-router-dom"
 import { GET } from "../../../../helpers/get"
 import { User, useUserContext } from "../../../../entities/user"
 import { CreatePostBlock } from "../create-post-block"
 import { ProfileBlock } from "../../../user"
+import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
+import { LoadingPostCard } from "../../../../entities/post/ui/post-card"
+import { UserAlbumsBlock } from "../../../album"
 
 const PAGE_SIZE = 10
 const PRELOAD_OFFSET = PAGE_SIZE - 1
 
 export function PostsList(props: PostsListProps) {
-	const { posts, myPosts, getPosts, getMyPosts, getUserPosts } =
+	const { posts, myPosts, getPosts, getMyPosts, getUserPosts, preNewPosts } =
 		usePostsManager()
 
 	const { user } = useUserContext()
 	const { id } = useParams()
+
+	const { openModal } = useModalManagerStore()
+
+	const navigate = useNavigate()
 
 	const [anotherUserPosts, setAnotherUserPosts] = useState<Post[] | null>(
 		null,
@@ -34,6 +41,8 @@ export function PostsList(props: PostsListProps) {
 
 	const loading = useRef(false)
 	const hasMore = useRef(true)
+
+	// const currentPosts = [] as Post[]
 
 	const currentPosts =
 		props.mode === "main"
@@ -164,29 +173,81 @@ export function PostsList(props: PostsListProps) {
 
 	return (
 		<div className={styles.list}>
-			{props.mode !== "anotherUser" && <CreatePostBlock />}
+			{props.mode !== "anotherUser" && user && <CreatePostBlock />}
 			{props.mode === "anotherUser" &&
 				window.matchMedia("(pointer: coarse)").matches &&
 				props.anotherUser && (
-					<ProfileBlock
-						mode="anotherUser"
-						anotherUser={props.anotherUser}
-					/>
+					<>
+						<ProfileBlock
+							mode="anotherUser"
+							anotherUser={props.anotherUser}
+						/>
+						<UserAlbumsBlock
+							userId={props.anotherUser.id}
+							// albums={anotherUser?.profile.albums || []}
+						/>
+					</>
 				)}
 			{/* <div className={styles.postsList}></div> */}
-			{currentPosts?.map((post, index) => (
-				<Fragment key={post.id}>
-					{index === currentPosts.length - PRELOAD_OFFSET && (
-						<div ref={targetRef} style={{ height: 1 }} />
-					)}
+			{preNewPosts?.map((post, index) => {
+				return <LoadingPostCard post={post} key={index} />
+			})}
+			{currentPosts && currentPosts.length > 0 ? (
+				currentPosts?.map((post, index) => (
+					<Fragment key={post.id}>
+						{index === currentPosts.length - PRELOAD_OFFSET && (
+							<div ref={targetRef} style={{ height: 1 }} />
+						)}
 
-					<PostCard
-						post={post}
-						key={post.id}
-						isGoToProfile={props.mode === "main"}
-					/>
-				</Fragment>
-			))}
+						<PostCard
+							post={post}
+							key={post.id}
+							isGoToProfile={props.mode === "main"}
+						/>
+					</Fragment>
+				))
+			) : (
+				<div className={styles.noPosts}>
+					<p className={styles.noPostsTitle}>
+						Ще немає жодної публікації
+					</p>
+					<p className={styles.noPostsSubtitle}>
+						{user ? (
+							<>
+								Поділіться своїми думками з спільнотою —{" "}
+								<button
+									type="button"
+									className={styles.noPostsCreatePost}
+									onClick={() => openModal("createPost")}
+								>
+									створіть публікацію
+								</button>{" "}
+								просто зараз.
+							</>
+						) : (
+							<>
+								Щоб створити публікацію,{" "}
+								<button
+									type="button"
+									className={styles.noPostsCreatePost}
+									onClick={() => navigate("/auth?mode=log")}
+								>
+									увійдіть
+								</button>{" "}
+								або{" "}
+								<button
+									type="button"
+									className={styles.noPostsCreatePost}
+									onClick={() => navigate("/auth?mode=reg")}
+								>
+									зареєструйтеся
+								</button>
+								.
+							</>
+						)}
+					</p>
+				</div>
+			)}
 			<div className={styles.bottomSpace}></div>
 		</div>
 	)

@@ -18,6 +18,7 @@ interface FriendsManagerStoreTypes {
     acceptRequest: (anotherUserId: number, token: string) => Promise<Result<string>>
     deleteRelationship: (anotherUserId: number, token: string) => Promise<Result<string>>
     whichFriendship: (anotherUserId: number, token: string) => Promise<FriendshipStatus | null>
+    clearAllFriends: () => void
 }
 
 
@@ -141,5 +142,9 @@ export const useFriendsManager = create<FriendsManagerStoreTypes>((set, get) => 
         if (whichFriendship.status === "error") return null
 
         return whichFriendship.data
+    },
+
+    clearAllFriends: () => {
+        set({requests: null, recommendations: null, allFriends: null})
     }
 }))

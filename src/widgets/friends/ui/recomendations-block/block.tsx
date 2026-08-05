@@ -82,7 +82,7 @@ export function RecomendationsBlock(props: RecomendationsBlockProps) {
 				}
 			>
 				<div className={styles.list}>
-					{recommendations?.map((user, index) => {
+					{recommendations && recommendations.length > 0 ? recommendations?.slice(0, PAGE_SIZE).map((user, index) => {
 						return (
 							<Fragment key={user.id}>
 								{index ===
@@ -110,7 +110,7 @@ export function RecomendationsBlock(props: RecomendationsBlockProps) {
 								/>
 							</Fragment>
 						)
-					})}
+					}) : <p className={styles.noItems}>Поки що немає рекомендацій</p>}
 				</div>
 			</UniversalBlockCard>
 		</div>

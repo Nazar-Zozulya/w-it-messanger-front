@@ -1,1 +1,1 @@
-export { ProfileBlock } from './block'
+export { ProfileBlock, ProfileBlockNoUser } from './block'

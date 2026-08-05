@@ -36,7 +36,7 @@ export function UserAlbumsPage() {
 
 	return (
 		<div className={styles.container}>
-			{anotherUser && (
+			{anotherUser && !window.matchMedia("(max-width: 1023px)").matches && (
 				<ProfileBlock mode="anotherUser" anotherUser={anotherUser} />
 			)}
 

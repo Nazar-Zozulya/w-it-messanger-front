@@ -34,14 +34,46 @@
 
 .list {
 	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(3, 20.07vw);
+	row-gap: 1vw;
+	align-items: flex-start;
+	justify-content: space-between;
 }
 
 .bottomSpace {
     height: 8vh;
     flex-shrink: 0;
+}
+
+.noItems {
+	color: #81818d;
+	font-family: "GT Walsheim Pro";
+	font-weight: 600;
+	font-size: clamp(14px, 1.25vw, 18px);
+}
+
+
+@media (max-width: 1270px) {
+	.list {
+		grid-template-columns: repeat(2, 30vw);
+	}
+}
+
+@media (max-width: 1025px) {
+    .list {
+		grid-template-columns: repeat(3, 30vw);
+	}
+}
+
+@media (max-width: 900px) {
+    .list {
+		grid-template-columns: repeat(2, 45vw);
+	}
+}
+
+@media (max-width: 767px) {
+    .list {
+		grid-template-columns: repeat(1, 100%);
+	}
 }

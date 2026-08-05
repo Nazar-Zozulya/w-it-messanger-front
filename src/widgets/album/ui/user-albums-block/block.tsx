@@ -5,15 +5,12 @@ import { useEffect, useState } from "react"
 import { useAlbumsManager } from "../../../../entities/album"
 import { useNavigate } from "react-router-dom"
 
-
-export function UserAlbumsBlock(props: {userId: number}) {
-
+export function UserAlbumsBlock(props: { userId: number }) {
 	const [albums, setAlbums] = useState<Album[] | null>(null)
 
 	const { getAlbumsByUserId } = useAlbumsManager()
 
 	const navigate = useNavigate()
-
 
 	useEffect(() => {
 		async function fetchAlbums() {
@@ -34,17 +31,23 @@ export function UserAlbumsBlock(props: {userId: number}) {
 					<Gallery stroke="#81818E" />
 					<p className={styles.title}>Альбоми</p>
 				</div>
-				<button className={styles.seeAllButton} onClick={() => {navigate(`/albums/${props.userId}`)}}>Дивитись всі</button>
+				{albums && albums.length > 0 && (
+					<button
+						className={styles.seeAllButton}
+						onClick={() => {
+							navigate(`/albums/${props.userId}`)
+						}}
+					>
+						Дивитись всі
+					</button>
+				)}
 			</div>
-			{albums &&
-			albums.length > 0 ? (
+			{albums && albums.length > 0 ? (
 				<div className={styles.line}></div>
 			) : undefined}
 
 			<div className={styles.content}>
-				{albums &&
-				albums.length >
-					0 ? (
+				{albums && albums.length > 0 ? (
 					albums
 						.filter((a) => a.isMyPhotoAlbum !== true)
 						.map((album) => {
@@ -59,15 +62,18 @@ export function UserAlbumsBlock(props: {userId: number}) {
 											{album.year}
 										</p>
 									</div>
-									{album?.images && album.images.length > 0 ? <img
-										src={
-											album?.images[
-												album?.images?.length - 1
-											]?.image
-										}
-										alt={album.name}
-										className={styles.previewImage}
-									/> : undefined }
+									{album?.images &&
+									album.images.length > 0 ? (
+										<img
+											src={
+												album?.images[
+													album?.images?.length - 1
+												]?.image
+											}
+											alt={album.name}
+											className={styles.previewImage}
+										/>
+									) : undefined}
 									{/* <img
 										src={
 											album?.images[

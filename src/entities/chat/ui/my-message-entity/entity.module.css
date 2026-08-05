@@ -9,10 +9,10 @@
 .messageBlock {
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: flex-end;
 	padding: 1.04vh 0.69vw;
-	gap: 0.69vw;
+	gap: 1vw;
 	background: #cdced2;
 	border-radius: 6px;
 }

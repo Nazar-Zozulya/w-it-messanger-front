@@ -1,9 +1,69 @@
+
 @font-face {
-  font-family: "GT Walsheim Pro";
-  src: url("assets/fonts/GTWalsheimPro-Light.eot");
-  src: local("GT Walsheim Pro Light"), local("GTWalsheimPro-Light"),
-    url("assets/fonts/GTWalsheimPro-Light.eot?#iefix") format("embedded-opentype"),
-    url("assets/fonts/GTWalsheimPro-Light.woff2") format("woff2"),
-    url("assets/fonts/GTWalsheimPro-Light.woff") format("woff"),
-    url("assets/fonts/GTWalsheimPro-Light.ttf") format("truetype");
+	font-family: "GT Walsheim Pro";
+	src: url("assets/fonts/GTWalsheimPro-Light.eot");
+	src:
+		local("GT Walsheim Pro Light"),
+		local("GTWalsheimPro-Light"),
+		url("assets/fonts/GTWalsheimPro-Light.eot?#iefix") format("embedded-opentype"),
+		url("assets/fonts/GTWalsheimPro-Light.woff2") format("woff2"),
+		url("assets/fonts/GTWalsheimPro-Light.woff") format("woff"),
+		url("assets/fonts/GTWalsheimPro-Light.ttf") format("truetype");
+  }
+  
+  /* @media (pointer: coarse) {
+    :root {
+      --card-size: 19.7vh;
+      }
+      } */
+:root {
+  --card-size: 20.8vh;
+}
+      
+@media (max-width: 1535px) {
+	:root {
+		--card-size: 19.7vh;
+	}
+}
+
+@media (max-width: 1460px) {
+	:root {
+		--card-size: 18.7vh;
+	}
+}
+
+@media (max-width: 1390px) {
+	:root {
+		--card-size: 17.7vh;
+	}
+}
+
+@media (max-width: 1320px) {
+	:root {
+		--card-size: 16.7vh;
+	}
+}
+
+@media (max-width: 1248px) {
+	:root {
+		--card-size: 20.8vh;
+	}
+}
+
+@media (max-width: 1144px) {
+	:root {
+		--card-size: 19.7vh;
+	}
+}
+
+@media (max-width: 1090px) {
+	:root {
+		--card-size: 18vh;
+	}
+}
+
+@media (max-width: 1023px) {
+	:root {
+		--card-size: 20.8vh;
+	}
 }

@@ -32,14 +32,14 @@
 }
 
 
-@media (pointer: fine){
+@media (min-width: 1024px) {
     .navigationForPC {
         display: flex;
     }
 }
 
 
-@media (pointer: coarse){
+@media (max-width: 1023px) {
     .navigationForPhone {
         display: flex;
     }

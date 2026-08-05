@@ -4,15 +4,16 @@
     justify-content: flex-start;
     gap: 1vh;
     flex-direction: column;
-    overflow-y: auto;
-    max-height: 89.8vh;
+    max-height: 100%;
     
+    overflow-y: auto;
+
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-.content::-webkit-scrollbar {
-  display: none;
+.container::-webkit-scrollbar {
+    display: none; 
 }
 
 .bottomSpace {
@@ -20,7 +21,7 @@
     flex-shrink: 0;
 }
 
-@media (pointer: coarse) {
+@media (max-width: 1023px) {
     .container {
         width: 100%;
     }

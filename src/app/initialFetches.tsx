@@ -13,9 +13,9 @@ interface InitialFetchesProps {
 }
 
 export function InitialFetches(props: InitialFetchesProps) {
-	const { getPosts, getMyPosts } = usePostsManager()
+	const { getPosts, getMyPosts, posts, myPosts } = usePostsManager()
 
-	const { connectSocket, connectSignalR } = useChatSocketStore()
+	const { connectSocket, connectSignalR, disconnect } = useChatSocketStore()
 
 	const location = useLocation()
 
@@ -26,22 +26,27 @@ export function InitialFetches(props: InitialFetchesProps) {
 	const {
 		connectSocket: connectGlobalSocket,
 		connectSignalR: connectGlobalSignalR,
+		disconnect: disconnectGlobal,
 		enterGlobalChat,
 		leaveGlobalChat,
 		getStatuses,
 		isConnected,
 	} = useGlobalChatSocketStore()
 
-	const { users } = useUserStatusStore()
-
-	const { getAllFriends, getAllRecommendations, getAllRequests } =
-		useFriendsManager()
+	const {
+		getAllFriends,
+		getAllRecommendations,
+		getAllRequests,
+		requests,
+		recommendations,
+		allFriends,
+	} = useFriendsManager()
 
 	const { token, user } = useUserContext()
 
-	const { getAlbums } = useAlbumsManager()
+	const { getAlbums, albums } = useAlbumsManager()
 
-	const { getIndividualChats, getGroups } = useChatsManager()
+	const { getIndividualChats, getGroups, chats } = useChatsManager()
 
 	useEffect(() => {
 		// не надо токен для получения
@@ -51,30 +56,20 @@ export function InitialFetches(props: InitialFetchesProps) {
 	}, [])
 
 	useEffect(() => {
-		if (!token) return
+		if (!token) {
+			disconnect()
+			disconnectGlobal()
+			return
+		}
 
-		// setTimeout(() => {
-		getAlbums(token, 1, 4)
-			// setTimeout(() => {
-		getAllRecommendations(token, 1, 6)
-				// setTimeout(() => {
+		if (!albums) getAlbums(token, 1, 4)
+		if (!recommendations) getAllRecommendations(token, 1, 6)
+		if (!allFriends) getAllFriends(token, 1, 6)
 		getAllFriends(token, 1, 6)
-					// setTimeout(() => {
-		getAllRequests(token, 1, 6)
-		//  			}, 1000)
-		// 		}, 1000)
-		// 	}, 1000)
-		// }, 1000)
-
-		// setTimeout(() => {
-		// 	getAllRecommendations(token)
-		// }, 1000)
-		// setTimeout(() => {
-		// 	getAllFriends(token)
-		// }, 2000)
-		// setTimeout(() => {
-		// 	getAllRequests(token)
-		// }, 3000)
+		getAllFriends(token, 1, 6)
+		getAllFriends(token, 1, 6)
+		getAllFriends(token, 1, 6)
+		if (!requests) getAllRequests(token, 1, 6)
 
 		if (WHICH_SERVICE === "js") {
 			connectSocket()
@@ -86,16 +81,17 @@ export function InitialFetches(props: InitialFetchesProps) {
 	}, [token])
 
 	useEffect(() => {
-		if (!user) return
+		if (!user) {
+			disconnect()
+			disconnectGlobal()
+			return
+		}
 
-		getMyPosts(user.id, 1, 10)
-		getIndividualChats(user.id, 1, 7)
-		getGroups(user.id, 1, 7)
-		// getAllGroups(user.id)
-
-		// enterGlobalChat(user.id)
-
-		// getStatuses(user.id)
+		if (!myPosts) getMyPosts(user.id, 1, 10)
+		if (!chats) {
+			getIndividualChats(user.id, 1, 7)
+			getGroups(user.id, 1, 7)
+		}
 
 		const handleLeave = () => {
 			leaveGlobalChat(user.id)
@@ -115,34 +111,6 @@ export function InitialFetches(props: InitialFetchesProps) {
 		enterGlobalChat(user.id)
 		getStatuses(user.id)
 	}, [user, isConnected])
-
-	// useEffect(() => {
-	// 	console.log("window location changed:", location.pathname)
-
-	// 	if (!token) return
-	// 	switch (location.pathname) {
-	// 		case "/friends":
-	// 			if (isFriendsLoaded === false) {
-	// 				setIsFriendsLoaded(true)
-
-	// 				getAllRecommendations(token)
-	// 				getAllFriends(token)
-	// 				getAllRequests(token)
-	// 				break
-	// 			} else {
-	// 				break
-	// 			}
-	// 		case "/settings":
-	// 			if (isAlbumsLoaded === false) {
-	// 				setIsAlbumsLoaded(true)
-
-	// 				getAlbums(token)
-	// 				break
-	// 			} else {
-	// 				break
-	// 			}
-	// 	}
-	// }, [location.pathname])
 
 	return <>{props.children}</>
 }

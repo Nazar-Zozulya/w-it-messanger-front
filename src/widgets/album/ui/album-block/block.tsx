@@ -5,6 +5,7 @@ import { MyImagesBlock } from "../my-images-block"
 import styles from "./block.module.css"
 import { useAlbumsManager } from "../../../../entities/album"
 import { Fragment, useEffect, useRef, useState } from "react"
+import { LoadingAlbumCard } from "../album-card/card"
 
 const PAGE_SIZE = 4
 const PRELOAD_OFFSET = PAGE_SIZE - 1
@@ -12,7 +13,7 @@ const PRELOAD_OFFSET = PAGE_SIZE - 1
 export function AlbumBlock() {
 	const { user, token } = useUserContext()
 
-	const { albums, getAlbums } = useAlbumsManager()
+	const { albums, getAlbums, preAlbums } = useAlbumsManager()
 
 	const page = useRef(1)
 
@@ -72,6 +73,15 @@ export function AlbumBlock() {
 						: "no-albums"
 				}
 			/>
+			{preAlbums?.map((album, index) => {
+				return (
+					<LoadingAlbumCard
+						name={album.name}
+						theme={album.theme}
+						year={album.year}
+					/>
+				)
+			})}
 			{albums
 				?.filter((a) => a.isMyPhotoAlbum !== true)
 				?.map((album, index) => {

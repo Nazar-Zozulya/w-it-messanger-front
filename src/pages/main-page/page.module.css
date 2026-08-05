@@ -6,6 +6,7 @@
     justify-content: center;
     position: relative;
     justify-content: space-between;
+    max-height: 89.8vh;
 }
 
 .leftBlock {

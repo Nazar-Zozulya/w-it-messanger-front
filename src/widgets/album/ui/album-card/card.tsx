@@ -15,6 +15,7 @@ import { useEffect, useState } from "react"
 import { Image } from "../../../../entities/image"
 import { SmallModal } from "../../../../shared/ui/small-modal"
 import { AlbumImage } from "../../../../entities/user/model/types"
+import { CreateAlbumCredentials } from "../../../../entities/album/model/types/album"
 
 export function AlbumCard(
 	props: Omit<Album, "profile"> & { isYourAlbum: boolean },
@@ -262,6 +263,35 @@ export function AlbumCard(
 								<AddNewIcon addImage={addNewImage} />
 							</>
 						) : undefined}
+					</div>
+				</div>
+			</div>
+		</UniversalBlockCard>
+	)
+}
+
+export function LoadingAlbumCard(props: CreateAlbumCredentials) {
+
+	return (
+		<UniversalBlockCard
+			title={props.name}
+			button={
+				<div className={styles.headerButtonsDiv}>
+					
+				</div>
+			}
+		>
+			<div className={styles.container}>
+				<div className={styles.loading}></div>
+				<div className={styles.header}>
+					<p className={styles.topic}>{props.theme}</p>
+					<p className={styles.year}>{props.year}</p>
+				</div>
+				<div className={styles.line}></div>
+				<div className={styles.content}>
+					<p className={styles.title}>Фотографії</p>
+					<div className={styles.imagesList}>
+						<AddNewIcon addImage={() => {}} />
 					</div>
 				</div>
 			</div>

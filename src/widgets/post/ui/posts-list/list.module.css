@@ -20,3 +20,46 @@
     height: 12vh;
     flex-shrink: 0;
 }
+
+.noPosts {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	width: 64.1vw;
+	height: 89.8vh;
+}
+
+.noPostsTitle {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 700;
+	font-size: clamp(28px, 2.4vw, 34px);
+	color: #060a1d;
+	text-align: center;
+}
+
+.noPostsSubtitle  {
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 500;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #81818D;
+	text-align: center;
+}
+
+.noPostsCreatePost {
+	border: none;
+	background: none;
+	cursor: pointer;
+	font-family: "GT Walsheim Pro";
+	font-style: normal;
+	font-weight: 500;
+	font-size: clamp(12px, 1.2vw, 16px);
+	color: #2563eb;
+}
+
+.noPostsCreatePost:hover {
+	color: #1d4ed8;
+	font-size: clamp(14px, 1.25vw, 18px);
+}

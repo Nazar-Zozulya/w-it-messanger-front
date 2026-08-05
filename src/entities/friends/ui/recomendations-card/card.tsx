@@ -21,6 +21,7 @@ export function RecomendationsCard(props: User) {
 						props.profile?.avatar?.image ??
 						DEFAULT_AVATAR
 					}
+					id={props.id}
 				/>
 
 				<div className={styles.textDiv}>

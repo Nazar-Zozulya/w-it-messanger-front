@@ -5,6 +5,7 @@ interface UseUserStatusStore {
 	users: UserStatus[] | null
 	setUserNewStatus: (status: UserStatusVariants, userId: number) => void
 	setInitialStatuses: (userStatuses: UserStatus[]) => void
+	clearAllStatuses:  () =>  void
 }
 
 export const useUserStatusStore = create<UseUserStatusStore>((set, get) => ({
@@ -27,4 +28,7 @@ export const useUserStatusStore = create<UseUserStatusStore>((set, get) => ({
 	setInitialStatuses: async (userStatuses) => {
 		set({ users: userStatuses })
 	},
+	clearAllStatuses: () => {
+		set({users: null})
+	}
 }))

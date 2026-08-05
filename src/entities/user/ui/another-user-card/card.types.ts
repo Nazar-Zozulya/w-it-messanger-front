@@ -16,7 +16,7 @@ export interface AnotherUserChatCardProps {
 	name?: string | null
 	surname?: string | null
 	username: string
-	lastMessage: Omit<Message, "createdAt">
+	lastMessage: Omit<Message, "createdAt"> | undefined
 	created_at?: Date
 	function?: () => void
 }
@@ -25,7 +25,7 @@ export interface AnotherUserGroupCardProps {
 	avatar?: string
 	id: number
 	name: string
-	lastMessage: Omit<Message, "createdAt">
+	lastMessage: Omit<Message, "createdAt"> | undefined
 	created_at?: Date
 	function?: () => void
 }

@@ -4,10 +4,22 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
 
 	background: #ffffff;
 	border: 1px solid #cdced2;
 	border-radius: 10px;
+}
+
+.loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	background: #eae6ee81 50%;
+	z-index: 10;
 }
 
 .header {
@@ -169,10 +181,12 @@
 
 .images {
 	display: flex;
-	flex-direction: flex-start;
+	flex-direction: row;
+	justify-content: flex-start;
 	align-items: flex-start;
 	flex-wrap: wrap;
-	gap: 2%;
+	gap: 2vh;
+	height: auto;
 	width: 100%;
 }
 

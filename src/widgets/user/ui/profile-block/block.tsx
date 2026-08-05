@@ -62,23 +62,31 @@ export function ProfileBlock(props: ProfileBlockProps) {
 
 	return (
 		<div
-			className={`${styles.container} ${props.mode === "anotherUser" ? styles.anotherUserSize : undefined}`}
+			className={`${styles.container} ${props.mode === "anotherUser" && user ? styles.anotherUserSize : undefined}`}
 		>
 			<div className={styles.ProfileInfo}>
 				<UserAvatar
-					avatar={
-						selectedUser?.profile?.avatar?.image ??
-						undefined
-					}
+					avatar={selectedUser?.profile?.avatar?.image ?? undefined}
 				/>
 
 				<div className={styles.NameBlock}>
-					<p className={styles.Name}>{selectedUser?.first_name} {selectedUser?.last_name}</p>
-					<p className={styles.Username}>@{selectedUser?.username}</p>
+					{user ? (
+						<>
+							<p className={styles.Name}>
+								{selectedUser?.first_name}{" "}
+								{selectedUser?.last_name}
+							</p>
+							<p className={styles.Username}>
+								@{selectedUser?.username}
+							</p>
+						</>
+					) : (
+						<p className={styles.Username}>Гість</p>
+					)}
 				</div>
 			</div>
 
-			{user ? (
+			{user || (!user && props.mode === "anotherUser") ? (
 				<div className={styles.anotherOrMyProfileStats}>
 					<div className={styles.ProfileStats}>
 						<div className={styles.StatBlock}>
@@ -182,6 +190,7 @@ export function ProfileBlock(props: ProfileBlockProps) {
 							{/* <Button fill={true} text={friendshipStatus ?? ""} /> */}
 
 							{friendshipStatus === "none" ||
+							!user ||
 							friendshipStatus === "requester" ? undefined : (
 								<Button
 									fill={false}
@@ -204,26 +213,18 @@ export function ProfileBlock(props: ProfileBlockProps) {
 					{/* {friendshipStatus} */}
 				</div>
 			) : (
-				<a href="auth">auth</a>
+				<div className={styles.guestCard}>
+					<button
+						type="button"
+						className={styles.authLink}
+						onClick={() => navigate("/auth")}
+					>
+						Увійти в акаунт
+					</button>
+				</div>
 			)}
-
-			{/* <div className={styles.ProfileStats}>
-                <div className={styles.StatBlock}>
-                    <p className={styles.StatCount}>566</p>
-                    <p className={styles.StatName}>Дописи</p>
-                </div>
-
-                <div className={styles.StatBlock + " " + styles.BorderedSides}>
-                    <p className={styles.StatCount}>566</p>
-                    <p className={styles.StatName}>Читачі</p>
-                </div>
-
-                <div className={styles.StatBlock}>
-                    <p className={styles.StatCount}>566</p>
-                    <p className={styles.StatName}>Друзі</p>
-                </div>
-
-            </div> */}
 		</div>
 	)
 }
+
+export function ProfileBlockNoUser() {}

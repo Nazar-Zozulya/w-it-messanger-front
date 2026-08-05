@@ -20,7 +20,15 @@ export function AnotherUserCard(props: AnotherUserCardProps) {
 					className={styles.avatar}
 					alt=""
 				/>
-				<div className={`${styles.avatarStatus} ${users?.find((u) => {return u.id == props.id})?.status === "active" ? styles.online : styles.ofline}`}></div>
+				<div
+					className={`${styles.avatarStatus} ${
+						users?.find((u) => {
+							return u.id == props.id
+						})?.status === "active"
+							? styles.online
+							: styles.ofline
+					}`}
+				></div>
 			</div>
 			<div className={styles.text}>
 				<p className={styles.name}>
@@ -41,23 +49,33 @@ export function AnotherUserChatCard(props: AnotherUserChatCardProps) {
 	return (
 		<button
 			className={`${styles.container} ${styles.chatContainer} ${
-				props.lastMessage.senderId === user?.id
-					? undefined
-					: props.lastMessage?.readers?.find(
-								(reader) => reader.id === user?.id,
-						  )
+				props.lastMessage
+					? props.lastMessage.senderId === user?.id
 						? undefined
-						: styles.newMessage
+						: props.lastMessage?.readers?.find(
+									(reader) => reader.id === user?.id,
+							  )
+							? undefined
+							: styles.newMessage
+					: undefined
 			}`}
 			onClick={props.function}
-		>	
+		>
 			<div className={styles.avatarBlock}>
 				<img
 					src={props.avatar ? props.avatar : DEFAULT_AVATAR}
 					className={styles.avatar}
 					alt=""
 				/>
-				<div className={`${styles.avatarStatus} ${users?.find((u) => {return u.id == props.id})?.status === "active" ? styles.online : styles.ofline}`}></div>
+				<div
+					className={`${styles.avatarStatus} ${
+						users?.find((u) => {
+							return u.id == props.id
+						})?.status === "active"
+							? styles.online
+							: styles.ofline
+					}`}
+				></div>
 			</div>
 			{/* <p>
 				{users?.map((userStatus) => {
@@ -77,7 +95,8 @@ export function AnotherUserChatCard(props: AnotherUserChatCardProps) {
 							: props.username}
 					</p>
 					<p className={styles.lastMessage}>
-						{props.lastMessage.text}
+						{props.lastMessage?.senderId === user?.id ? "Ви:" : ""}{" "}
+						{props.lastMessage?.text}
 					</p>
 				</div>
 				<p className={styles.createdAt}>
@@ -96,13 +115,15 @@ export function AnotherUserGroupCard(props: AnotherUserGroupCardProps) {
 	return (
 		<button
 			className={`${styles.container} ${styles.chatContainer} ${
-				props.lastMessage.senderId === user?.id
-					? undefined
-					: props.lastMessage?.readers?.find(
-								(reader) => reader.id === user?.id,
-						  )
+				props.lastMessage
+					? props.lastMessage.senderId === user?.id
 						? undefined
-						: styles.newMessage
+						: props.lastMessage?.readers?.find(
+									(reader) => reader.id === user?.id,
+							  )
+							? undefined
+							: styles.newMessage
+					: undefined
 			}`}
 			onClick={props.function}
 		>
@@ -115,7 +136,8 @@ export function AnotherUserGroupCard(props: AnotherUserGroupCardProps) {
 				<div className={styles.textLeftPart}>
 					<p className={styles.name}>{props.name}</p>
 					<p className={styles.lastMessage}>
-						{props.lastMessage.text}
+						{props.lastMessage?.senderId === user?.id ? "Ви:" : ""}
+						{props.lastMessage?.text}
 					</p>
 				</div>
 				<p className={styles.createdAt}>

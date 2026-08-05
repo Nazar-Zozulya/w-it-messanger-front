@@ -29,7 +29,26 @@ export function FriendsMainBlock(props: FriendsMainBlockProps) {
 				}
 			>
 				<div className={styles.list}>
-					{requests?.map((user) => {
+					{requests && requests.length > 0 ? requests?.slice(
+							0,
+							(window.matchMedia("(max-width: 1270px)").matches &&
+								window.matchMedia("(min-width: 1026px)")
+									.matches) ||
+								(window.matchMedia("(max-width: 900px)")
+									.matches &&
+									window.matchMedia("(min-width: 768px)")
+										.matches)
+								? 4
+								: (window.matchMedia("(max-width: 1025px)")
+											.matches &&
+											window.matchMedia(
+												"(min-width: 901px)",
+											).matches) ||
+									  window.matchMedia("(min-width: 1271px)")
+											.matches
+									? 6
+									: 2,
+						).map((user) => {
 						return (
 							<RequestsCard
 								id={user.id}
@@ -47,7 +66,7 @@ export function FriendsMainBlock(props: FriendsMainBlockProps) {
 								date_joined={user.date_joined}
 							/>
 						)
-					})}
+					}) : <p className={styles.noItems}>Поки що немає запитів</p>}
 				</div>
 			</UniversalBlockCard>
 			<UniversalBlockCard
@@ -62,7 +81,26 @@ export function FriendsMainBlock(props: FriendsMainBlockProps) {
 				}
 			>
 				<div className={styles.list}>
-					{recommendations?.map((user) => {
+					{recommendations && recommendations.length > 0 ? recommendations?.slice(
+							0,
+							(window.matchMedia("(max-width: 1270px)").matches &&
+								window.matchMedia("(min-width: 1026px)")
+									.matches) ||
+								(window.matchMedia("(max-width: 900px)")
+									.matches &&
+									window.matchMedia("(min-width: 768px)")
+										.matches)
+								? 4
+								: (window.matchMedia("(max-width: 1025px)")
+											.matches &&
+											window.matchMedia(
+												"(min-width: 901px)",
+											).matches) ||
+									  window.matchMedia("(min-width: 1271px)")
+											.matches
+									? 6
+									: 2,
+						).map((user) => {
 						return (
 							<RecomendationsCard
 								id={user.id}
@@ -80,7 +118,7 @@ export function FriendsMainBlock(props: FriendsMainBlockProps) {
 								date_joined={user.date_joined}
 							/>
 						)
-					})}
+					}) : <p className={styles.noItems}>Поки що немає рекомендацій</p>}
 				</div>
 			</UniversalBlockCard>
 			<UniversalBlockCard
@@ -95,25 +133,45 @@ export function FriendsMainBlock(props: FriendsMainBlockProps) {
 				}
 			>
 				<div className={styles.list}>
-					{allFriends?.map((user) => {
-						return (
-							<FriendsCard
-								id={user.id}
-								username={user.username}
-								first_name={user.first_name}
-								last_name={user.last_name}
-								email={user.email}
-								password={user.password}
-								profile={user.profile}
-								profileId={user.profileId}
-								images={user.images}
-								is_active={user.is_active}
-								is_staff={user.is_staff}
-								is_superuser={user.is_superuser}
-								date_joined={user.date_joined}
-							/>
+					{allFriends && allFriends.length > 0 ? allFriends?.slice(
+								0,
+							(window.matchMedia("(max-width: 1270px)").matches &&
+								window.matchMedia("(min-width: 1026px)")
+									.matches) ||
+								(window.matchMedia("(max-width: 900px)")
+									.matches &&
+									window.matchMedia("(min-width: 768px)")
+										.matches)
+								? 4
+								: (window.matchMedia("(max-width: 1025px)")
+											.matches &&
+											window.matchMedia(
+												"(min-width: 901px)",
+											).matches) ||
+									  window.matchMedia("(min-width: 1271px)")
+											.matches
+									? 6
+									: 2,
 						)
-					})}
+						.map((user) => {
+							return (
+								<FriendsCard
+									id={user.id}
+									username={user.username}
+									first_name={user.first_name}
+									last_name={user.last_name}
+									email={user.email}
+									password={user.password}
+									profile={user.profile}
+									profileId={user.profileId}
+									images={user.images}
+									is_active={user.is_active}
+									is_staff={user.is_staff}
+									is_superuser={user.is_superuser}
+									date_joined={user.date_joined}
+								/>
+							)
+						}) : <p className={styles.noItems}>Поки що немає друзів</p>}
 				</div>
 			</UniversalBlockCard>
 			<div className={styles.bottomSpace}></div>

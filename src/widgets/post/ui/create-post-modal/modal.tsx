@@ -14,10 +14,15 @@ import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { Button } from "../../../../shared/ui/button"
 import { CloseModalButton } from "../../../../features/modal"
 import { User, useUserContext } from "../../../../entities/user"
-import { createPostData, usePostsManager } from "../../../../entities/post"
+import {
+	createPostData,
+	PostImagesList,
+	usePostsManager,
+} from "../../../../entities/post"
 import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 import { fileToBase64 } from "../../../../helpers/fileToBase64"
 import { UserToPost } from "../../../../entities/user/model/types/user"
+import { Post } from "../../../../entities/post/model/types"
 
 export function CreatePostModal() {
 	const [tags, setTags] = useState<string[]>([])
@@ -114,7 +119,7 @@ export function CreatePostModal() {
 	async function selectImage(e: ChangeEvent<HTMLInputElement>) {
 		const file = e.target.files?.[0]
 
-		e.target.value = '';
+		e.target.value = ""
 
 		if (!file) return
 
@@ -133,7 +138,7 @@ export function CreatePostModal() {
 			id: user.id,
 			first_name: user.first_name,
 			last_name: user.last_name,
-			avatar: user.profile?.avatar?.image
+			avatar: user.profile?.avatar?.image,
 		}
 
 		const newData: createPostData = {
@@ -146,15 +151,12 @@ export function CreatePostModal() {
 
 		console.log("images: " + newData.images)
 
+		const response = createPost(newData, token)
+		closeModal()
+		// if (response.status === "error") setError(response.message ?? "error")
 
-
-		const response = await createPost(newData, token)
-
-		if (response.status === "error") setError(response.message ?? "error")
-
-		if (response.status === "success") {
-			closeModal()
-		}
+		// if (response.status === "success") {
+		// }
 		console.log(response)
 	}
 
@@ -185,7 +187,11 @@ export function CreatePostModal() {
 							},
 						}}
 						control={control}
-						fullWidth={window.matchMedia("(pointer: coarse)").matches ? true : false}
+						fullWidth={
+							window.matchMedia("(pointer: coarse)").matches
+								? true
+								: false
+						}
 						name="title"
 					/>
 
@@ -307,7 +313,7 @@ export function CreatePostModal() {
 						)} */}
 					</div>
 
-					<div className={styles.imagesList}>
+					{/* <div className={styles.imagesList}>
 						{images?.map((image, index) => {
 							return (
 								<div className={styles.postImage}>
@@ -322,7 +328,17 @@ export function CreatePostModal() {
 								</div>
 							)
 						})}
-					</div>
+					</div> */}
+					<PostImagesList
+						images={(images ?? []).map((image) => ({
+							original_image: image,
+							id: 0,
+							compressed_image: "",
+							post: {} as Post,
+							postId: 0
+							// остальные поля, если они обязательны
+						}))}
+					/>
 
 					<p>{error}</p>
 
@@ -338,7 +354,6 @@ export function CreatePostModal() {
 									ref={selectImageInputRef}
 									onChange={selectImage}
 									accept="image/*"
-
 								></input>
 							}
 							function={triggerImageInput}

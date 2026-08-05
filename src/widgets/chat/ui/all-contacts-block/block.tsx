@@ -73,9 +73,9 @@ export function AllContactsBlock() {
 									}
 									navigate(`/chat/${response.data.id}`)
 								}}
-								// avatar={
-								// 	friend.profile.activeAvatar?.image.base64
-								// }
+								avatar={
+									friend.profile.avatar
+								}
 							/>
 						)
 					})}

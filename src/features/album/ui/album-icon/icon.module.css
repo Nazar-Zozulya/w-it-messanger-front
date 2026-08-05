@@ -1,7 +1,7 @@
 .container {
 	position: relative;
-	width: 20.8vh;
-	height: 20.8vh;
+	width: var(--card-size);
+	height: var(--card-size);
 	border-radius: 10px;
 	display: flex;
 	align-items: center;
@@ -39,11 +39,4 @@
 
 .loading {
 	filter: brightness(70%);
-}
-
-@media (pointer: coarse) {
-	.container {
-		width: 19.7vh;
-		height: 19.7vh;
-	}
 }

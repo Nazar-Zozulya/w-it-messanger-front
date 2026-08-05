@@ -1,0 +1,1 @@
+export { PostCard, LoadingPostCard } from './card'

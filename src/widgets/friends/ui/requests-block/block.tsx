@@ -79,7 +79,7 @@ export function RequestsBlock(props: RequestsBlockProps) {
 				}
 			>
 				<div className={styles.list}>
-					{requests?.map((user, index) => {
+					{requests && requests.length > 0 ? requests?.slice(0, PAGE_SIZE).map((user, index) => {
 						return (
 							<Fragment key={user.id}>
 								{index === requests?.length - PRELOAD_OFFSET && (
@@ -106,7 +106,7 @@ export function RequestsBlock(props: RequestsBlockProps) {
 								/>
 							</Fragment>
 						)
-					})}
+					}) : <p className={styles.noItems}>Поки що немає запитів</p>}
 				</div>
 			</UniversalBlockCard>
 		</div>

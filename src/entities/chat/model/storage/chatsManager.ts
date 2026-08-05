@@ -8,12 +8,9 @@ import { User } from "../../../user"
 interface ChatsManagerStoreTypes {
 	chats: Chat[] | null
 	setChats: (value: Chat[] | ((prev: Chat[] | null) => Chat[] | null)) => void
-	// setGroups: (
-	// 	value: Chat[] | ((prev: Chat[] | null) => Chat[] | null),
-	// ) => void
+
 	getChat: (userId: number, anotherUserId: number) => Promise<Result<Chat>>
 	getChatById: (chatId: number) => Promise<Result<Chat>>
-	// getMessagesFromChat: (chatId: number) => void
 	getIndividualChats: (
 		userId: number,
 		page: number,
@@ -27,11 +24,7 @@ interface ChatsManagerStoreTypes {
 		avatar?: string,
 	) => Promise<Result<Chat>>
 
-	getGroups: (
-		userId: number,
-		page: number,
-		size: number,
-	) => Promise<number>
+	getGroups: (userId: number, page: number, size: number) => Promise<number>
 
 	getMessagesFromChat: (
 		chatId: number,
@@ -39,18 +32,32 @@ interface ChatsManagerStoreTypes {
 		size: number,
 		replace: boolean,
 	) => Promise<number>
-	// getGroup: (groupId: number) => Promise<Result<Chat>>
-	// getAllGroups: (userId: number) => void
+
+	clearAllChats: () => void
 }
 
 export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 	chats: null,
-	groups: null,
 
-	setChats: (value) =>
-		set((state) => ({
-			chats: typeof value === "function" ? value(state.chats) : value,
-		})),
+	setChats: (value) => {
+		set((state) => {
+			const newChats =
+				typeof value === "function" ? value(state.chats) : value
+
+			console.log(
+				"before",
+				state.chats?.map((c) => c.id),
+			)
+			console.log(
+				"after",
+				newChats?.map((c) => c.id),
+			)
+
+			return {
+				chats: newChats,
+			}
+		})
+	},
 
 	// setGroups: (value) =>
 	// 	set((state) => ({
@@ -101,12 +108,15 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 
 		if (getChat.status === "error") return getChat
 
+		console.log("user avatar chat:", getChat.data)
+
 		const allChats = get().chats
 
 		const someChat = allChats?.some((chat) => chat.id === getChat.data.id)
 
 		if (!someChat) {
 			const updatedChats = [...(allChats ?? []), getChat.data]
+			console.log("updatedChatsfffff: ", updatedChats)
 
 			set({ chats: updatedChats })
 		}
@@ -174,9 +184,11 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 		console.log(get().chats)
 		const allChats = get().chats
 
-		const currentChatMessages = allChats?.find(c => c.id === chatId)?.messages
+		const currentChatMessages = allChats?.find(
+			(c) => c.id === chatId,
+		)?.messages
 
-		if (currentChatMessages && currentChatMessages.length > 1) return 0
+		// if (currentChatMessages && currentChatMessages.length > 1) return 0
 
 		const messages = await GET<Message[]>({
 			whichService: "chatService",
@@ -210,40 +222,8 @@ export const useChatsManager = create<ChatsManagerStoreTypes>((set, get) => ({
 
 		return messages.data.length
 	},
-	// getGroup: async (groupId) => {
-	// 	const group = await GET<Chat>({
-	// 		whichService: "chatService",
-	// 		endpoint: `api/chat/group/${groupId}`,
-	// 	})
 
-	// 	if (group.status === "error") return group
-
-	// 	const allGroups = get().groups ?? []
-
-	// 	const exists = allGroups.some((item) => item.id === group.data.id)
-
-	// 	if (exists) {
-	// 		set({
-	// 			groups: allGroups.map((item) =>
-	// 				item.id === group.data.id ? group.data : item,
-	// 			),
-	// 		})
-	// 	} else {
-	// 		set({
-	// 			groups: [...allGroups, group.data],
-	// 		})
-	// 	}
-
-	// 	return group
-	// },
-	// getAllGroups: async (userId) => {
-	// 	const gettedGroups = await GET<Chat[]>({
-	// 		whichService: "chatService",
-	// 		endpoint: `api/chat/groups/${userId}`,
-	// 	})
-
-	// 	if (gettedGroups.status === "error") return
-
-	// 	set({ groups: gettedGroups.data })
-	// },
+	clearAllChats: () => {
+		set({ chats: null })
+	},
 }))

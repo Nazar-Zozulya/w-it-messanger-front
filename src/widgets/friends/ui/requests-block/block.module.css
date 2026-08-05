@@ -9,12 +9,10 @@
 
 .block {
     /* max-height: 89.8vh; */
-	height: 86.8vh;
+	/* height: 100%; */
+	height: 78vh;
+	overflow: hidden;
     
-    overflow-y: auto;
-    
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 	justify-content: flex-start !important;
 }
 
@@ -39,15 +37,59 @@
 
 .list {
 	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	align-items: center;
+	display: grid;
+	/* flex: 1; */
+	min-height: 0;
+	grid-template-columns: repeat(3, 20.07vw);
+	row-gap: 1vw;
+	align-items: flex-start;
+	padding-bottom: 3vh;
+	justify-content: space-between;
 	flex-wrap: wrap;
+	overflow-y: auto;
+    
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-@media (pointer: coarse) {
-	.block {
-		height: 100%;
+.list::-webkit-scrollbar {
+	display: none;
+}
+
+.noItems {
+	color: #81818d;
+	font-family: "GT Walsheim Pro";
+	font-weight: 600;
+	font-size: clamp(2px, 2.4vw, 34px);
+}
+
+
+@media (max-width: 1270px) {
+	.list {
+		grid-template-columns: repeat(2, 30vw);
+	}
+}
+
+@media (max-width: 1025px) {
+    .list {
+		grid-template-columns: repeat(3, 30vw);
+	}
+}
+
+@media (max-width: 900px) {
+    .list {
+		grid-template-columns: repeat(2, 45vw);
+	}
+}
+
+@media (max-width: 767px) {
+    .list {
+		grid-template-columns: repeat(1, 100%);
+	}
+}
+
+@media (min-width: 1025px) {
+    .block {
+		height: 89vh;
 	}
 }

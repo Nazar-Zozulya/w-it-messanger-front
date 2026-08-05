@@ -36,33 +36,44 @@ export function RequestBlock() {
 					<p>Запити</p>
 				</div>
 
-				<button className={styles.seeAll}>Дивитись всі</button>
+				<button
+					className={styles.seeAll}
+					onClick={() => {
+						navigate("/friends?mode=requests")
+					}}
+				>
+					Дивитись всі
+				</button>
 			</div>
 			<div className={styles.requestsList}>
-				{requests && requests.length > 0
-					? requests?.map((request) => {
-							return (
-								<AnotherUserCard
-									username={request?.username ?? ""}
-									name={request?.first_name}
-									surname={request?.last_name}
-									avatar={request?.profile?.avatar}
-									id={request.id}
-									// avatar={}
-									function={async () => {
-										navigate(`/${request.id}`)
-									}}
-								/>
-								// <div className={styles.request}>
-								//     <img src={request.profile.avatar} alt="" className={styles.avatar} />
-								//     <div className={styles.textInfo}>
-								//         <p className={styles.name}>{request.first_name}</p>
-								//         {/* <p className={styles.subscribers}>{request.} підписників</p> */}
-								//     </div>
-								// </div>
-							)
-						})
-					: <p className={styles.noRequests}>Поки що у вас немає запросів.</p>}
+				{requests && requests.length > 0 ? (
+					requests?.map((request) => {
+						return (
+							<AnotherUserCard
+								username={request?.username ?? ""}
+								name={request?.first_name}
+								surname={request?.last_name}
+								avatar={request?.profile?.avatar}
+								id={request.id}
+								// avatar={}
+								function={async () => {
+									navigate(`/${request.id}`)
+								}}
+							/>
+							// <div className={styles.request}>
+							//     <img src={request.profile.avatar} alt="" className={styles.avatar} />
+							//     <div className={styles.textInfo}>
+							//         <p className={styles.name}>{request.first_name}</p>
+							//         {/* <p className={styles.subscribers}>{request.} підписників</p> */}
+							//     </div>
+							// </div>
+						)
+					})
+				) : (
+					<p className={styles.noRequests}>
+						Поки що у вас немає запросів.
+					</p>
+				)}
 			</div>
 		</div>
 	)

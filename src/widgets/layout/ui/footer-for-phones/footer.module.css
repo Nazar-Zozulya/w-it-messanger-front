@@ -1,14 +1,17 @@
 .container {
-    position: fixed;
+    position: absolute;
     bottom: 0;
-    padding-bottom: 1.7vh;
+
     display: none;
     align-items: center;
     justify-content: space-between;
-    width: 100vw;
     flex-direction: row;
-    padding: 0 3.1vw 1.7vh 3.1vw;
+
+    width: 100%;
+    padding: 0 3.1vw calc(1.7vh + env(safe-area-inset-bottom)) 3.1vw;
+
     background: #FAF8FF;
+    z-index: 1000;
 }
 
 .selected {
@@ -28,7 +31,7 @@
     cursor: pointer;
 }
 
-@media (pointer: coarse) {
+@media (max-width: 1025px) {
     .container {
         display: flex;
     }

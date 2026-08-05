@@ -55,7 +55,7 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 			setChats((prev) => {
 				if (!prev) return []
 
-				return prev.map((chat) => {
+				const updatedChats = prev.map((chat) => {
 					if (Number(chat.id) !== Number(message.chatId)) {
 						return chat
 					}
@@ -65,6 +65,18 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 						messages: [...(chat.messages ?? []), message],
 					}
 				})
+
+				const chatIndex = updatedChats.findIndex(
+					(chat) => Number(chat.id) === Number(message.chatId),
+				)
+
+				if (chatIndex === -1) {
+					return updatedChats
+				}
+
+				const [updatedChat] = updatedChats.splice(chatIndex, 1)
+
+				return [updatedChat, ...updatedChats]
 			})
 		})
 
@@ -85,7 +97,7 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 
 	connectSignalR: async (token) => {
 		if (get().connection) return
-		
+
 		const connection = createConnection("global", token)
 
 		connection.on("user:active", (id: number) => {
@@ -104,7 +116,7 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 			setChats((prev) => {
 				if (!prev) return []
 
-				return prev.map((chat) => {
+				const updatedChats = prev.map((chat) => {
 					if (Number(chat.id) !== Number(message.chatId)) {
 						return chat
 					}
@@ -114,6 +126,18 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 						messages: [...(chat.messages ?? []), message],
 					}
 				})
+
+				const chatIndex = updatedChats.findIndex(
+					(chat) => Number(chat.id) === Number(message.chatId),
+				)
+
+				if (chatIndex === -1) {
+					return updatedChats
+				}
+
+				const [updatedChat] = updatedChats.splice(chatIndex, 1)
+
+				return [updatedChat, ...updatedChats]
 			})
 		})
 
@@ -152,6 +176,7 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 
 		set({
 			socket: null,
+			connection: null,
 			isConnected: false,
 		})
 	},
@@ -165,7 +190,9 @@ export const useGlobalChatSocketStore = create<SocketStore>((set, get) => ({
 	},
 
 	enterGlobalChat: (userId) => {
-		console.log("2312312318238127893128973879127893========================")
+		console.log(
+			"2312312318238127893128973879127893========================",
+		)
 		emit(get().socket, get().connection, "globalChat:join", userId)
 		// get().socket?.emit("globalChat:join", chatId)
 	},

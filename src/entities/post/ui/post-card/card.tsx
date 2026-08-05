@@ -14,7 +14,8 @@ import { usePostsManager } from "../../model/storage"
 import { useUserContext } from "../../../user"
 import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
 import { useNavigate } from "react-router-dom"
-import { PostCardProps } from "./card.types"
+import { LoadingPostCardProps, PostCardProps } from "./card.types"
+import { PostImagesList } from "../post-images-list"
 
 // const data: Omit<Post, "author"> = {
 //     id: 1,
@@ -39,7 +40,7 @@ export function PostCard(props: PostCardProps) {
 		useState<boolean>(false)
 
 	return (
-		<div className={styles.container}>
+		<div className={`${styles.container}`}>
 			<div className={styles.header}>
 				<button
 					onClick={
@@ -68,9 +69,11 @@ export function PostCard(props: PostCardProps) {
 						}
 						alt=""
 					/>
-					{props.post.author.first_name && props.post.author.last_name ? (
+					{props.post.author.first_name &&
+					props.post.author.last_name ? (
 						<p>
-							{props.post.author.first_name} {props.post.author.last_name}
+							{props.post.author.first_name}{" "}
+							{props.post.author.last_name}
 						</p>
 					) : (
 						<p>{props.post.author.username}</p>
@@ -179,7 +182,9 @@ export function PostCard(props: PostCardProps) {
 					})}
 				</div>
 
-				<div className={styles.images}>
+				<PostImagesList images={props.post.images ?? []} />
+
+				{/* <div className={styles.images}>
 					{props.post.images?.map((image) => {
 						return (
 							<img
@@ -189,7 +194,7 @@ export function PostCard(props: PostCardProps) {
 							/>
 						)
 					})}
-				</div>
+				</div> */}
 				<div className={styles.postStatistics}>
 					<div className={styles.likes}>
 						<Like />
@@ -206,6 +211,69 @@ export function PostCard(props: PostCardProps) {
 						</p>
 					</div>
 				</div>
+			</div>
+		</div>
+	)
+}
+
+export function LoadingPostCard(props: LoadingPostCardProps) {
+
+	return (
+		<div className={`${styles.container}`}>
+			<div className={styles.loading}></div>
+			<div className={styles.header}>
+				<button className={styles.profile}>
+					<img
+						src={
+							props.post.author.avatar
+								? props.post.author.avatar
+								: DEFAULT_AVATAR
+						}
+						alt=""
+					/>
+					{props.post.author.first_name &&
+					props.post.author.last_name ? (
+						<p>
+							{props.post.author.first_name}{" "}
+							{props.post.author.last_name}
+						</p>
+					) : (
+						<p>{props.post.author.username}</p>
+					)}
+				</button>
+			</div>
+			<div className={styles.line}></div>
+			<div className={styles.content}>
+				<p className={styles.title}>{props.post.title}</p>
+				<p className={styles.description}>{props.post.content}</p>
+				<div className={styles.tagsList}>
+					{props.post.tags?.map((tag) => {
+						return (
+							// <div className={styles.tag}>
+							<p className={styles.tag}>{tag}</p>
+							// {/* </div> */}
+						)
+					})}
+				</div>
+
+				<div className={styles.linksList}>
+					{props.post.links?.map((link) => {
+						return (
+							// <div className={styles.link}>
+							<a className={styles.link}>{link}</a>
+							// </div>
+						)
+					})}
+				</div>
+
+				<PostImagesList
+					images={(props.post.images ?? []).map((url, index) => ({
+						id: index,
+						original_image: url,
+						compressed_image: url,
+						postId: 1,
+					}))}
+				/>
 			</div>
 		</div>
 	)
