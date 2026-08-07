@@ -16,6 +16,7 @@ import { DEFAULT_AVATAR } from "../../../../constants/default-avatar"
 import { useNavigate } from "react-router-dom"
 import { LoadingPostCardProps, PostCardProps } from "./card.types"
 import { PostImagesList } from "../post-images-list"
+import { useModalManagerStore } from "../../../modal/model/storage/modalManager"
 
 // const data: Omit<Post, "author"> = {
 //     id: 1,
@@ -33,6 +34,8 @@ export function PostCard(props: PostCardProps) {
 	// const { data: author, error, isLoading } = useGetUser(props.authorId)
 	const { user } = useUserContext()
 	const { deletePost } = usePostsManager()
+
+	const { setUpdatePostData, openModal } = useModalManagerStore()
 
 	const navigate = useNavigate()
 
@@ -123,6 +126,11 @@ export function PostCard(props: PostCardProps) {
 										className={
 											styles.moreOptionsModalButton
 										}
+
+										onClick={()=> {
+											setUpdatePostData(props.post)
+											openModal("updatePost")
+										}}
 									>
 										<Edit />
 										<p>Редагувати допис</p>

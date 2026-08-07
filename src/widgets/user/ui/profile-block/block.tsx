@@ -67,6 +67,8 @@ export function ProfileBlock(props: ProfileBlockProps) {
 			<div className={styles.ProfileInfo}>
 				<UserAvatar
 					avatar={selectedUser?.profile?.avatar?.image ?? undefined}
+					id={selectedUser?.id as number}
+					isFriend={friendshipStatus === "friends" ? true : false}
 				/>
 
 				<div className={styles.NameBlock}>

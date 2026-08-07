@@ -11,6 +11,7 @@ import { ProfileBlock } from "../../../user"
 import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 import { LoadingPostCard } from "../../../../entities/post/ui/post-card"
 import { UserAlbumsBlock } from "../../../album"
+import { BounceLoader } from "react-spinners"
 
 const PAGE_SIZE = 10
 const PRELOAD_OFFSET = PAGE_SIZE - 1
@@ -25,6 +26,12 @@ export function PostsList(props: PostsListProps) {
 	const { openModal } = useModalManagerStore()
 
 	const navigate = useNavigate()
+
+	// const listRef = useRef<HTMLDivElement | null>(null)
+
+	// const postsScroll = useRef(0)
+
+	// const myPostsScroll = useRef(0)
 
 	const [anotherUserPosts, setAnotherUserPosts] = useState<Post[] | null>(
 		null,
@@ -82,6 +89,32 @@ export function PostsList(props: PostsListProps) {
 		loading.current = false
 		hasMore.current = true
 	}, [props.mode, id])
+
+	// useEffect(() => {
+	// 	if (!listRef.current) return
+	// 	switch (props.mode) {
+	// 		case "main":
+	// 			listRef.current.scrollTop = postsScroll.current
+	// 			break
+	// 		case "myPosts":
+	// 			listRef.current.scrollTop = myPostsScroll.current
+	// 			break
+	// 		default:
+	// 			listRef.current.scrollTop = 0
+	// 			break
+	// 	}
+
+	// 	return () => {
+	// 		switch (props.mode) {
+	// 			case "main":
+	// 				postsScroll.current = listRef.current?.scrollTop ?? 0
+	// 				break
+	// 			case "myPosts":
+	// 				myPostsScroll.current = listRef.current?.scrollTop ?? 0
+	// 				break
+	// 		}
+	// 	}
+	// }, [props.mode, listRef])
 
 	useEffect(() => {
 		const element = targetRef.current
@@ -172,7 +205,10 @@ export function PostsList(props: PostsListProps) {
 	])
 
 	return (
-		<div className={styles.list}>
+		<div
+			className={styles.list}
+			// ref={listRef}
+		>
 			{props.mode !== "anotherUser" && user && <CreatePostBlock />}
 			{props.mode === "anotherUser" &&
 				window.matchMedia("(pointer: coarse)").matches &&
@@ -248,6 +284,7 @@ export function PostsList(props: PostsListProps) {
 					</p>
 				</div>
 			)}
+			{loading.current && <BounceLoader color="#81818d " size={"5vh"} />}
 			<div className={styles.bottomSpace}></div>
 		</div>
 	)

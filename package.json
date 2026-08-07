@@ -20,6 +20,7 @@
     "react-hook-form": "^7.63.0",
     "react-router-dom": "^7.9.2",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.17.0",
     "react-verification-input": "^4.2.2",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",

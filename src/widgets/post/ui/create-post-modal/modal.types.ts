@@ -1,11 +1,17 @@
+import { Post } from "../../../../entities/post/model/types"
+
 export interface createPostForm {
-    title: string
-    content?: string
+	title: string
+	content?: string
 
-    // authorId: number
+	// authorId: number
 
-    // images?: string[]
+	// images?: string[]
 
-    // tags: string[]
-    // links: string[]
+	// tags: string[]
+	// links: string[]
+}
+
+export interface createPostModalProps {
+	mode: "create" | "update"
 }

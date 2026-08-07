@@ -27,6 +27,7 @@ import {
 } from "../../../../entities/chat"
 
 import { useUserContext } from "../../../../entities/user"
+import { BounceLoader } from "react-spinners"
 
 const PAGE_SIZE = 30
 const PRELOAD_OFFSET = 15
@@ -327,6 +328,8 @@ export function ChatBlock(props: ChatBlockProps) {
 						{chat?.messages?.map((message, index) => {
 							return (
 								<Fragment key={message.id}>
+									{ loading.current && <BounceLoader color="#81818d" size={"5vh"} /> }
+
 									{index === PRELOAD_OFFSET && (
 										<div
 											ref={targetRef}

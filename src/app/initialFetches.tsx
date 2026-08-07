@@ -65,10 +65,6 @@ export function InitialFetches(props: InitialFetchesProps) {
 		if (!albums) getAlbums(token, 1, 4)
 		if (!recommendations) getAllRecommendations(token, 1, 6)
 		if (!allFriends) getAllFriends(token, 1, 6)
-		getAllFriends(token, 1, 6)
-		getAllFriends(token, 1, 6)
-		getAllFriends(token, 1, 6)
-		getAllFriends(token, 1, 6)
 		if (!requests) getAllRequests(token, 1, 6)
 
 		if (WHICH_SERVICE === "js") {

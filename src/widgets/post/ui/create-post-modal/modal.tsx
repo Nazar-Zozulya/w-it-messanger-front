@@ -7,7 +7,7 @@ import { ReactComponent as Trash } from "../../../../shared/ui/icons/trash.svg"
 
 import styles from "./modal.module.css"
 import { Modal } from "../../../../shared/ui/modal"
-import { createPostForm } from "./modal.types"
+import { createPostForm, createPostModalProps } from "./modal.types"
 import { Input } from "../../../../shared/ui/input"
 import { Controller, useForm } from "react-hook-form"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
@@ -22,9 +22,10 @@ import {
 import { useModalManagerStore } from "../../../../entities/modal/model/storage/modalManager"
 import { fileToBase64 } from "../../../../helpers/fileToBase64"
 import { UserToPost } from "../../../../entities/user/model/types/user"
-import { Post } from "../../../../entities/post/model/types"
+import { Post, PostImage } from "../../../../entities/post/model/types"
+import { Tag } from "../../../../entities/tag"
 
-export function CreatePostModal() {
+export function CreatePostModal(props: createPostModalProps) {
 	const [tags, setTags] = useState<string[]>([])
 	const [links, setLinks] = useState<string[]>([])
 	const [images, setImages] = useState<string[]>([])
@@ -34,7 +35,8 @@ export function CreatePostModal() {
 
 	const { user } = useUserContext()
 
-	const { closeModal } = useModalManagerStore()
+	const { closeModal, updatePostData, setUpdatePostData } =
+		useModalManagerStore()
 
 	const { createPost } = usePostsManager()
 
@@ -71,6 +73,25 @@ export function CreatePostModal() {
 		})
 		setTags(newTags)
 	}
+
+	useEffect(() => {
+		if (props.mode === "update") {
+			if (!updatePostData) return
+
+			setImages(
+				updatePostData.images?.map((image) => image.original_image) ??
+					[],
+			)
+
+			setTags(updatePostData.tags?.map((t) => t.name) ?? [])
+
+			setLinks(updatePostData.links?.map((l) => l.url) ?? [])
+		}
+
+		return () => {
+			setUpdatePostData(null)
+		}
+	}, [])
 
 	function addNewTag(data: { tag: string | undefined }) {
 		let newTag = data.tag
@@ -149,9 +170,7 @@ export function CreatePostModal() {
 			links,
 		}
 
-		console.log("images: " + newData.images)
-
-		const response = createPost(newData, token)
+		const response = props.mode === "create" ? createPost(newData, token) : 
 		closeModal()
 		// if (response.status === "error") setError(response.message ?? "error")
 
@@ -179,6 +198,7 @@ export function CreatePostModal() {
 					<Input
 						label="Назва публікації"
 						placeholder="Введіть назву"
+						defaultValue={props.mode === "update" ? updatePostData?.title : ""}
 						error={formState.errors.title?.message}
 						rules={{
 							required: {
@@ -196,7 +216,7 @@ export function CreatePostModal() {
 					/>
 
 					<div className={styles.tagList}>
-						{tags?.map((tag) => {
+						{[...tags].map((tag) => {
 							return (
 								<button
 									className={styles.tag}
@@ -249,6 +269,7 @@ export function CreatePostModal() {
 					<Input.TextArea
 						placeholder="Ввведіть контент"
 						control={control}
+						defaultValue={props.mode === "update" ? updatePostData?.content : ""}
 						error={formState.errors.content?.message}
 						name="content"
 						rows={8}
@@ -330,14 +351,18 @@ export function CreatePostModal() {
 						})}
 					</div> */}
 					<PostImagesList
-						images={(images ?? []).map((image) => ({
-							original_image: image,
-							id: 0,
-							compressed_image: "",
-							post: {} as Post,
-							postId: 0
-							// остальные поля, если они обязательны
-						}))}
+						images={[
+							...images.map((image) => ({
+								original_image: image,
+								id: 0,
+								compressed_image: "",
+								post: {} as Post,
+								postId: 0,
+								// остальные поля, если они обязательны
+							})),
+						]}
+						isDelete={true}
+						onDelete={deleteImage}
 					/>
 
 					<p>{error}</p>

@@ -12,3 +12,16 @@ export interface createPostData {
     tags?: string[]
     links?: string[]
 }
+
+export interface updatePostData {
+    id: number
+    title: string
+    content?: string
+
+    author: UserToPost
+
+    images?: string[]
+
+    tags?: string[]
+    links?: string[]
+}

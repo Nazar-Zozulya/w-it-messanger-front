@@ -12,7 +12,9 @@ export function ModalsShower(props: { children: React.ReactNode }) {
 		<>
 			{props.children}
 
-			{activeModal === "createPost" && <CreatePostModal />}
+			{activeModal === "createPost" && <CreatePostModal mode="create" />}
+
+			{activeModal === "updatePost" && <CreatePostModal mode="update" />}
 
 			{activeModal === "completeProfile" && <CompleteProfileModal />}
 

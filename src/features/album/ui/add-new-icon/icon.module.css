@@ -1,6 +1,6 @@
 .container {
-    width: 20.8vh;
-    height: 20.8vh;
+    width: var(--card-size);
+	height: var(--card-size);
     border: 1px dotted  black;
     border-radius: 10px;
     cursor: pointer;

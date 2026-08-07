@@ -21,8 +21,13 @@
     gap: 2vw;
 }
 
+.imageDiv {
+    position: relative;
+}
+
 .image {
-	height: 21.2vh;
+    height: 21.2vh;
+    width: 100%;
 	border-radius: 16px;
     object-fit: cover;
 }
@@ -37,5 +42,12 @@
 
 .oneImage {
     width: 100%;
-    height: calc(21.2vh * 1.5);
+    height: 21.2vh;
+}
+
+.imageDeleteButton {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    background: #fff !important;
 }

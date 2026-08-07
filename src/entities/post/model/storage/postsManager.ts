@@ -3,6 +3,7 @@ import { GET } from "../../../../helpers/get"
 import { Result } from "../../../../types/result"
 import { createPostData, Post } from "../types"
 import { POST } from "../../../../helpers/post"
+import { updatePostData } from "../types/createPostData"
 
 interface PostsManagerStoreTypes {
 	posts: Post[] | null
@@ -21,6 +22,7 @@ interface PostsManagerStoreTypes {
 
 	deletePost: (postId: number, userId: number) => Promise<Result<Post>>
 	createPost: (data: createPostData, token: string) => Promise<Result<Post>>
+	updatePost: (data: updatePostData, token: string) => Promise<Result<Post>>
 
 	clearAllPosts: () => void
 }
@@ -170,6 +172,60 @@ export const usePostsManager = create<PostsManagerStoreTypes>((set, get) => ({
 				set({ posts: [response.data] })
 			} else {
 				set({ posts: [response.data, ...posts] })
+			}
+
+			if (!myPosts) {
+				set({ myPosts: [response.data] })
+			} else {
+				set({ myPosts: [response.data, ...myPosts] })
+			}
+
+			return response
+		} catch (e) {
+			console.log("Error creating post:", e)
+
+			return {
+				status: "error",
+				message: "error with creating post",
+			}
+		}
+	},
+
+	updatePost: async (data, token) => {
+		try {
+			// set({ preNewPosts: [...(get().preNewPosts ?? []), data] })
+
+			const response = await POST<Post>({
+				whichService: "postService",
+				endpoint: "api/post/update",
+				body: data,
+				token,
+			})
+
+			if (response.status === "error") {
+				// set((state) => ({
+				// 	preNewPosts: state.preNewPosts?.filter(
+				// 		(post) => post !== data,
+				// 	),
+				// }))
+				return response
+			}
+
+			// set((state) => ({
+			// 	preNewPosts: state.preNewPosts?.filter((post) => post !== data),
+			// }))
+
+			const posts = get().posts
+			const myPosts = get().myPosts
+
+			if (!posts) {
+				set({ posts: [response.data] })
+			} else {
+				set({
+					posts: posts.map((post) =>
+						post.id === response.data.id ? response.data : post,
+					),
+				})
 			}
 
 			if (!myPosts) {

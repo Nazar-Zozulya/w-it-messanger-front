@@ -2,6 +2,8 @@ import { PostImagesListProps } from "./list.types"
 import styles from "./list.module.css"
 import { PostImage } from "../../model/types"
 import { WhichDeviceType } from "../../../../helpers/which-device-type"
+import { ReactComponent as Trash } from "../../../../shared/ui/icons/trash.svg"
+import { Button } from "../../../../shared/ui/button"
 
 export function PostImagesList(props: PostImagesListProps) {
 	const chunkImages: PostImage[][] = props.images.reduce<PostImage[][]>(
@@ -36,16 +38,29 @@ export function PostImagesList(props: PostImagesListProps) {
 			{chunkImages.map((imageChunk) => {
 				return (
 					<div className={styles.imageChunkList}>
-						{imageChunk.map((image) => {
+						{imageChunk.map((image, index) => {
 							return (
-								<img
-									className={`${styles.image} 
-                                        ${imageChunk.length === 3 && styles.threeImage}
+								<div
+									className={`${styles.imageDiv} ${imageChunk.length === 3 && styles.threeImage}
                                         ${imageChunk.length === 2 && styles.twoImage}
                                         ${imageChunk.length === 1 && styles.oneImage}`}
-									src={image.original_image}
-									alt={"Фото не прогрузилося."}
-								/>
+								>
+									<img
+										className={`${styles.image} 
+										`}
+										src={image.original_image}
+										alt={"Фото не прогрузилося."}
+									/>
+									{props.isDelete && (
+										<Button
+											fill={false}
+											type="button"
+											icon={<Trash />}
+											className={styles.imageDeleteButton}
+											function={()=>{props.onDelete  && props.onDelete(image.original_image,index)}}
+										/>
+									)}
+								</div>
 							)
 						})}
 					</div>

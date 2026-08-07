@@ -6,6 +6,7 @@ import styles from "./block.module.css"
 import { useAlbumsManager } from "../../../../entities/album"
 import { Fragment, useEffect, useRef, useState } from "react"
 import { LoadingAlbumCard } from "../album-card/card"
+import { BounceLoader } from "react-spinners"
 
 const PAGE_SIZE = 4
 const PRELOAD_OFFSET = PAGE_SIZE - 1
@@ -21,6 +22,7 @@ export function AlbumBlock() {
 	const targetRef = useRef<HTMLDivElement>(null)
 
 	const loading = useRef(false)
+	const [isLoading, setIsLoading] = useState(false)
 	const hasMore = useRef(true)
 
 	useEffect(() => {
@@ -36,6 +38,7 @@ export function AlbumBlock() {
 			if (!hasMore.current) return
 
 			loading.current = true
+			setIsLoading(true)
 
 			try {
 				let loadedCount = 0
@@ -51,8 +54,10 @@ export function AlbumBlock() {
 					hasMore.current = false
 					observer.current?.disconnect()
 				}
+				loading.current = false
 			} finally {
 				loading.current = false
+				setIsLoading(false)
 			}
 		})
 
@@ -64,6 +69,7 @@ export function AlbumBlock() {
 	return (
 		<div className={styles.container}>
 			<MyImagesBlock />
+			{/* <BeatLoader /> */}
 
 			<AddAlbumBlock
 				mode={
@@ -109,6 +115,7 @@ export function AlbumBlock() {
 						</Fragment>
 					)
 				})}
+			{isLoading === true && <BounceLoader color="#81818d" size={"5vh"} />}
 			<div className={styles.bottomSpace}></div>
 		</div>
 	)
@@ -127,6 +134,7 @@ export function AnotherUserAlbumBlock(props: { userId: number }) {
 	const targetRef = useRef<HTMLDivElement>(null)
 
 	const loading = useRef(false)
+	const [isLoading, setIsLoading] = useState(false)
 	const hasMore = useRef(true)
 
 	useEffect(() => {
@@ -142,6 +150,7 @@ export function AnotherUserAlbumBlock(props: { userId: number }) {
 			if (!hasMore.current) return
 
 			loading.current = true
+			setIsLoading(true)
 
 			try {
 				let loadedCount = 0
@@ -173,6 +182,7 @@ export function AnotherUserAlbumBlock(props: { userId: number }) {
 				}
 			} finally {
 				loading.current = false
+				setIsLoading(false)
 			}
 		})
 
@@ -220,6 +230,7 @@ export function AnotherUserAlbumBlock(props: { userId: number }) {
 					</Fragment>
 				)
 			})}
+			{isLoading === true && <BounceLoader color="#81818d" size={"5vh"} />}
 			<div className={styles.bottomSpace}></div>
 		</div>
 	)
