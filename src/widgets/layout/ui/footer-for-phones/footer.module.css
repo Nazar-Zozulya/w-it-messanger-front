@@ -2,20 +2,29 @@
     position: absolute;
     bottom: 0;
 
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
 
     width: 100%;
-    padding: 0 3.1vw calc(1.7vh + env(safe-area-inset-bottom)) 3.1vw;
-
     background: #FAF8FF;
     z-index: 1000;
-    margin-bottom: calc(-1 * env(safe-area-inset-bottom));
-    
-    padding-bottom: calc(1.7vh + env(safe-area-inset-bottom));
+
+    /* Высчитываем отступы по бокам и снизу */
+    padding-left: 3.1vw;
+    padding-right: 3.1vw;
+    padding-top: 0;
+
+    /* РЕШЕНИЕ ДЛЯ REDMI: */
+    /* 1. Задаем базовый безопасный отступ для старых/обычных систем (на случай если env вернет 0) */
+    padding-bottom: calc(1.7vh + 48px); 
+
+    /* 2. Для современных систем, которые поддерживают safe-area, берем бóльшее значение */
+    /* На Redmi с кнопками сработает 48px, а на iPhone сработает env() */
+    padding-bottom: max(calc(1.7vh + 48px), calc(1.7vh + env(safe-area-inset-bottom)));
 }
+
 
 .selected {
     border-top: 2px solid #543C52 !important;
