@@ -12,6 +12,9 @@
 
     background: #FAF8FF;
     z-index: 1000;
+    margin-bottom: calc(-1 * env(safe-area-inset-bottom));
+    
+    padding-bottom: calc(1.7vh + env(safe-area-inset-bottom));
 }
 
 .selected {

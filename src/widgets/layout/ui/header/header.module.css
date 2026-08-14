@@ -3,11 +3,14 @@
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    height: 9.2vh;
+    
+    min-height: calc(9.2vh + env(safe-area-inset-top));
     width: 100%;
     background-color: #fff;
-    padding: 0 5.6vw;
+    
+    padding: env(safe-area-inset-top) 5.6vw 0 5.6vw;
 }
+
 
 .navigationForPC {
     display: none;
@@ -16,7 +19,7 @@
 }
 
 .navigationForPhone {
-    display: none;
+    display: none; 
     align-items: center;
     gap: 1.7vw;
 }
