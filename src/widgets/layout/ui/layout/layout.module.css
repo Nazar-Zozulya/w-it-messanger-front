@@ -18,11 +18,11 @@
     align-items: start;
     justify-content: center;
     padding: 0 5.6vw;
-    /* overflow-y: auto;
-
-	scrollbar-width: none; 
-	-ms-overflow-style: none; */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12vh; 
 }
+
 
 @media (pointer: coarse) {
     .container {
